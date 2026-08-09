@@ -1,0 +1,475 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import SeoImage from '../components/SeoImage.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import JsonLd from '../components/JsonLd.astro';
+import Lantern from '../components/Lantern.astro';
+import ChineseCloud from '../components/ChineseCloud.astro';
+import HeroWaves from '../components/HeroWaves.astro';
+import aboutImage from '../assets/hero/ks_kina.jpg';
+import { resolveImage } from '../lib/images';
+import { safeHref } from '../lib/links';
+
+const pages = await getCollection('stranice');
+const homepage = pages.find((page) => page.id === 'homepage');
+if (!homepage) throw new Error('Nedostaje src/content/stranice/homepage.md');
+
+const destinations = (await getCollection('destinacije', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.redosled - b.data.redosled);
+const { seo, hero, ponuda, prednosti, oMeni, ctaBaner, faq } = homepage.data;
+
+// Jedina vrednost koju treba promeniti je `hero.image` u homepage.md.
+const HERO_IMAGE_SOURCE = hero.image;
+const heroImage = resolveImage(HERO_IMAGE_SOURCE);
+const heroTitleWords = hero.headline.trim().split(/\s+/);
+const heroTitleLines = [
+  heroTitleWords.slice(0, -1).join(' '),
+  heroTitleWords.at(-1) ?? '',
+];
+const heroHighlightWords = hero.headlineHighlight.trim().split(/\s+/);
+const heroHighlightFirstLine = heroHighlightWords.slice(0, 2).join(' ').toLocaleLowerCase('sr-Latn');
+const heroHighlightLines = [
+  heroHighlightFirstLine,
+  heroHighlightWords.slice(2).join(' ').toLocaleLowerCase('sr-Latn'),
+];
+const offerHeadingWords = ponuda.heading.trim().split(/\s+/);
+const offerHeadingAccent = offerHeadingWords.pop() ?? '';
+const offerHeadingStart = offerHeadingWords.join(' ');
+
+const webSiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Kina sa Ksenijom',
+  url: seo.canonical,
+  inLanguage: 'sr-Latn',
+  description: seo.description,
+};
+---
+
+<Layout title={seo.title} description={seo.description} canonical={seo.canonical} ogImage={seo.ogImage} ogImageAlt={seo.ogImageAlt}>
+  <JsonLd data={webSiteSchema} />
+
+  <section class="hero-home" aria-labelledby="hero-heading">
+    <ChineseCloud class="hero-cloud hero-cloud--left" />
+    <ChineseCloud class="hero-cloud hero-cloud--middle" />
+
+    <div class="container hero-home__grid">
+      <div class="hero-home__copy">
+        <p class="eyebrow">{hero.eyebrow}</p>
+        <h1 id="hero-heading" aria-label={`${hero.headline} ${hero.headlineHighlight}`}>
+          <span class="hero-home__title" aria-hidden="true">
+            {heroTitleLines.map((line) => <span>{line}</span>)}
+          </span>
+          <span class="hero-home__brush" aria-hidden="true">
+            {heroHighlightLines.map((line) => <span aria-hidden="true">{line}</span>)}
+          </span>
+        </h1>
+        <span class="hero-home__brush-stroke" aria-hidden="true"></span>
+        <p class="lead">{hero.lead}</p>
+        <a class="button hero-home__cta" href={hero.cta.href}>
+          <span>{hero.cta.label}</span><Icon name="arrow" size={19} />
+        </a>
+      </div>
+
+      <div class="hero-home__art">
+        <div class="hero-home__ring" aria-hidden="true"></div>
+        <div class="hero-home__image">
+          <SeoImage
+            src={heroImage}
+            alt={hero.imageAlt}
+            width={1400}
+            height={1400}
+            widths={[560, 840, 1120, 1400]}
+            sizes="(max-width: 900px) 88vw, 52vw"
+            priority
+          />
+        </div>
+        <div class="hero-home__lanterns" aria-hidden="true">
+          <span class="hero-lantern hero-lantern--one"><Lantern size="5.2rem" /></span>
+          <span class="hero-lantern hero-lantern--two"><Lantern size="7rem" /></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-home__waves"><HeroWaves /></div>
+  </section>
+
+  <section class="offer section" aria-labelledby="offer-heading">
+    <ChineseCloud class="offer__cloud offer__cloud--top-left" />
+    <ChineseCloud class="offer__cloud offer__cloud--bottom-right" />
+    <div class="container">
+      <div class="section-heading offer__heading">
+        <h2 id="offer-heading">{offerHeadingStart} <em>{offerHeadingAccent}</em></h2>
+      </div>
+
+      <div class="journeys-grid">
+        {ponuda.kartice.map((card, index) => (
+          <article class="journey-card" id={card.href === '/vodic/' ? 'vodic' : undefined}>
+            <div class="journey-card__image">
+              <SeoImage
+                src={resolveImage(card.image)}
+                alt={card.imageAlt}
+                width={720}
+                height={470}
+                widths={[360, 540, 720]}
+                sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 25vw"
+              />
+              {index === 0 && <span class="journey-card__badge">Aktuelno</span>}
+            </div>
+            <div class="journey-card__body">
+              <p>{card.nadnaslov}</p>
+              <h3>{card.naslov}</h3>
+              <span class="journey-card__description">{card.opis}</span>
+              {card.href === '/destinacije/' ? (
+                <nav class="journey-card__cities" aria-label="Izaberite grad">
+                  {destinations.map((destination) => (
+                    <a href={`/${destination.id}/`}>{destination.data.naslov}</a>
+                  ))}
+                </nav>
+              ) : (
+                <a class="journey-card__link" href={safeHref(card.href)}>{card.cta}<Icon name="arrow" size={15} /></a>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <p class="offer__contact">
+        <span aria-hidden="true">✦</span>
+        <strong>{ponuda.kontaktKartica.telefon}</strong>
+        <small>{ponuda.kontaktKartica.napomena} · kontakt će biti objavljen pre lansiranja</small>
+      </p>
+    </div>
+  </section>
+
+  <section class="benefits" aria-label="Prednosti putovanja">
+    <SeoImage src={resolveImage(prednosti.backgroundImage)} alt={prednosti.backgroundAlt} width={1600} height={620} widths={[720, 1100, 1600]} sizes="100vw" />
+    <div class="benefits__overlay"></div>
+    <div class="container benefits__grid">
+      {prednosti.stavke.map((item) => (
+        <article>
+          <div class="benefits__icon"><Icon name={item.ikonica} size={29} /></div>
+          <div><h3>{item.naslov}</h3><p>{item.opis}</p></div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="about section" id="o-meni" aria-labelledby="about-heading">
+    <ChineseCloud class="about__cloud about__cloud--left" />
+    <ChineseCloud class="about__cloud about__cloud--right" />
+    <div class="container about__grid">
+      <div class="about__copy">
+        <p class="eyebrow">{oMeni.nadnaslov}</p>
+        <h2 id="about-heading">{oMeni.heading}<br /><span class="brush-accent">{oMeni.headingHighlight}</span></h2>
+        <p class="about__text">{oMeni.tekst}</p>
+        <a class="button button--outline" href={safeHref(oMeni.cta.href)}>{oMeni.cta.label}<Icon name="arrow" size={18} /></a>
+        <dl class="stats">
+          {oMeni.brojke.map((item) => <div><dt>{item.broj}{item.sufiks}</dt><dd>{item.labela}</dd></div>)}
+        </dl>
+      </div>
+
+      <div class="about__image-slot">
+        <SeoImage
+          src={aboutImage}
+          alt="Ksenija ispred panorame Šangaja"
+          width={713}
+          height={620}
+          widths={[360, 520, 713]}
+          sizes="(max-width: 42rem) calc(100vw - 2rem), (max-width: 68rem) 36rem, 32rem"
+        />
+      </div>
+    </div>
+
+  </section>
+
+  <section class="cta-banner" id="kontakt" aria-labelledby="cta-heading">
+    <div class="container cta-banner__grid">
+      <div class="cta-banner__portrait">
+        <SeoImage src={resolveImage(ctaBaner.backgroundImage)} alt={ctaBaner.backgroundAlt} width={760} height={760} widths={[420, 620, 760]} sizes="(max-width: 760px) 72vw, 35vw" />
+      </div>
+      <div class="cta-banner__body">
+        <p class="eyebrow">{ctaBaner.nadnaslov}</p>
+        <h2 id="cta-heading">{ctaBaner.headline} <span>{ctaBaner.headlineHighlight}</span></h2>
+        <p>{ctaBaner.tekst}</p>
+        <div>
+          <a class="button button--gold" href={ctaBaner.primarniCta.href}>{ctaBaner.primarniCta.label}<Icon name="arrow" size={18} /></a>
+          <span class="button button--light-outline" aria-disabled="true" title="Kontakt podaci biće objavljeni pre lansiranja">{ctaBaner.sekundarniCta.label}</span>
+        </div>
+        <small>Kontakt podaci biće objavljeni pre lansiranja.</small>
+      </div>
+    </div>
+  </section>
+
+  {faq && <Faq variant="home" heading={faq.heading} questions={faq.pitanja} />}
+</Layout>
+
+<style>
+  @font-face {
+    font-family: 'Gliker';
+    src: url('/fonts/gliker-regular-subset.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Kalam';
+    src: url('@fontsource/kalam/files/kalam-latin-ext-700-normal.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+  }
+
+  .hero-home {
+    position: relative;
+    display: grid;
+    min-height: min(53rem, 100svh);
+    align-items: stretch;
+    overflow: hidden;
+    padding-top: 6.5rem;
+    background:
+      radial-gradient(circle at 76% 41%, rgba(210, 166, 88, .12), transparent 28rem),
+      linear-gradient(118deg, #fffaf1 0%, #f7eddd 68%, #f1e2cb 100%);
+  }
+  .hero-home::after {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(128, 87, 30, .14) .55px, transparent .55px);
+    background-size: 7px 7px;
+    content: '';
+    opacity: .13;
+    pointer-events: none;
+  }
+  .hero-home__grid {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: minmax(29rem, .92fr) minmax(32rem, 1.08fr);
+    align-items: center;
+    gap: clamp(1rem, 2vw, 2.5rem);
+    padding-block: 3rem 7rem;
+  }
+  .hero-home__copy { position: relative; z-index: 4; min-width: 0; padding-left: .25rem; }
+  .hero-home .eyebrow { margin-bottom: 1.1rem; color: #966820; font-size: clamp(.7rem, .85vw, .77rem); }
+  .hero-home h1 { max-width: 8.6ch; text-wrap: wrap; }
+  .hero-home__title {
+    display: block;
+    color: #211b19;
+    font-family: 'Gliker', var(--font-display);
+    font-size: clamp(4rem, 5.45vw, 6rem);
+    font-weight: 400;
+    letter-spacing: -.025em;
+    line-height: .88;
+    text-transform: uppercase;
+  }
+  .hero-home__title > span { display: block; white-space: nowrap; }
+  .hero-home__brush {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    margin-top: .18em;
+    color: #a90f17;
+    font-family: 'Playlist Script', 'Segoe Script', cursive;
+    font-size: clamp(3.65rem, 4.8vw, 5.6rem);
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: .78;
+    text-transform: none;
+  }
+  .hero-home__brush > span { display: block; white-space: nowrap; }
+  .hero-home__brush-stroke { display: block; width: 18rem; height: .55rem; margin: .65rem 0 1.35rem 1rem; transform: rotate(-2deg); border-radius: 50%; background: #c3943f; clip-path: polygon(0 43%, 100% 0, 92% 58%, 8% 100%); opacity: .9; }
+  .hero-home .lead { max-width: 41rem; margin-bottom: 1.7rem; color: #4f4540; font-size: clamp(.92rem, 1.2vw, 1.04rem); line-height: 1.75; }
+  .hero-home__cta { position: relative; isolation: isolate; min-height: 3.65rem; gap: .7rem; padding: 1rem 2.1rem; border: 2px solid #bb8934; background: #a20e16; box-shadow: inset 0 0 0 2px #7d080e, 0 11px 25px rgba(126, 13, 19, .18); }
+  .hero-home__cta::before { position: absolute; z-index: -1; inset: .34rem; border: 1px solid #dfb55e; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(116, 5, 11, .55), 0 0 0 1px rgba(224, 181, 94, .18); content: ''; pointer-events: none; }
+  .hero-home__cta:hover { background: #b3111a; }
+  .hero-home__cta > span { padding-inline: .15rem; }
+  .hero-home__art { position: relative; min-height: 35rem; margin-right: -5rem; }
+  .hero-home__image { position: absolute; top: -2%; right: 0; width: min(47rem, 53vw); aspect-ratio: 1; overflow: hidden; border-radius: 50%; box-shadow: 0 28px 70px rgba(91, 48, 27, .2); }
+  .hero-home__image::after { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(246, 210, 147, .22), transparent 48%, rgba(91, 19, 16, .2)); content: ''; pointer-events: none; }
+  .hero-home__image :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 56% 50%; filter: saturate(.88) sepia(.13) contrast(.98); }
+  .hero-home__ring { position: absolute; top: -6%; right: -1.5%; width: min(50rem, 56vw); aspect-ratio: 1; transform: rotate(-8deg); border: clamp(.7rem, 1.3vw, 1.25rem) solid rgba(186, 139, 57, .72); border-top-color: rgba(210, 168, 90, .35); border-right-color: rgba(150, 101, 31, .82); border-radius: 47% 53% 49% 51%; filter: drop-shadow(0 4px 0 rgba(255,255,255,.42)); }
+  .hero-home__ring::before, .hero-home__ring::after { position: absolute; inset: -.55rem; border: 2px solid rgba(176, 126, 48, .4); border-radius: 50%; content: ''; }
+  .hero-home__ring::after { inset: .45rem -.9rem -.35rem .2rem; border-width: 1px; }
+  .hero-home__lanterns { position: absolute; top: -4rem; right: 3.2rem; z-index: 5; }
+  .hero-lantern { position: absolute; transform-origin: 50% 0; animation: lantern-sway 5.5s ease-in-out infinite alternate; }
+  .hero-lantern--one { top: 5.8rem; right: 6.4rem; }
+  .hero-lantern--two { top: 0; right: 0; animation-delay: -2.1s; animation-duration: 6.4s; }
+  :global(.hero-cloud) { position: absolute; z-index: 1; width: 27rem; pointer-events: none; }
+  :global(.hero-cloud--left) { top: 3.8rem; left: -5rem; transform: rotate(3deg); }
+  :global(.hero-cloud--middle) { top: 5.3rem; left: 31%; width: 31rem; transform: scale(.82); opacity: .75; }
+  .hero-home__waves { position: absolute; right: 0; bottom: -1px; left: 0; z-index: 4; height: clamp(7.5rem, 14vw, 13rem); pointer-events: none; }
+  @keyframes lantern-sway { from { rotate: -2deg; } to { rotate: 2deg; } }
+
+  .offer { position: relative; overflow: hidden; background: #fffaf1; color: var(--text); }
+  .offer::before { position: absolute; inset: 0; background-image: linear-gradient(90deg, rgba(177,130,49,.045) 1px, transparent 1px), linear-gradient(rgba(177,130,49,.045) 1px, transparent 1px); background-size: 28px 28px; content: ''; mask-image: linear-gradient(to bottom, black, transparent 68%); }
+  .offer .container { position: relative; }
+  .offer :global(.offer__cloud) { position: absolute; z-index: 1; color: #caa45c; opacity: .45; pointer-events: none; }
+  .offer :global(.offer__cloud--top-left) { top: .75rem; left: -2.5rem; width: 22rem; }
+  .offer :global(.offer__cloud--bottom-right) { right: -5rem; bottom: 1.5rem; width: 25rem; transform: scaleX(-1); }
+  .offer__heading { max-width: 52rem; margin-inline: auto; text-align: center; }
+  .offer__heading h2 { font-size: clamp(2.1rem, 3.8vw, 3.65rem); }
+  .offer__heading em { color: var(--vermilion); font-family: 'Kalam', 'Segoe Print', cursive; font-size: 1.08em; font-style: normal; letter-spacing: -.04em; }
+  .journeys-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+  .journey-card { position: relative; padding: .58rem; border: 1px solid rgba(176, 128, 48, .5); background: rgba(255, 252, 245, .85); box-shadow: 0 15px 40px rgba(98, 65, 37, .07); }
+  .journey-card::before, .journey-card::after { position: absolute; width: 1.1rem; height: 1.1rem; border-color: #c49a4b; content: ''; pointer-events: none; }
+  .journey-card::before { top: .25rem; left: .25rem; border-top: 1px solid; border-left: 1px solid; }
+  .journey-card::after { right: .25rem; bottom: .25rem; border-right: 1px solid; border-bottom: 1px solid; }
+  .journey-card__image { position: relative; overflow: hidden; aspect-ratio: 1.42; background: #e8dac5; }
+  .journey-card__image :global(img) { width: 100%; height: 100%; object-fit: cover; filter: saturate(.82) sepia(.1); transition: transform 400ms ease, filter 400ms ease; }
+  .journey-card:hover .journey-card__image :global(img) { transform: scale(1.035); filter: saturate(1); }
+  .journey-card__badge { position: absolute; top: .65rem; left: .65rem; padding: .32rem .58rem; border-radius: 999px; background: var(--vermilion); color: white; font-size: .55rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  .journey-card__body { display: flex; min-height: 15rem; flex-direction: column; align-items: flex-start; padding: 1.2rem .9rem .9rem; }
+  .journey-card__body > p { margin: 0 0 .45rem; color: #93691e; font-size: .58rem; font-weight: 800; letter-spacing: .1em; line-height: 1.45; text-transform: uppercase; }
+  .journey-card h3 { margin-bottom: .75rem; font-size: clamp(1.35rem, 2vw, 1.75rem); }
+  .journey-card__description { color: var(--text-muted); font-size: .78rem; line-height: 1.65; }
+  .journey-card__link { display: inline-flex; align-items: center; gap: .45rem; margin-top: auto; padding-top: 1rem; color: var(--vermilion); font-size: .65rem; font-weight: 800; letter-spacing: .08em; text-decoration: none; text-transform: uppercase; }
+  .journey-card__cities { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: auto; padding-top: .85rem; }
+  .journey-card__cities a { padding: .35rem .52rem; border: 1px solid rgba(156,14,21,.25); border-radius: 999px; color: var(--vermilion); font-size: .64rem; font-weight: 800; text-decoration: none; }
+  .journey-card__cities a:hover { background: var(--vermilion); color: white; }
+  .offer__contact { display: flex; width: max-content; max-width: 100%; align-items: center; gap: .65rem; margin: 1.4rem auto 0; color: #7e5a1e; font-size: .76rem; }
+  .offer__contact strong { color: var(--vermilion); }
+  .offer__contact small { color: var(--text-muted); }
+
+  .benefits { position: relative; min-height: 12rem; overflow: hidden; color: var(--on-dark); }
+  .benefits > :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .benefits__overlay { position: absolute; inset: 0; background: rgba(27, 22, 20, .94); }
+  .benefits__grid { position: relative; display: grid; min-height: 12rem; grid-template-columns: repeat(3, 1fr); align-items: center; }
+  .benefits article { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 1rem; padding: 1.8rem 2.2rem; }
+  .benefits article + article { border-left: 1px solid rgba(215,177,100,.22); }
+  .benefits__icon { display: grid; width: 4.25rem; height: 4.25rem; place-items: center; border: 1px solid rgba(216,174,87,.65); border-radius: 50%; color: #d1a44f; }
+  .benefits h3 { font-size: 1.12rem; line-height: 1.1; text-transform: uppercase; }
+  .benefits p { margin: .5rem 0 0; color: #cfc5bb; font-size: .72rem; line-height: 1.55; }
+
+  .about { position: relative; overflow: hidden; background: #f9f1e4; }
+  .about::before { position: absolute; inset: 0; background: radial-gradient(circle at 16% 40%, rgba(190,145,65,.08), transparent 25rem); content: ''; }
+  .about__grid { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr) minmax(24rem, .82fr); align-items: start; gap: clamp(4rem, 9vw, 8rem); }
+  .about .eyebrow { color: #9b6b22; }
+  .about h2 { color: #231d1b; font-size: clamp(3rem, 5.3vw, 5.4rem); }
+  .brush-accent { color: var(--vermilion); font-family: 'Kalam', 'Segoe Print', cursive; font-size: 1.04em; letter-spacing: -.04em; }
+  .about__text { max-width: 43rem; margin-block: 1.8rem; color: var(--text-muted); white-space: pre-line; }
+  .button--outline { border-color: rgba(156,14,21,.5); background: transparent; color: var(--vermilion); }
+  .about .button.button--outline:hover,
+  .about .button.button--outline:focus-visible { border-color: var(--vermilion); background: rgba(156, 14, 21, .08); color: #790a10; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 3.5rem 0 0; }
+  .stats div { padding-top: .9rem; border-top: 1px solid rgba(141,101,32,.28); }
+  .stats dt { color: var(--vermilion); font-family: var(--font-display); font-size: 2rem; font-weight: 800; line-height: 1; }
+  .stats dd { margin: .5rem 0 0; color: var(--text-muted); font-size: .67rem; line-height: 1.4; }
+  .about__image-slot {
+    position: relative;
+    width: min(100%, 32rem);
+    aspect-ratio: 1;
+    justify-self: end;
+    overflow: hidden;
+    border: .6rem solid #c9963e;
+    border-radius: 50%;
+    outline: 2px solid #f0cf87;
+    outline-offset: .24rem;
+    background: #dfceb3;
+    box-shadow: 0 0 0 .55rem rgba(177, 128, 48, .18), 0 24px 55px rgba(95, 63, 35, .18);
+  }
+  .about__image-slot :global(img) { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: 54% 50%; }
+  .about__image-slot::after {
+    position: absolute;
+    inset: .35rem;
+    border: 1px solid rgba(255, 240, 201, .65);
+    border-radius: 50%;
+    content: '';
+    pointer-events: none;
+  }
+  .about :global(.about__cloud) { position: absolute; color: #bd9854; pointer-events: none; }
+  .about :global(.about__cloud--left) { top: 35%; left: -6rem; width: 22rem; }
+  .about :global(.about__cloud--right) { right: -4.5rem; bottom: 1.75rem; width: 19rem; transform: scaleX(-1); }
+
+  .cta-banner { position: relative; overflow: hidden; padding-block: clamp(3.2rem, 6vw, 5.5rem); background: linear-gradient(115deg, #7e0a10, #a80e16 55%, #8c0b11); color: white; }
+  .cta-banner::before { position: absolute; inset: 0; background-image: radial-gradient(rgba(255,233,191,.16) .6px, transparent .6px); background-size: 8px 8px; content: ''; opacity: .22; }
+  .cta-banner__grid { position: relative; display: grid; grid-template-columns: minmax(20rem, .7fr) minmax(0, 1.3fr); align-items: center; gap: clamp(2rem, 6vw, 6rem); }
+  .cta-banner__portrait { position: relative; width: min(24rem, 90%); aspect-ratio: 1; justify-self: center; overflow: hidden; border: .55rem solid rgba(213,174,96,.76); border-radius: 50%; box-shadow: 0 0 0 1px #f0ca7d, 0 22px 45px rgba(45,4,7,.28); }
+  .cta-banner__portrait :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .cta-banner__body .eyebrow { border-color: rgba(236,203,137,.55); background: rgba(78,4,8,.2); color: #eccb89; }
+  .cta-banner h2 { color: #fff9ef; font-size: clamp(4rem, 8vw, 7rem); letter-spacing: -.04em; }
+  .cta-banner h2 span { color: #e6bd68; font-family: 'Kalam', 'Segoe Print', cursive; }
+  .cta-banner__body > p:not(.eyebrow) { max-width: 40rem; margin: 1rem 0 1.7rem; color: #f2dfd3; }
+  .cta-banner__body > div { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .cta-banner__body > small { display: block; margin-top: .9rem; color: #e6c8bd; }
+  .button--gold { background: #e7bd67; color: #5a0a0d; }
+  .button--gold:hover { background: #f1d08b; color: #5a0a0d; }
+  .button--light-outline { border-color: rgba(255,246,233,.65); background: transparent; color: white; }
+  @media (min-width: 58.01rem) {
+    .hero-home { min-height: min(45rem, 100svh); padding-top: 5.6rem; }
+    .hero-home__grid {
+      grid-template-columns: minmax(25rem, .92fr) minmax(28rem, 1.08fr);
+      padding-block: 2rem 5rem;
+    }
+    .hero-home__title { font-size: clamp(3.4rem, 4.65vw, 5.1rem); }
+    .hero-home__brush { font-size: clamp(3.3rem, 4.2vw, 4.8rem); }
+    .hero-home__brush-stroke { width: 15.3rem; margin-block: .5rem 1.05rem; }
+    .hero-home .lead { margin-bottom: 1.4rem; }
+    .hero-home__art { min-height: 29.75rem; }
+    .hero-home__image { width: min(40rem, 45vw); }
+    .hero-home__ring { width: min(42.5rem, 47.6vw); }
+    .hero-home__lanterns { top: -3rem; right: 2.7rem; transform: scale(.85); transform-origin: 100% 0; }
+    .hero-home__waves { height: clamp(6.4rem, 11.9vw, 11rem); }
+  }
+
+  @media (min-width: 125rem) {
+    .hero-home { min-height: clamp(45rem, 82svh, 56rem); }
+    .hero-home__grid {
+      width: min(calc(100% - 6rem), 85rem);
+      grid-template-columns: minmax(27rem, 1fr) minmax(30rem, 1fr);
+      column-gap: 4.5rem;
+    }
+    .hero-home__art { margin-right: -2rem; }
+  }
+
+  @media (max-width: 68rem) {
+    .hero-home__grid { grid-template-columns: minmax(24rem, .9fr) minmax(25rem, 1.1fr); }
+    .hero-home__art { margin-right: -2rem; }
+    .journeys-grid { grid-template-columns: 1fr 1fr; }
+    .journey-card__body { min-height: 13.5rem; }
+  }
+
+  @media (max-width: 58rem) {
+    .hero-home { min-height: auto; padding-top: 5.25rem; }
+    .hero-home__grid { grid-template-columns: 1fr; padding-block: 4rem 9rem; }
+    .hero-home__copy { max-width: 44rem; }
+    .hero-home__art { min-height: 39rem; margin: -1rem -10vw 0 16vw; }
+    .hero-home__image { width: min(42rem, 83vw); }
+    .hero-home__ring { width: min(45rem, 89vw); }
+    .hero-home__lanterns { right: 5vw; }
+    :global(.hero-cloud--middle) { display: none; }
+    .benefits__grid { grid-template-columns: 1fr; padding-block: 1rem; }
+    .benefits article + article { border-top: 1px solid rgba(215,177,100,.22); border-left: 0; }
+    .about__grid { grid-template-columns: 1fr; }
+    .about__image-slot { width: min(100%, 36rem); justify-self: center; }
+  }
+
+  @media (max-width: 42rem) {
+    .hero-home__grid { padding-top: 6.75rem; padding-bottom: 7rem; }
+    .hero-home h1 { max-width: none; text-wrap: wrap; }
+    .hero-home__title { max-width: 100%; font-size: clamp(2.5rem, 12vw, 4.7rem); }
+    .hero-home__brush { width: max-content; font-size: clamp(3.25rem, 15vw, 4.8rem); }
+    .hero-home__brush-stroke { width: 12rem; }
+    .hero-home__art { position: absolute; z-index: 2; inset: 0; min-height: 0; margin: 0; pointer-events: none; }
+    .hero-home__image, .hero-home__ring { display: none; }
+    .hero-home__lanterns { top: -2.75rem; right: 1rem; transform: scale(.62); transform-origin: 100% 0; }
+    .hero-home__waves { height: 6.8rem; }
+    .journeys-grid { grid-template-columns: 1fr; }
+    .journey-card__body { min-height: 0; }
+    .offer__contact { align-items: flex-start; flex-wrap: wrap; justify-content: center; text-align: center; }
+    .benefits article { padding-inline: .5rem; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .about__image-slot { width: min(86vw, 27rem); }
+    .cta-banner__grid { grid-template-columns: 1fr; text-align: center; }
+    .cta-banner__body .eyebrow { justify-content: center; }
+    .cta-banner__body > p:not(.eyebrow) { margin-inline: auto; }
+    .cta-banner__body > div { justify-content: center; }
+    .cta-banner__portrait { width: min(18rem, 74vw); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-lantern { animation: none; }
+  }
+</style>

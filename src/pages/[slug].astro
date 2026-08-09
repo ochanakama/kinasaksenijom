@@ -1,0 +1,174 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import SeoImage from '../components/SeoImage.astro';
+import Faq from '../components/Faq.astro';
+import JsonLd from '../components/JsonLd.astro';
+import Icon from '../components/Icon.astro';
+import { resolveImage } from '../lib/images';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('destinacije', ({ data }) => !data.draft);
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+interface Props { entry: CollectionEntry<'destinacije'>; }
+const { entry } = Astro.props as Props;
+const { Content } = await render(entry);
+const [destinations, blogs, tours] = await Promise.all([
+  getCollection('destinacije', ({ data }) => !data.draft),
+  getCollection('blog', ({ data }) => !data.draft),
+  getCollection('ture', ({ data }) => !data.draft),
+]);
+const destinationMap = new Map(destinations.map((item) => [item.id, item]));
+const blogMap = new Map(blogs.map((item) => [item.id, item]));
+const tourMap = new Map(tours.map((item) => [item.id, item]));
+const relatedDestinations = entry.data.susedneDestinacije.map((id) => destinationMap.get(id)).filter(Boolean) as CollectionEntry<'destinacije'>[];
+const relatedBlogs = entry.data.povezaniBlogovi.map((id) => blogMap.get(id)).filter(Boolean) as CollectionEntry<'blog'>[];
+const relatedTours = entry.data.povezaneTure.map((id) => tourMap.get(id)).filter(Boolean) as CollectionEntry<'ture'>[];
+const hero = resolveImage(entry.data.heroImage);
+const canonical = new URL(`/${entry.id}/`, Astro.site).href;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristDestination',
+  name: entry.data.naslov,
+  alternateName: entry.data.kineskiNaziv,
+  description: entry.data.description,
+  url: canonical,
+  image: new URL(hero.src, Astro.site).href,
+  ...(entry.data.koordinate ? {
+    geo: { '@type': 'GeoCoordinates', latitude: entry.data.koordinate.lat, longitude: entry.data.koordinate.lng },
+  } : {}),
+};
+const dataLabels: Record<string, string> = {
+  brojStanovnika: 'Broj stanovnika', vremenskaZona: 'Vremenska zona', aerodrom: 'Aerodrom',
+  preporucenoTrajanje: 'Preporučeno trajanje', najboljeVreme: 'Najbolje vreme', valuta: 'Valuta',
+};
+---
+
+<Layout title={entry.data.title} description={entry.data.description} canonical={canonical} ogImage={hero.src} ogImageAlt={entry.data.heroImageAlt} noindex={entry.data.noindex}>
+  <JsonLd data={schema} />
+  <article>
+    <header class="detail-hero">
+      <SeoImage src={hero} alt={entry.data.heroImageAlt} width={1600} height={900} widths={[720, 1100, 1600]} sizes="100vw" priority />
+      <div class="detail-hero__overlay"></div>
+      <div class="container detail-hero__inner">
+        <Breadcrumbs items={[{ label: 'Početna', href: '/' }, { label: entry.data.naslov }]} />
+        <div class="detail-hero__copy">
+          <p class="eyebrow">{entry.data.regija} · {entry.data.kineskiNaziv}</p>
+          <h1>{entry.data.naslov}</h1>
+          <p class="lead">{entry.data.uvod}</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="facts section--tight" aria-label="Osnovni podaci">
+      <div class="container facts__grid">
+        {Object.entries(entry.data.podaci).map(([key, value]) => value && <div><dt>{dataLabels[key]}</dt><dd>{value}</dd></div>)}
+      </div>
+    </section>
+
+    <section class="section story">
+      <div class="container story__grid">
+        <aside><p class="eyebrow">Vodič iz prve ruke</p><h2>Upoznajte grad<br /><span class="accent">pre polaska</span></h2></aside>
+        <div class="prose"><Content /></div>
+      </div>
+    </section>
+
+    {entry.data.znamenitosti.length > 0 && (
+      <section class="section sights" aria-labelledby="sights-heading">
+        <div class="container">
+          <div class="section-heading"><p class="eyebrow">Ne propustite</p><h2 id="sights-heading">Znamenitosti</h2></div>
+          <div class="sights__grid">
+            {entry.data.znamenitosti.map((sight, index) => (
+              <article class:list={['sight', index % 2 === 1 && 'sight--reverse']}>
+                <SeoImage src={resolveImage(sight.image)} alt={sight.imageAlt} width={840} height={620} widths={[480, 720, 840]} sizes="(max-width: 760px) 100vw, 50vw" />
+                <div><span>0{index + 1}</span><h3>{sight.naziv}</h3><p>{sight.opis}</p></div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    {entry.data.galerija.length > 0 && (
+      <section class="gallery section" aria-labelledby="gallery-heading">
+        <div class="container"><div class="section-heading"><p class="eyebrow">Detalji putovanja</p><h2 id="gallery-heading">Galerija</h2></div></div>
+        <div class="container gallery__grid">
+          {entry.data.galerija.map((image, index) => <SeoImage src={resolveImage(image.src)} alt={image.alt} width={760} height={index === 0 ? 900 : 620} widths={[420, 620, 760]} sizes="(max-width: 700px) 100vw, 33vw" />)}
+        </div>
+      </section>
+    )}
+  </article>
+
+  {entry.data.faq && <Faq heading={`Česta pitanja o destinaciji ${entry.data.naslov}`} questions={entry.data.faq} />}
+
+  {(relatedDestinations.length > 0 || relatedBlogs.length > 0 || relatedTours.length > 0) && (
+    <section class="related section" aria-labelledby="related-heading">
+      <div class="container">
+        <div class="section-heading"><p class="eyebrow">Nastavite istraživanje</p><h2 id="related-heading">Povezano sa ovom rutom</h2></div>
+        <div class="related__links">
+          {relatedDestinations.map((item) => <a href={`/${item.id}/`}><span>Destinacija</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
+          {relatedBlogs.map((item) => <a href={`/blog/${item.id}/`}><span>Blog</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
+          {relatedTours.map((item) => <a href={`/ture/${item.id}/`}><span>Tura</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
+        </div>
+      </div>
+    </section>
+  )}
+</Layout>
+
+<style>
+  .detail-hero { position: relative; min-height: 50rem; overflow: hidden; padding-top: 6.5rem; color: var(--on-dark); }
+  .detail-hero > :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .detail-hero__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(16,14,12,.98), rgba(16,14,12,.25) 75%); }
+  .detail-hero__inner { position: relative; display: grid; min-height: 43.5rem; align-content: space-between; }
+  .detail-hero__inner :global(.breadcrumbs) { width: 100%; margin: 0; padding-inline: 0; }
+  .detail-hero :global(.breadcrumbs) { color: var(--on-dark-muted); }
+  .detail-hero__copy { max-width: 56rem; padding-bottom: clamp(4rem, 8vw, 7rem); }
+  .detail-hero__copy .lead { margin: 1.5rem 0 0; color: #e1d9ce; }
+  .facts { border-bottom: 1px solid var(--line); background: var(--ink-900); }
+  .facts__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+  .facts__grid div { padding: 1.3rem 1.7rem; border-left: 1px solid var(--line); }
+  .facts__grid div:nth-child(3n) { border-right: 1px solid var(--line); }
+  .facts dt { color: var(--brass); font-size: .67rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+  .facts dd { margin: .4rem 0 0; font-weight: 700; }
+  .story__grid { display: grid; grid-template-columns: minmax(16rem, .65fr) minmax(0, 1.35fr); gap: clamp(3rem, 8vw, 8rem); }
+  .story aside { position: sticky; top: 2rem; align-self: start; }
+  .story h2 { font-size: clamp(2.5rem, 5vw, 4rem); }
+  .sights { background: var(--surface); color: var(--text); }
+  .sights .eyebrow { color: #8b651d; }
+  .sights__grid { display: grid; gap: 1.25rem; }
+  .sight { display: grid; min-height: 27rem; grid-template-columns: 1fr 1fr; overflow: hidden; border-radius: var(--radius); background: #e6ded3; }
+  .sight--reverse :global(img) { order: 2; }
+  .sight :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .sight > div { display: grid; align-content: center; padding: clamp(2rem, 5vw, 4rem); }
+  .sight > div > span { color: var(--vermilion); font-family: var(--font-display); font-weight: 800; }
+  .sight h3 { margin-top: 1rem; font-size: clamp(2rem, 4vw, 3.2rem); }
+  .sight p { margin: 1.2rem 0 0; color: #4d4640; }
+  .gallery { background: var(--ink-900); }
+  .gallery__grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 1rem; }
+  .gallery__grid :global(img) { width: 100%; height: 28rem; border-radius: var(--radius); object-fit: cover; }
+  .gallery__grid :global(img:first-child) { grid-row: span 2; height: 57rem; }
+  .related__links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .related__links a { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: .35rem 1rem; padding: 1.4rem; border: 1px solid var(--line); border-radius: var(--radius-sm); text-decoration: none; }
+  .related__links a:hover { border-color: var(--brass); }
+  .related__links span { grid-column: 1; color: var(--brass); font-size: .65rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+  .related__links strong { grid-column: 1; line-height: 1.35; }
+  .related__links :global(svg) { grid-column: 2; grid-row: 1 / 3; }
+  @media (max-width: 50rem) {
+    .detail-hero { min-height: 43rem; padding-top: 5.25rem; }
+    .detail-hero__inner { min-height: 37.75rem; }
+    .facts__grid { grid-template-columns: 1fr 1fr; }
+    .facts__grid div:nth-child(3n) { border-right: 0; }
+    .story__grid { grid-template-columns: 1fr; }
+    .story aside { position: static; }
+    .sight { grid-template-columns: 1fr; }
+    .sight--reverse :global(img) { order: 0; }
+    .sight :global(img) { max-height: 27rem; }
+    .gallery__grid { grid-template-columns: 1fr 1fr; }
+    .gallery__grid :global(img), .gallery__grid :global(img:first-child) { grid-row: auto; height: 25rem; }
+    .related__links { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 35rem) { .facts__grid, .gallery__grid { grid-template-columns: 1fr; } .gallery__grid :global(img), .gallery__grid :global(img:first-child) { height: 22rem; } }
+</style>

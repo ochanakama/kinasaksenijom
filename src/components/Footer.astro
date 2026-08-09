@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__top">
+    <div>
+      <a class="footer-brand" href="/"><Image src="/logo (1).webp" alt="" width={56} height={56} loading="lazy" />Kina sa Ksenijom</a>
+      <p>Organizovana putovanja u Kinu iz Srbije i regiona, u malim grupama i uz lično vođenje.</p>
+    </div>
+    <nav aria-label="Destinacije">
+      <strong>Destinacije</strong>
+      <a href="/sangaj/">Šangaj</a>
+      <a href="/peking/">Peking</a>
+      <a href="/hainan/">Hainan</a>
+    </nav>
+    <nav aria-label="Sadržaj">
+      <strong>Istraži</strong>
+      <a href="/ture/">Ture</a>
+      <a href="/blog/">Blog</a>
+    </nav>
+    <div class="contact">
+      <strong>Kontakt</strong>
+      <span>Telefon i WhatsApp</span>
+      <span class="placeholder">+381 XX XXX XXXX</span>
+      <small>Kontakt podaci biće objavljeni pre lansiranja.</small>
+    </div>
+  </div>
+  <div class="container site-footer__bottom">
+    <span>© {new Date().getFullYear()} Kina sa Ksenijom</span>
+    <a href="/sitemap-index.xml">Mapa sajta</a>
+  </div>
+</footer>
+
+<style>
+  .site-footer { border-top: 1px solid var(--line); background: #d8c9b5; }
+  .site-footer__top { display: grid; grid-template-columns: 1.5fr .75fr .75fr 1fr; gap: 3rem; padding-block: 4.5rem; }
+  .footer-brand { display: inline-flex; align-items: center; gap: .8rem; color: var(--vermilion); font-family: 'Playlist Script', 'Segoe Script', cursive; font-size: 1.85rem; font-weight: 400; letter-spacing: 0; line-height: .95; text-decoration: none; text-transform: none; }
+  .footer-brand :global(img) { width: 3.5rem; height: 3.5rem; object-fit: contain; }
+  p { max-width: 25rem; margin-top: 1rem; color: var(--text); font-size: .9rem; }
+  nav, .contact { display: grid; align-content: start; gap: .6rem; }
+  strong { margin-bottom: .35rem; color: var(--vermilion); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; }
+  nav a, .contact span { color: var(--text); font-size: .86rem; text-decoration: none; }
+  nav a:hover { color: var(--vermilion); }
+  .placeholder { font-weight: 800; }
+  small { max-width: 16rem; color: var(--text); line-height: 1.5; }
+  .site-footer__bottom { display: flex; justify-content: space-between; gap: 1rem; padding-block: 1.2rem; border-top: 1px solid var(--line); color: var(--text); font-size: .72rem; }
+  @media (max-width: 52rem) { .site-footer__top { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 34rem) { .site-footer__top { grid-template-columns: 1fr; } }
+</style>

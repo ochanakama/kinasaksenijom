@@ -1,0 +1,75 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import SeoImage from '../../components/SeoImage.astro';
+import Faq from '../../components/Faq.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import { resolveImage } from '../../lib/images';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('ture', ({ data }) => !data.draft);
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+interface Props { entry: CollectionEntry<'ture'>; }
+const { entry } = Astro.props as Props;
+const { Content } = await render(entry);
+const hero = resolveImage(entry.data.heroImage);
+const canonical = new URL(`/ture/${entry.id}/`, Astro.site).href;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristTrip',
+  name: entry.data.naslov,
+  description: entry.data.description,
+  url: canonical,
+  image: new URL(hero.src, Astro.site).href,
+  itinerary: entry.data.destinacije.join(', '),
+};
+---
+
+<Layout title={entry.data.title} description={entry.data.description} canonical={canonical} ogImage={hero.src} ogImageAlt={entry.data.heroImageAlt} noindex={entry.data.noindex}>
+  <JsonLd data={schema} />
+  <article>
+    <header class="tour-detail">
+      <SeoImage src={hero} alt={entry.data.heroImageAlt} width={1600} height={900} widths={[720, 1100, 1600]} sizes="100vw" priority />
+      <div class="tour-detail__overlay"></div>
+      <div class="container tour-detail__inner">
+        <Breadcrumbs items={[{ label: 'Početna', href: '/' }, { label: 'Ture', href: '/ture/' }, { label: entry.data.naslov }]} />
+        <div><p class="eyebrow">{entry.data.tip} · {entry.data.trajanjeDana} dana</p><h1>{entry.data.naslov}</h1><p class="lead">{entry.data.uvod}</p></div>
+      </div>
+    </header>
+    <section class="tour-facts section--tight"><div class="container">
+      <dl><div><dt>Trajanje</dt><dd>{entry.data.trajanjeDana} dana, {entry.data.trajanjeNoci} noći</dd></div><div><dt>Polazak</dt><dd>{entry.data.polazakIz}</dd></div><div><dt>Grupa</dt><dd>{entry.data.velicinaGrupe.min} do {entry.data.velicinaGrupe.max} putnika</dd></div><div><dt>Sezona</dt><dd>{entry.data.sezona ?? 'Po objavljenom terminu'}</dd></div></dl>
+    </div></section>
+    <section class="section"><div class="prose"><Content /></div></section>
+    {entry.data.itinerer.length > 0 && <section class="itinerary section"><div class="container"><div class="section-heading"><p class="eyebrow">Dan po dan</p><h2>Plan putovanja</h2></div><ol>{entry.data.itinerer.map((day) => <li><span>{day.dan}</span><div><h3>{day.naslov}</h3><p>{day.opis}</p><small>{day.nocenje && `Noćenje: ${day.nocenje}`}{day.obroci.length > 0 && ` · Obroci: ${day.obroci.join(', ')}`}</small></div></li>)}</ol></div></section>}
+  </article>
+  {entry.data.faq && <Faq heading="Česta pitanja o turi" questions={entry.data.faq} />}
+</Layout>
+
+<style>
+  .tour-detail { position: relative; min-height: 50rem; overflow: hidden; padding-top: 6.5rem; color: var(--on-dark); }
+  .tour-detail > :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .tour-detail__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(16,14,12,.97), rgba(16,14,12,.3)); }
+  .tour-detail__inner { position: relative; display: grid; min-height: 43.5rem; align-content: space-between; padding-bottom: 5rem; }
+  .tour-detail__inner :global(.breadcrumbs) { width: 100%; margin: 0; padding-inline: 0; }
+  .tour-detail :global(.breadcrumbs) { color: var(--on-dark-muted); }
+  .tour-detail__inner > div { max-width: 62rem; }
+  .tour-detail .lead { margin-top: 1.5rem; }
+  .tour-facts { background: var(--ink-900); }
+  .tour-facts dl { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; }
+  .tour-facts dl div { padding: 1rem 1.5rem; border-left: 1px solid var(--line); }
+  .tour-facts dt { color: var(--brass); font-size: .68rem; font-weight: 800; text-transform: uppercase; }
+  .tour-facts dd { margin: .35rem 0 0; font-weight: 700; }
+  .itinerary { background: var(--surface); color: var(--text); }
+  .itinerary .eyebrow { color: #8b651d; }
+  .itinerary ol { max-width: 55rem; margin: 0 auto; padding: 0; list-style: none; }
+  .itinerary li { display: grid; grid-template-columns: 4rem 1fr; gap: 1.5rem; padding-block: 2rem; border-top: 1px solid #cec4b7; }
+  .itinerary li > span { color: var(--vermilion); font-family: var(--font-display); font-size: 2rem; font-weight: 800; }
+  .itinerary h3 { font-size: 2rem; }
+  .itinerary p { margin: .8rem 0; color: #514a43; }
+  .itinerary small { color: #756c63; }
+  @media (max-width: 58rem) { .tour-detail { padding-top: 5.25rem; } .tour-facts dl { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 35rem) { .tour-facts dl { grid-template-columns: 1fr; } }
+</style>

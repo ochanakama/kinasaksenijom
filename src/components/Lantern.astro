@@ -1,0 +1,27 @@
+---
+interface Props { size?: string; }
+const { size = '2.5rem' } = Astro.props;
+---
+
+<svg class="lantern" viewBox="0 0 96 170" width="96" height="170" style={`width:${size};height:auto`} aria-hidden="true">
+  <path class="lantern__cord" d="M48 0v28" />
+  <path class="lantern__loop" d="M37 31c2-10 20-10 22 0" />
+  <rect class="lantern__cap" x="30" y="27" width="36" height="9" rx="3" />
+  <path class="lantern__body" d="M48 34c25 0 36 15 36 45s-11 50-36 50S12 109 12 79s11-45 36-45Z" />
+  <path class="lantern__glow" d="M48 40c15 0 22 14 22 39s-7 42-22 42-22-17-22-42 7-39 22-39Z" />
+  <path class="lantern__rib" d="M48 36v91M30 39c-6 25-6 60 0 84M66 39c6 25 6 60 0 84" />
+  <rect class="lantern__cap" x="28" y="126" width="40" height="9" rx="3" />
+  <path class="lantern__knot" d="M43 135h10l-2 10h-6l-2-10Z" />
+  <path class="lantern__tassel" d="M48 145v24M42 147l-3 19M54 147l3 19" />
+</svg>
+
+<style>
+  .lantern { display: block; max-width: none; overflow: visible; filter: drop-shadow(0 8px 12px rgba(99, 8, 13, .17)); }
+  .lantern__cord, .lantern__loop, .lantern__rib, .lantern__tassel { fill: none; stroke-linecap: round; }
+  .lantern__cord, .lantern__loop { stroke: #6f4b1b; stroke-width: 2; }
+  .lantern__body { fill: #9c0e15; }
+  .lantern__glow { fill: #c63a31; opacity: .65; }
+  .lantern__rib { stroke: rgba(255, 226, 178, .48); stroke-width: 1.5; }
+  .lantern__cap, .lantern__knot { fill: #8a621f; }
+  .lantern__tassel { stroke: #9c0e15; stroke-width: 2.4; }
+</style>

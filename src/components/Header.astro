@@ -1,0 +1,152 @@
+---
+import { Image } from 'astro:assets';
+
+const path = Astro.url.pathname;
+const linksBeforeDestinations = [
+  { label: 'Početna', href: '/' },
+  { label: 'Ture', href: '/ture/' },
+];
+const destinationLinks = [
+  { label: 'Šangaj', description: 'Neboderi i francuska četvrt', href: '/sangaj/' },
+  { label: 'Peking', description: 'Carska prestonica i Kineski zid', href: '/peking/' },
+  { label: 'Hainan', description: 'Tropsko ostrvo i plaže Sanje', href: '/hainan/' },
+];
+const linksAfterDestinations = [
+  { label: 'Vodič', href: '/#vodic' },
+  { label: 'Blog', href: '/blog/' },
+  { label: 'O meni', href: '/#o-meni' },
+  { label: 'Kontakt', href: '/#kontakt' },
+];
+const isDestination = destinationLinks.some((link) => path === link.href);
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/">
+      <Image class="brand__logo" src="/logo (1).webp" alt="" width={64} height={64} loading="eager" />
+      <strong>Kina sa Ksenijom</strong>
+    </a>
+    <nav class="desktop-nav" aria-label="Glavna navigacija">
+      {linksBeforeDestinations.map((link) => (
+        <a class="nav-link" href={link.href} aria-current={link.href !== '/' && path.startsWith(link.href) ? 'page' : path === link.href ? 'page' : undefined}>
+          {link.label}
+        </a>
+      ))}
+      <details class:list={['nav-dropdown', isDestination && 'nav-dropdown--active']}>
+        <summary>Destinacije <span class="nav-dropdown__caret" aria-hidden="true"></span></summary>
+        <div class="nav-dropdown__menu">
+          <span class="nav-dropdown__eyebrow">Izaberi destinaciju</span>
+          {destinationLinks.map((link, index) => (
+            <a href={link.href} aria-current={path === link.href ? 'page' : undefined}>
+              <span class="nav-dropdown__number">0{index + 1}</span>
+              <span><strong>{link.label}</strong><small>{link.description}</small></span>
+              <span class="nav-dropdown__arrow" aria-hidden="true">→</span>
+            </a>
+          ))}
+        </div>
+      </details>
+      {linksAfterDestinations.map((link) => (
+        <a class="nav-link" href={link.href} aria-current={link.href !== '/' && path.startsWith(link.href) ? 'page' : path === link.href ? 'page' : undefined}>
+          {link.label}
+        </a>
+      ))}
+    </nav>
+    <details class="menu">
+      <summary aria-label="Otvori navigaciju"><span></span><span></span><span></span></summary>
+      <nav aria-label="Mobilna navigacija">
+        {linksBeforeDestinations.map((link) => (
+          <a href={link.href} aria-current={link.href !== '/' && path.startsWith(link.href) ? 'page' : path === link.href ? 'page' : undefined}>
+            {link.label}
+          </a>
+        ))}
+        <span class="mobile-destinations__label">Destinacije</span>
+        <div class="mobile-destinations">
+          {destinationLinks.map((link) => <a href={link.href} aria-current={path === link.href ? 'page' : undefined}>{link.label}</a>)}
+        </div>
+        {linksAfterDestinations.map((link) => (
+          <a href={link.href} aria-current={link.href !== '/' && path.startsWith(link.href) ? 'page' : path === link.href ? 'page' : undefined}>
+            {link.label}
+          </a>
+        ))}
+      </nav>
+    </details>
+  </div>
+</header>
+
+<script>
+  const destinationDropdown = document.querySelector<HTMLDetailsElement>('.nav-dropdown');
+
+  if (destinationDropdown) {
+    destinationDropdown.addEventListener('mouseenter', () => {
+      destinationDropdown.open = true;
+    });
+
+    destinationDropdown.addEventListener('mouseleave', () => {
+      if (!destinationDropdown.matches(':focus-within')) destinationDropdown.open = false;
+    });
+
+    destinationDropdown.addEventListener('focusin', () => {
+      destinationDropdown.open = true;
+    });
+
+    destinationDropdown.addEventListener('focusout', (event) => {
+      const nextTarget = event.relatedTarget;
+      if (!(nextTarget instanceof Node) || !destinationDropdown.contains(nextTarget)) {
+        destinationDropdown.open = false;
+      }
+    });
+
+    destinationDropdown.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        destinationDropdown.open = false;
+        destinationDropdown.querySelector('summary')?.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .site-header { position: absolute; inset: 0 0 auto; z-index: 30; background: linear-gradient(to bottom, rgba(235,225,209,.98), rgba(235,225,209,.84), transparent); }
+  .site-header__inner { display: flex; min-height: 6.5rem; align-items: center; justify-content: space-between; gap: 2rem; }
+  .brand { display: inline-flex; align-items: center; gap: .8rem; text-decoration: none; }
+  .brand :global(.brand__logo) { width: 3.6rem; height: 3.6rem; object-fit: contain; }
+  .brand strong { display: block; color: var(--vermilion); font-family: 'Playlist Script', 'Segoe Script', cursive; font-size: 1.75rem; font-weight: 400; letter-spacing: 0; line-height: .9; text-transform: none; white-space: nowrap; }
+  .menu { display: none; }
+  nav { align-items: center; gap: clamp(.75rem, 2vw, 1.8rem); }
+  .desktop-nav { display: flex; }
+  .nav-link, .nav-dropdown > summary { position: relative; padding: .7rem 0; color: var(--paper-muted); font-family: var(--font-body); font-size: .73rem; font-variation-settings: 'wght' 760; font-weight: 760; letter-spacing: .055em; line-height: 1.2; text-decoration: none; text-transform: uppercase; }
+  .nav-dropdown > summary { display: inline-flex; align-items: center; gap: .5rem; cursor: default; list-style: none; user-select: none; }
+  .nav-dropdown > summary::-webkit-details-marker { display: none; }
+  .nav-dropdown__caret { width: .4rem; height: .4rem; transform: translateY(-.15rem) rotate(45deg); border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transition: transform 180ms ease; }
+  .nav-link:hover, .nav-link[aria-current='page'], .nav-dropdown:hover > summary, .nav-dropdown:focus-within > summary, .nav-dropdown--active > summary { color: var(--paper); }
+  .nav-link::after, .nav-dropdown > summary::after { position: absolute; right: 0; bottom: .35rem; left: 0; height: 1px; transform: scaleX(0); background: var(--vermilion-bright); content: ''; transition: transform 180ms ease; }
+  .nav-link:hover::after, .nav-link[aria-current='page']::after, .nav-dropdown:hover > summary::after, .nav-dropdown:focus-within > summary::after, .nav-dropdown--active > summary::after { transform: scaleX(1); }
+  .nav-dropdown { position: relative; }
+  .nav-dropdown__menu { position: absolute; top: calc(100% + .35rem); right: -2rem; display: grid; width: 20rem; padding: .65rem; transform: translateY(.55rem); border: 1px solid rgba(38,29,27,.13); border-radius: 1rem; background: rgba(248,241,231,.98); box-shadow: 0 22px 55px rgba(75,49,40,.2); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease; }
+  .nav-dropdown[open] .nav-dropdown__menu { transform: translateY(0); opacity: 1; visibility: visible; pointer-events: auto; }
+  .nav-dropdown[open] .nav-dropdown__caret { transform: translateY(.1rem) rotate(225deg); }
+  .nav-dropdown__eyebrow { padding: .65rem .85rem .5rem; color: var(--vermilion); font-size: .58rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+  .nav-dropdown__menu a { display: grid; grid-template-columns: 1.6rem 1fr auto; align-items: center; gap: .75rem; padding: .8rem .85rem; border-radius: .7rem; color: var(--text); text-decoration: none; }
+  .nav-dropdown__menu a:hover, .nav-dropdown__menu a:focus-visible, .nav-dropdown__menu a[aria-current='page'] { background: var(--surface-alt); color: var(--vermilion); }
+  .nav-dropdown__number { color: var(--brass); font-size: .6rem; font-weight: 800; letter-spacing: .08em; }
+  .nav-dropdown__menu strong, .nav-dropdown__menu small { display: block; }
+  .nav-dropdown__menu strong { font-family: var(--font-display); font-size: .88rem; letter-spacing: .02em; text-transform: uppercase; }
+  .nav-dropdown__menu small { margin-top: .18rem; color: var(--text-muted); font-size: .68rem; line-height: 1.35; }
+  .nav-dropdown__arrow { font-size: 1rem; transition: transform 160ms ease; }
+  .nav-dropdown__menu a:hover .nav-dropdown__arrow, .nav-dropdown__menu a:focus-visible .nav-dropdown__arrow { transform: translateX(.2rem); }
+  @media (max-width: 58rem) {
+    .site-header__inner { min-height: 5.25rem; }
+    .desktop-nav { display: none; }
+    .menu { display: block; }
+    .menu summary { display: grid; width: 2.8rem; height: 2.8rem; place-content: center; gap: .3rem; cursor: pointer; border: 1px solid var(--line); border-radius: 50%; list-style: none; }
+    .menu summary::-webkit-details-marker { display: none; }
+    .menu summary span { display: block; width: 1.1rem; height: 1px; background: var(--text); }
+    .menu nav { position: absolute; top: 5.25rem; right: 0; left: 0; display: grid; padding: 1rem max(1rem, calc((100vw - var(--container))/2)); border-bottom: 1px solid var(--line); background: rgba(248,241,231,.99); box-shadow: var(--shadow); }
+    .menu nav > a { padding: .7rem 1rem; color: var(--paper-muted); font-family: var(--font-body); font-size: .73rem; font-variation-settings: 'wght' 760; font-weight: 760; letter-spacing: .055em; line-height: 1.25; text-decoration: none; text-transform: uppercase; }
+    .menu nav > a[aria-current='page'] { color: var(--vermilion); }
+    .mobile-destinations__label { padding: .7rem 1rem .2rem; color: var(--vermilion); font-family: var(--font-body); font-size: .67rem; font-variation-settings: 'wght' 760; font-weight: 760; letter-spacing: .07em; text-transform: uppercase; }
+    .mobile-destinations { display: grid; grid-template-columns: repeat(3, 1fr); gap: .45rem; padding: 0 1rem .55rem; }
+    .mobile-destinations a { padding: .65rem .7rem; border-radius: .45rem; background: var(--surface-alt); color: var(--text); font-size: .72rem; font-weight: 800; text-align: center; text-decoration: none; }
+    .mobile-destinations a[aria-current='page'] { background: var(--vermilion); color: white; }
+  }
+</style>

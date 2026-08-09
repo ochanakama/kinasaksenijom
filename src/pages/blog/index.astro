@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ContentCard from '../../components/ContentCard.astro';
+import { resolveImage } from '../../lib/images';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.datumObjave.getTime() - a.data.datumObjave.getTime());
+const title = 'Blog o putovanju u Kinu | Kina sa Ksenijom';
+const description = 'Praktični saveti za putovanje u Kinu. Plaćanje, aplikacije, prevoz, dokumenta i vodiči koji olakšavaju pripremu pre polaska.';
+---
+
+<Layout title={title} description={description}>
+  <div class="listing-hero">
+    <Breadcrumbs items={[{ label: 'Početna', href: '/' }, { label: 'Blog' }]} />
+    <div class="container listing-hero__copy">
+      <p class="eyebrow">Praktično, bez komplikovanja</p>
+      <h1>Vodič za Kinu<br /><span class="accent">pre polaska</span></h1>
+      <p class="lead">Aplikacije, plaćanje, prevoz i pravila koja u Kini funkcionišu drugačije. Ovde ih sređujem u jasne korake.</p>
+    </div>
+  </div>
+  <section class="section" aria-label="Tekstovi sa bloga">
+    <div class="container cards-grid">
+      {posts.map((entry) => (
+        <ContentCard
+          href={`/blog/${entry.id}/`}
+          title={entry.data.naslov}
+          description={entry.data.karticaOpis ?? entry.data.uvod}
+          image={resolveImage(entry.data.heroImage)}
+          alt={entry.data.heroImageAlt}
+          eyebrow={`${entry.data.kategorija} · ${entry.data.vremeCitanja ?? 1} min čitanja`}
+        />
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .listing-hero { padding: 6.5rem 0 clamp(4rem, 9vw, 8rem); border-bottom: 1px solid var(--line); background: radial-gradient(circle at 80% 30%, rgba(156,14,21,.11), transparent 28rem); }
+  .listing-hero__copy { padding-top: clamp(2rem, 5vw, 5rem); }
+  .listing-hero h1 { max-width: 12ch; }
+  .listing-hero .lead { margin-top: 2rem; }
+  @media (max-width: 58rem) { .listing-hero { padding-top: 5.25rem; } }
+</style>
