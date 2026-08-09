@@ -2,7 +2,10 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import displayFont from '@fontsource-variable/archivo/files/archivo-latin-ext-wght-normal.woff2?url';
+import displayFontLatin from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url';
+import displayFontLatinExt from '@fontsource-variable/fraunces/files/fraunces-latin-ext-wght-normal.woff2?url';
+import bodyFontLatin from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url';
+import bodyFontLatinExt from '@fontsource-variable/dm-sans/files/dm-sans-latin-ext-wght-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -22,9 +25,12 @@ const {
   noindex = false,
 } = Astro.props;
 const absoluteOgImage = new URL(ogImage, Astro.site).href;
-const headingFont = Astro.url.pathname === '/'
-  ? { href: '/fonts/gliker-regular-subset.woff2', type: 'font/woff2' }
-  : { href: displayFont, type: 'font/woff2' };
+const fontPreloads = [
+  { href: displayFontLatin, type: 'font/woff2' },
+  { href: displayFontLatinExt, type: 'font/woff2' },
+  { href: bodyFontLatin, type: 'font/woff2' },
+  { href: bodyFontLatinExt, type: 'font/woff2' },
+];
 ---
 
 <!doctype html>
@@ -37,7 +43,7 @@ const headingFont = Astro.url.pathname === '/'
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preload" href={headingFont.href} as="font" type={headingFont.type} crossorigin />
+    {fontPreloads.map((font) => <link rel="preload" href={font.href} as="font" type={font.type} crossorigin />)}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Kina sa Ksenijom" />

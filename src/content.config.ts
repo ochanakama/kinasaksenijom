@@ -60,7 +60,7 @@ const stranice = defineCollection({
       headingHighlight: z.string(),
       tekst: z.string(),
       cta: ctaLink,
-      brojke: z.array(z.object({ broj: z.number(), sufiks: z.string(), labela: z.string() })),
+      kredibilitet: z.array(z.object({ naslov: z.string(), opis: z.string(), ikonica: z.string() })),
       lista: z.object({
         naslov: z.string(),
         stavke: z.array(z.object({ naziv: z.string(), podnaslov: z.string(), href: z.string() })),

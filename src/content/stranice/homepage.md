@@ -40,17 +40,17 @@ hero:
 #    size kontroliše raspored u gridu (tall / wide / normal)
 # ---------------------------------------------------------------------
 ponuda:
-  heading: "IZABERI SVOJE PUTOVANJE"
+  heading: "ISTRAŽI Kinu"
 
   kontaktKartica:
     telefon: "+381 XX XXX XXXX"
     napomena: "Pozovi ili piši na WhatsApp"
 
   kartice:
-    - naslov: "Aktuelne ture"
-      nadnaslov: "Grupni polasci sa fiksnim datumima"
-      opis: "Termini za narednu sezonu, sa cenom, itinererom i brojem slobodnih mesta. Grupe do 12 ljudi."
-      cta: "Pogledaj termine"
+    - naslov: "Ture uskoro stižu"
+      nadnaslov: "Novi termini su u pripremi"
+      opis: "Pripremam nove grupne ture kroz Kinu. Uskoro objavljujem datume polazaka, detaljne itinerere i sve informacije za rezervaciju."
+      cta: "Pogledaj najavu"
       href: "/ture/"
       image: "~/assets/ponuda/grupne-ture.jpg"
       imageAlt: "Grupa putnika ispred hrama u Pekingu"
@@ -65,13 +65,13 @@ ponuda:
       imageAlt: "Ulica u starom delu Čengdua"
       size: "tall"
 
-    - naslov: "Privatne ture"
-      nadnaslov: "Vaša grupa, vaš tempo"
-      opis: "Porodica, društvo ili firma. Rutu pravim od nule, prema tome šta vas zanima i koliko dana imate."
-      cta: "Zatraži ponudu"
-      href: "/ture/privatne/"
-      image: "~/assets/ponuda/privatne-ture.jpg"
-      imageAlt: "Dvoje putnika na obali reke Li"
+    - naslov: "Kina iz prve ruke"
+      nadnaslov: "Priče, saveti i vodiči"
+      opis: "Praktični saveti o plaćanju, aplikacijama, običajima i svakodnevnom životu u Kini — sve što vredi znati pre puta."
+      cta: "Čitaj blog"
+      href: "/blog/"
+      image: "~/assets/blog/placanje-u-kini/hero.png"
+      imageAlt: "Noćna panorama Šangaja uz reku Huangpu"
       size: "normal"
 
     - naslov: "Vodič kroz Kinu"
@@ -101,8 +101,8 @@ prednosti:
       ikonica: "check-circle"
 
 # ---------------------------------------------------------------------
-# 4. O MENI + BROJKE + LISTA DESTINACIJA
-#    Kod Montanara: levo tekst + 4 brojača, desno lista "Naši projekti"
+# 4. O MENI + KREDIBILITET + LISTA DESTINACIJA
+#    Levo: tekst i ključne kvalifikacije. Desno: fotografija.
 # ---------------------------------------------------------------------
 oMeni:
   nadnaslov: "Ko stoji iza ovoga"
@@ -114,20 +114,16 @@ oMeni:
     label: "Pročitaj moju priču"
     href: "/o-meni/"
 
-  # Brojke, zameni stvarnim vrednostima pre lansiranja
-  brojke:
-    - broj: 0
-      sufiks: "+"
-      labela: "godina u Kini"
-    - broj: 0
-      sufiks: "+"
-      labela: "vođenih tura"
-    - broj: 0
-      sufiks: "+"
-      labela: "posećenih gradova"
-    - broj: 0
-      sufiks: "+"
-      labela: "putnika iz regiona"
+  kredibilitet:
+    - naslov: "Diplomirala kineski jezik"
+      opis: "Formalno obrazovanje iz kineskog jezika i kulture kao osnova za sigurnu komunikaciju."
+      ikonica: "graduation"
+    - naslov: "Putovala po Kini"
+      opis: "Lično iskustvo kineskih gradova, ruta i svakodnevnog života van tipičnih turističkih programa."
+      ikonica: "map"
+    - naslov: "Iskustvo u prevođenju"
+      opis: "Rad sa Kinezima, prevođenje i iskustvo u direktnoj međukulturnoj komunikaciji."
+      ikonica: "messages"
 
   # Desna kolona, kod Montanara "Naši projekti"
   lista:
@@ -204,7 +200,6 @@ frontmatter-a iznad. Ovaj prostor koristi za interne beleške.
 
 TODO pre lansiranja:
 - [ ] Uneti stvaran broj telefona u ponuda.kontaktKartica.telefon
-- [ ] Zameniti nule u oMeni.brojke stvarnim vrednostima
 - [ ] Ubaciti slike u /src/assets/ po putanjama navedenim gore
 - [ ] Napraviti og/homepage.jpg (1200x630)
 - [ ] Odlučiti da li /ture/privatne/ ide kao zasebna stranica ili kao

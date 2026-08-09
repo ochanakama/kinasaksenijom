@@ -110,11 +110,11 @@ const isDestination = destinationLinks.some((link) => path === link.href);
   .site-header__inner { display: flex; min-height: 6.5rem; align-items: center; justify-content: space-between; gap: 2rem; }
   .brand { display: inline-flex; align-items: center; gap: .8rem; text-decoration: none; }
   .brand :global(.brand__logo) { width: 3.6rem; height: 3.6rem; object-fit: contain; }
-  .brand strong { display: block; color: var(--vermilion); font-family: 'Playlist Script', 'Segoe Script', cursive; font-size: 1.75rem; font-weight: 400; letter-spacing: 0; line-height: .9; text-transform: none; white-space: nowrap; }
+  .brand strong { display: block; color: var(--vermilion); font-family: var(--font-script); font-size: 1.75rem; font-weight: 400; letter-spacing: 0; line-height: .9; text-transform: none; white-space: nowrap; }
   .menu { display: none; }
   nav { align-items: center; gap: clamp(.75rem, 2vw, 1.8rem); }
   .desktop-nav { display: flex; }
-  .nav-link, .nav-dropdown > summary { position: relative; padding: .7rem 0; color: var(--paper-muted); font-family: var(--font-body); font-size: .73rem; font-variation-settings: 'wght' 760; font-weight: 760; letter-spacing: .055em; line-height: 1.2; text-decoration: none; text-transform: uppercase; }
+  .nav-link, .nav-dropdown > summary { position: relative; padding: .7rem 0; color: var(--paper-muted); font-family: var(--font-body); font-size: .73rem; font-weight: 600; letter-spacing: .04em; line-height: 1.2; text-decoration: none; text-transform: uppercase; }
   .nav-dropdown > summary { display: inline-flex; align-items: center; gap: .5rem; cursor: default; list-style: none; user-select: none; }
   .nav-dropdown > summary::-webkit-details-marker { display: none; }
   .nav-dropdown__caret { width: .4rem; height: .4rem; transform: translateY(-.15rem) rotate(45deg); border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transition: transform 180ms ease; }
@@ -130,7 +130,7 @@ const isDestination = destinationLinks.some((link) => path === link.href);
   .nav-dropdown__menu a:hover, .nav-dropdown__menu a:focus-visible, .nav-dropdown__menu a[aria-current='page'] { background: var(--surface-alt); color: var(--vermilion); }
   .nav-dropdown__number { color: var(--brass); font-size: .6rem; font-weight: 800; letter-spacing: .08em; }
   .nav-dropdown__menu strong, .nav-dropdown__menu small { display: block; }
-  .nav-dropdown__menu strong { font-family: var(--font-display); font-size: .88rem; letter-spacing: .02em; text-transform: uppercase; }
+  .nav-dropdown__menu strong { font-family: var(--font-body); font-size: .88rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
   .nav-dropdown__menu small { margin-top: .18rem; color: var(--text-muted); font-size: .68rem; line-height: 1.35; }
   .nav-dropdown__arrow { font-size: 1rem; transition: transform 160ms ease; }
   .nav-dropdown__menu a:hover .nav-dropdown__arrow, .nav-dropdown__menu a:focus-visible .nav-dropdown__arrow { transform: translateX(.2rem); }
@@ -142,9 +142,9 @@ const isDestination = destinationLinks.some((link) => path === link.href);
     .menu summary::-webkit-details-marker { display: none; }
     .menu summary span { display: block; width: 1.1rem; height: 1px; background: var(--text); }
     .menu nav { position: absolute; top: 5.25rem; right: 0; left: 0; display: grid; padding: 1rem max(1rem, calc((100vw - var(--container))/2)); border-bottom: 1px solid var(--line); background: rgba(248,241,231,.99); box-shadow: var(--shadow); }
-    .menu nav > a { padding: .7rem 1rem; color: var(--paper-muted); font-family: var(--font-body); font-size: .73rem; font-variation-settings: 'wght' 760; font-weight: 760; letter-spacing: .055em; line-height: 1.25; text-decoration: none; text-transform: uppercase; }
+    .menu nav > a { padding: .7rem 1rem; color: var(--paper-muted); font-family: var(--font-body); font-size: .73rem; font-weight: 600; letter-spacing: .04em; line-height: 1.25; text-decoration: none; text-transform: uppercase; }
     .menu nav > a[aria-current='page'] { color: var(--vermilion); }
-    .mobile-destinations__label { padding: .7rem 1rem .2rem; color: var(--vermilion); font-family: var(--font-body); font-size: .67rem; font-variation-settings: 'wght' 760; font-weight: 760; letter-spacing: .07em; text-transform: uppercase; }
+    .mobile-destinations__label { padding: .7rem 1rem .2rem; color: var(--vermilion); font-family: var(--font-body); font-size: .67rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
     .mobile-destinations { display: grid; grid-template-columns: repeat(3, 1fr); gap: .45rem; padding: 0 1rem .55rem; }
     .mobile-destinations a { padding: .65rem .7rem; border-radius: .45rem; background: var(--surface-alt); color: var(--text); font-size: .72rem; font-weight: 800; text-align: center; text-decoration: none; }
     .mobile-destinations a[aria-current='page'] { background: var(--vermilion); color: white; }
