@@ -86,6 +86,66 @@ const stranice = defineCollection({
   }),
 });
 
+const landing = defineCollection({
+  loader: glob({ pattern: '**/[!_]*.md', base: './src/content/landing' }),
+  schema: z.object({
+    seo: z.object({
+      title: z.string(),
+      description: z.string(),
+      canonical: z.string().url(),
+    }),
+    purchaseUrl: z.string().url(),
+    hero: z.object({
+      eyebrow: z.string(),
+      naslov: z.string(),
+      lead: z.string(),
+      opis: z.string(),
+      istaknuto: z.string(),
+      cta: z.string(),
+      microcopy: z.string(),
+      imageAlt: z.string(),
+    }),
+    problem: z.object({
+      naslov: z.string(),
+      paragrafi: z.array(z.string()),
+    }),
+    sadrzaj: z.object({
+      naslov: z.string(),
+      uvod: z.string(),
+      teme: z.array(z.object({
+        naslov: z.string(),
+        stavke: z.array(z.string()),
+        ikonica: z.string(),
+      })).length(4),
+    }),
+    bonusi: z.object({
+      naslov: z.string(),
+      stavke: z.array(z.object({ naslov: z.string(), opis: z.string() })).length(5),
+      cta: z.string(),
+      microcopy: z.string(),
+    }),
+    preview: z.object({
+      naslov: z.string(),
+      opis: z.string(),
+      stavke: z.array(z.object({ naslov: z.string(), alt: z.string(), filename: z.string() })).length(3),
+    }),
+    autor: z.object({
+      naslov: z.string(),
+      paragrafi: z.array(z.string()),
+      linkLabel: z.string(),
+      linkHref: z.string(),
+      imageAlt: z.string(),
+    }),
+    faq: z.object({ naslov: z.string(), pitanja: z.array(faqItem) }),
+    zavrsniCta: z.object({
+      naslov: z.string(),
+      tekst: z.string(),
+      cta: z.string(),
+      microcopy: z.string(),
+    }),
+  }),
+});
+
 const destinacije = defineCollection({
   loader: glob({ pattern: '**/[!_]*.md', base: './src/content/destinacije' }),
   schema: z.object({
@@ -196,4 +256,4 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { stranice, destinacije, ture, blog };
+export const collections = { stranice, landing, destinacije, ture, blog };

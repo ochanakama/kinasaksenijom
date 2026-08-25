@@ -2,8 +2,8 @@
 import JsonLd from './JsonLd.astro';
 
 interface Question { pitanje: string; odgovor: string; }
-interface Props { heading: string; questions: Question[]; variant?: 'default' | 'home'; }
-const { heading, questions, variant = 'default' } = Astro.props;
+interface Props { heading: string; questions: Question[]; variant?: 'default' | 'home'; eyebrow?: string; }
+const { heading, questions, variant = 'default', eyebrow = 'Važno pre puta' } = Astro.props;
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -18,7 +18,7 @@ const schema = {
 <section class:list={['faq', 'section', variant === 'home' && 'faq--home']} aria-labelledby="faq-heading">
   <div class="container faq__inner">
     <div class="section-heading">
-      <p class="eyebrow">Važno pre puta</p>
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
       <h2 id="faq-heading">{heading}</h2>
     </div>
     <div class="faq__list">

@@ -1,0 +1,299 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import SeoImage from '../components/SeoImage.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import JsonLd from '../components/JsonLd.astro';
+import authorImage from '../assets/hero/ks_kina.jpg';
+
+const landingPages = await getCollection('landing');
+const page = landingPages.find((entry) => entry.id === 'china-ready-vodic');
+if (!page) throw new Error('Nedostaje src/content/landing/china-ready-vodic.md');
+
+const { seo, purchaseUrl, hero, problem, sadrzaj, bonusi, preview, autor, faq, zavrsniCta } = page.data;
+const bookSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Book',
+  name: 'China Ready',
+  description: seo.description,
+  inLanguage: 'sr-Latn',
+  bookFormat: 'https://schema.org/EBook',
+  author: { '@type': 'Person', name: 'Ksenija' },
+  url: seo.canonical,
+  offers: {
+    '@type': 'Offer',
+    price: '9.90',
+    priceCurrency: 'EUR',
+    url: purchaseUrl,
+  },
+};
+---
+
+<Layout title={seo.title} description={seo.description} canonical={seo.canonical} ogImageAlt={hero.imageAlt}>
+  <JsonLd data={bookSchema} />
+
+  <section class="guide-hero" aria-labelledby="guide-title">
+    <div class="container guide-hero__grid">
+      <div class="guide-hero__copy">
+        <p class="eyebrow">{hero.eyebrow}</p>
+        <h1 id="guide-title">{hero.naslov}</h1>
+        <p class="guide-hero__lead">{hero.lead}</p>
+        <p class="guide-hero__description">{hero.opis}</p>
+        <p class="guide-highlights"><Icon name="check-circle" size={20} />{hero.istaknuto}</p>
+        <a class="button guide-button" href={purchaseUrl}>{hero.cta}<Icon name="arrow" size={19} /></a>
+        <small class="purchase-note">{hero.microcopy}</small>
+      </div>
+
+      <div class="guide-hero__visual">
+        <!-- TODO: zameniti CSS mockup finalnim assetom src/assets/china-ready/china-ready-cover-mockup.webp -->
+        <div class="guide-mockup" role="img" aria-label={hero.imageAlt}>
+          <div class="guide-mockup__device">
+            <div class="guide-mockup__screen">
+              <span>Kina sa Ksenijom</span>
+              <strong>China<br /><i>Ready</i></strong>
+              <small>Praktični vodič za prvo putovanje u Kinu</small>
+              <div aria-hidden="true"><b>支付</b><b>地图</b><b>出行</b></div>
+            </div>
+          </div>
+          <span class="guide-mockup__tag">Digitalni PDF vodič</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="problem section" aria-labelledby="problem-heading">
+    <div class="container problem__inner">
+      <h2 id="problem-heading">{problem.naslov}</h2>
+      {problem.paragrafi.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+  </section>
+
+  <section class="contents section" aria-labelledby="contents-heading">
+    <div class="container">
+      <header class="section-heading guide-section-heading">
+        <h2 id="contents-heading">{sadrzaj.naslov}</h2>
+        <p>{sadrzaj.uvod}</p>
+      </header>
+      <div class="topic-grid">
+        {sadrzaj.teme.map((tema) => (
+          <article class="topic-card">
+            <span class="topic-card__icon"><Icon name={tema.ikonica} size={28} /></span>
+            <h3>{tema.naslov}</h3>
+            <ul>{tema.stavke.map((stavka) => <li>{stavka}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bonuses section" aria-labelledby="bonuses-heading">
+    <div class="container">
+      <header class="section-heading guide-section-heading guide-section-heading--center">
+        <h2 id="bonuses-heading">{bonusi.naslov}</h2>
+      </header>
+      <div class="bonus-list" aria-label="Bonus materijali">
+        {bonusi.stavke.map((bonus, index) => (
+          <article class="bonus-card">
+            <span>0{index + 1}</span>
+            <h3>{bonus.naslov}</h3>
+            <p>{bonus.opis}</p>
+          </article>
+        ))}
+      </div>
+      <div class="section-purchase">
+        <a class="button guide-button" href={purchaseUrl}>{bonusi.cta}<Icon name="arrow" size={19} /></a>
+        <small class="purchase-note">{bonusi.microcopy}</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="preview section" aria-labelledby="preview-heading">
+    <div class="container">
+      <header class="section-heading guide-section-heading">
+        <h2 id="preview-heading">{preview.naslov}</h2>
+        <p>{preview.opis}</p>
+      </header>
+      <div class="preview-list">
+        {preview.stavke.map((item, index) => (
+          <figure class="preview-card">
+            <!-- TODO: zameniti placeholder sa src/assets/china-ready/{item.filename} -->
+            <div class="preview-placeholder" role="img" aria-label={item.alt}>
+              <span>CHINA READY</span>
+              <strong>0{index + 1}</strong>
+              <div aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+            </div>
+            <figcaption>{item.naslov}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="author section" aria-labelledby="author-heading">
+    <div class="container author__grid">
+      <div class="author__image">
+        <SeoImage
+          src={authorImage}
+          alt={autor.imageAlt}
+          width={713}
+          height={620}
+          widths={[420, 620, 713]}
+          sizes="(max-width: 48rem) calc(100vw - 2rem), 45vw"
+        />
+      </div>
+      <div class="author__copy">
+        <h2 id="author-heading">{autor.naslov}</h2>
+        {autor.paragrafi.map((paragraph) => <p>{paragraph}</p>)}
+        <a class="text-link" href={autor.linkHref}>{autor.linkLabel}<Icon name="arrow" size={18} /></a>
+      </div>
+    </div>
+  </section>
+
+  <Faq heading={faq.naslov} questions={faq.pitanja} eyebrow="" />
+
+  <section class="final-cta section" aria-labelledby="final-cta-heading">
+    <div class="container final-cta__inner">
+      <h2 id="final-cta-heading">{zavrsniCta.naslov}</h2>
+      <p>{zavrsniCta.tekst}</p>
+      <a class="button guide-button guide-button--light" href={purchaseUrl}>{zavrsniCta.cta}<Icon name="arrow" size={19} /></a>
+      <small>{zavrsniCta.microcopy}</small>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .guide-hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(8.5rem, 13vw, 11rem) 0 clamp(4.5rem, 8vw, 7rem);
+    background: #fffaf1;
+  }
+  .guide-hero::before,
+  .guide-hero::after {
+    position: absolute;
+    border: 1px solid rgba(156, 14, 21, .12);
+    border-radius: 50%;
+    content: '';
+    pointer-events: none;
+  }
+  .guide-hero::before { top: 7rem; right: -13rem; width: 36rem; aspect-ratio: 1; box-shadow: 0 0 0 2.5rem rgba(138, 98, 31, .045); }
+  .guide-hero::after { bottom: -17rem; left: -12rem; width: 30rem; aspect-ratio: 1; }
+  .guide-hero__grid { position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(22rem, .75fr); align-items: center; gap: clamp(3rem, 8vw, 7rem); }
+  .guide-hero__copy { min-width: 0; }
+  .guide-hero .eyebrow { color: #94651d; }
+  .guide-hero h1 { max-width: 12ch; color: var(--text); font-size: clamp(3.6rem, 6.5vw, 6.6rem); line-height: .93; }
+  .guide-hero__lead { max-width: 42rem; margin: 1.6rem 0 .75rem; color: var(--vermilion); font-size: clamp(1.25rem, 2vw, 1.65rem); font-weight: 700; line-height: 1.4; }
+  .guide-hero__description { max-width: 43rem; margin-bottom: 1.2rem; color: var(--text-muted); font-size: 1.02rem; }
+  .guide-highlights { display: flex; max-width: 42rem; align-items: center; gap: .65rem; margin-bottom: 1.5rem; color: #76531c; font-size: .78rem; font-weight: 800; letter-spacing: .045em; text-transform: uppercase; }
+  .guide-highlights :global(svg) { flex: 0 0 auto; }
+  .guide-button { min-height: 3.7rem; padding-inline: 1.7rem; box-shadow: 0 12px 28px rgba(133, 16, 22, .18); }
+  .purchase-note { display: block; margin-top: .65rem; color: var(--text-muted); font-size: .75rem; }
+  .guide-hero__visual { min-width: 0; }
+  .guide-mockup { position: relative; width: min(100%, 27rem); margin-inline: auto; padding: 1.25rem 2rem 3rem; }
+  .guide-mockup::before { position: absolute; right: .5rem; bottom: 2.15rem; left: .5rem; height: 2rem; border-radius: 50%; background: rgba(64, 38, 30, .16); content: ''; filter: blur(14px); }
+  .guide-mockup__device { position: relative; padding: .65rem; transform: rotate(2.5deg); border: 1px solid #2d2422; border-radius: 1.8rem; background: #2b2523; box-shadow: 0 28px 60px rgba(71, 39, 28, .23); }
+  .guide-mockup__device::before { position: absolute; top: .32rem; left: 50%; width: 3.2rem; height: .28rem; transform: translateX(-50%); border-radius: 999px; background: #4d4541; content: ''; }
+  .guide-mockup__screen { display: flex; aspect-ratio: .73; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; border-radius: 1.25rem; background: #f4e5cc; color: #291e1c; text-align: center; }
+  .guide-mockup__screen > span { color: var(--vermilion); font-family: var(--font-script); font-size: 1.55rem; line-height: 1; }
+  .guide-mockup__screen > strong { margin-block: 2rem 1rem; font-family: var(--font-display); font-size: clamp(3.2rem, 7vw, 5.1rem); font-weight: 900; letter-spacing: -.05em; line-height: .72; text-transform: uppercase; }
+  .guide-mockup__screen > strong i { color: var(--vermilion); font-family: var(--font-script); font-size: 1.15em; font-style: normal; font-weight: 400; letter-spacing: 0; text-transform: none; }
+  .guide-mockup__screen > small { max-width: 14rem; color: var(--text-muted); font-size: .7rem; font-weight: 700; line-height: 1.45; text-transform: uppercase; }
+  .guide-mockup__screen > div { display: flex; gap: .55rem; margin-top: 2rem; }
+  .guide-mockup__screen b { display: grid; width: 2.35rem; aspect-ratio: 1; place-items: center; border: 1px solid rgba(156,14,21,.35); border-radius: 50%; color: var(--vermilion); font-size: .8rem; }
+  .guide-mockup__tag { position: absolute; right: 0; bottom: 0; padding: .55rem .8rem; transform: rotate(-2deg); border: 1px solid rgba(138,98,31,.35); background: #fffaf1; color: #80591b; font-size: .66rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+
+  .problem { background: var(--surface-alt); }
+  .problem__inner { max-width: 54rem; }
+  .problem h2 { max-width: 18ch; margin-bottom: 2rem; font-size: clamp(2.7rem, 5vw, 4.8rem); }
+  .problem p { max-width: 49rem; color: var(--text-muted); font-size: clamp(1.05rem, 1.4vw, 1.18rem); }
+  .problem p + p { margin-top: 1.15rem; }
+
+  .contents { background: #fffaf1; }
+  .guide-section-heading p { margin: 0; color: var(--text-muted); }
+  .guide-section-heading--center { margin-inline: auto; text-align: center; }
+  .topic-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+  .topic-card { display: grid; min-height: 20rem; grid-template-columns: auto 1fr; align-content: start; gap: 0 1.2rem; padding: clamp(1.6rem, 3vw, 2.5rem); border: 1px solid rgba(138,98,31,.28); background: rgba(248,241,231,.72); }
+  .topic-card__icon { display: grid; width: 3.5rem; height: 3.5rem; grid-row: 1 / span 2; place-items: center; border: 1px solid rgba(156,14,21,.28); border-radius: 50%; color: var(--vermilion); }
+  .topic-card h3 { align-self: center; font-size: clamp(1.6rem, 2.5vw, 2.25rem); }
+  .topic-card ul { grid-column: 2; margin: 1.5rem 0 0; padding: 0; color: var(--text-muted); list-style: none; }
+  .topic-card li { position: relative; padding-left: 1.1rem; }
+  .topic-card li::before { position: absolute; top: .7em; left: 0; width: .32rem; height: .32rem; transform: rotate(45deg); background: var(--brass); content: ''; }
+  .topic-card li + li { margin-top: .55rem; }
+
+  .bonuses { overflow: hidden; background: #2b211f; color: var(--on-dark); }
+  .bonuses .guide-section-heading h2 { color: var(--on-dark); }
+  .bonus-list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .8rem; }
+  .bonus-card { min-width: 0; padding: 1.35rem; border: 1px solid rgba(220,181,104,.3); background: #352a27; }
+  .bonus-card > span { color: #d8ad59; font-size: .68rem; font-weight: 800; letter-spacing: .1em; }
+  .bonus-card h3 { margin-top: 1.1rem; color: #fff8ed; font-size: 1.18rem; line-height: 1.12; }
+  .bonus-card p { margin: .7rem 0 0; color: var(--on-dark-muted); font-size: .78rem; line-height: 1.55; }
+  .section-purchase { display: grid; justify-items: center; margin-top: 2.5rem; text-align: center; }
+  .bonuses .purchase-note { color: #d7cac0; }
+
+  .preview { background: #f6ecdd; }
+  .preview-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+  .preview-card { min-width: 0; margin: 0; padding: .7rem; border: 1px solid rgba(138,98,31,.28); background: #fffaf1; box-shadow: 0 18px 45px rgba(75,49,40,.09); }
+  .preview-placeholder { display: grid; aspect-ratio: .76; align-content: center; justify-items: center; padding: 2rem; border: 1px solid rgba(156,14,21,.2); background: #f1dfc4; color: var(--text); text-align: center; }
+  .preview-placeholder > span { color: var(--vermilion); font-size: .65rem; font-weight: 800; letter-spacing: .15em; }
+  .preview-placeholder > strong { margin-block: 1.25rem; color: rgba(156,14,21,.18); font-family: var(--font-display); font-size: clamp(5rem, 10vw, 8rem); line-height: 1; }
+  .preview-placeholder > div { display: grid; width: min(100%, 13rem); gap: .45rem; }
+  .preview-placeholder i { display: block; height: .38rem; background: rgba(38,29,27,.16); }
+  .preview-placeholder i:nth-child(2) { width: 84%; }
+  .preview-placeholder i:nth-child(3) { width: 92%; }
+  .preview-placeholder i:nth-child(4) { width: 68%; }
+  .preview-card figcaption { padding: 1rem .45rem .45rem; color: var(--text); font-weight: 700; line-height: 1.35; }
+
+  .author { background: #fffaf1; }
+  .author__grid { display: grid; grid-template-columns: minmax(20rem, .85fr) minmax(0, 1.15fr); align-items: center; gap: clamp(3rem, 8vw, 7rem); }
+  .author__image { position: relative; overflow: hidden; aspect-ratio: 1; border: .5rem solid #c99b45; border-radius: 50%; box-shadow: 0 22px 55px rgba(75,49,40,.15); }
+  .author__image :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 54% 50%; }
+  .author__copy h2 { max-width: 15ch; margin-bottom: 1.7rem; }
+  .author__copy p { max-width: 43rem; color: var(--text-muted); }
+  .author__copy p + p { margin-top: 1rem; }
+  .text-link { display: inline-flex; align-items: center; gap: .55rem; margin-top: .6rem; color: var(--vermilion); font-size: .83rem; font-weight: 800; letter-spacing: .045em; text-decoration: none; text-transform: uppercase; }
+  .text-link:hover { color: var(--vermilion-bright); }
+
+  .final-cta { background: var(--vermilion); color: white; }
+  .final-cta__inner { display: grid; max-width: 58rem; justify-items: center; text-align: center; }
+  .final-cta h2 { color: #fff9ef; }
+  .final-cta p { max-width: 44rem; margin: 1.5rem 0 1.8rem; color: #f2dfd3; font-size: 1.08rem; }
+  .guide-button--light { background: #e7bd67; color: #4d090c; box-shadow: 0 12px 30px rgba(45,4,7,.25); }
+  .guide-button--light:hover { background: #f1d08b; color: #4d090c; }
+  .final-cta small { margin-top: .8rem; color: #f0d7cc; }
+
+  @media (max-width: 68rem) {
+    .guide-hero__grid { grid-template-columns: minmax(0, 1fr) minmax(19rem, .65fr); gap: 2.5rem; }
+    .guide-hero h1 { font-size: clamp(3.2rem, 6.5vw, 5rem); }
+    .bonus-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 48rem) {
+    .guide-hero { padding-top: 7.5rem; }
+    .guide-hero__grid { grid-template-columns: 1fr; }
+    .guide-hero__copy { display: flex; flex-direction: column; align-items: flex-start; }
+    .guide-hero h1 { max-width: 11ch; }
+    .guide-hero__visual { grid-row: 2; }
+    .guide-mockup { width: min(90%, 23rem); }
+    .topic-grid { grid-template-columns: 1fr; }
+    .topic-card { min-height: 0; }
+    .preview-list { grid-template-columns: repeat(3, minmax(17rem, 78vw)); margin-inline: -1rem; padding: .25rem 1rem 1.5rem; overflow-x: auto; scroll-padding-inline: 1rem; scroll-snap-type: x mandatory; }
+    .preview-card { scroll-snap-align: start; }
+    .author__grid { grid-template-columns: 1fr; }
+    .author__image { width: min(86vw, 31rem); margin-inline: auto; }
+  }
+
+  @media (max-width: 42rem) {
+    .guide-hero .eyebrow { font-size: .65rem; }
+    .guide-hero h1 { font-size: clamp(2.9rem, 13vw, 4rem); }
+    .guide-hero__lead { font-size: 1.2rem; }
+    .guide-highlights { align-items: flex-start; font-size: .7rem; line-height: 1.55; }
+    .guide-button { width: 100%; padding-inline: 1rem; text-align: center; }
+    .problem h2 { font-size: clamp(2.4rem, 11vw, 3.2rem); }
+    .topic-card { grid-template-columns: 1fr; }
+    .topic-card__icon { grid-row: auto; margin-bottom: 1rem; }
+    .topic-card ul { grid-column: 1; }
+    .bonus-list { display: grid; grid-template-columns: repeat(5, minmax(16rem, 82vw)); margin-inline: -1rem; padding: .25rem 1rem 1.5rem; overflow-x: auto; scroll-padding-inline: 1rem; scroll-snap-type: x mandatory; }
+    .bonus-card { scroll-snap-align: start; }
+  }
+</style>
