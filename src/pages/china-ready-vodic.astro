@@ -41,8 +41,10 @@ const bookSchema = {
         <p class="guide-hero__lead">{hero.lead}</p>
         <p class="guide-hero__description">{hero.opis}</p>
         <p class="guide-highlights"><Icon name="check-circle" size={20} />{hero.istaknuto}</p>
-        <a class="button guide-button" href={purchaseUrl}>{hero.cta}<Icon name="arrow" size={19} /></a>
-        <small class="purchase-note">{hero.microcopy}</small>
+        <div class="guide-hero__purchase">
+          <a class="button guide-button" href={purchaseUrl}>{hero.cta}</a>
+          <small class="purchase-note">{hero.microcopy}</small>
+        </div>
       </div>
 
       <div class="guide-hero__visual">
@@ -64,14 +66,30 @@ const bookSchema = {
 
   <section class="problem section" aria-labelledby="problem-heading">
     <div class="container problem__inner">
-      <h2 id="problem-heading">{problem.naslov}</h2>
-      {problem.paragrafi.map((paragraph) => <p>{paragraph}</p>)}
+      <div class="problem__visual">
+        <span class="problem__ornament problem__ornament--top" aria-hidden="true"></span>
+        <div class="problem__cards">
+          {problem.izazovi.map((izazov) => (
+            <div class="problem-card">
+              <strong lang="zh-Hans">{izazov.znak}</strong>
+              <span>{izazov.naslov}</span>
+            </div>
+          ))}
+        </div>
+        <span class="problem__ornament problem__ornament--bottom" aria-hidden="true"></span>
+      </div>
+      <div class="problem__copy">
+        <p class="problem__eyebrow">{problem.eyebrow}</p>
+        <h2 id="problem-heading">{problem.naslov}</h2>
+        {problem.paragrafi.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
     </div>
   </section>
 
   <section class="contents section" aria-labelledby="contents-heading">
     <div class="container">
       <header class="section-heading guide-section-heading">
+        <p class="contents__eyebrow">{sadrzaj.eyebrow}</p>
         <h2 id="contents-heading">{sadrzaj.naslov}</h2>
         <p>{sadrzaj.uvod}</p>
       </header>
@@ -81,6 +99,7 @@ const bookSchema = {
             <span class="topic-card__icon"><Icon name={tema.ikonica} size={28} /></span>
             <h3>{tema.naslov}</h3>
             <ul>{tema.stavke.map((stavka) => <li>{stavka}</li>)}</ul>
+            <span class="topic-card__watermark" lang="zh-Hans" aria-hidden="true">{tema.znak}</span>
           </article>
         ))}
       </div>
@@ -166,7 +185,7 @@ const bookSchema = {
   .guide-hero {
     position: relative;
     overflow: hidden;
-    padding: clamp(8.5rem, 13vw, 11rem) 0 clamp(4.5rem, 8vw, 7rem);
+    padding: clamp(7rem, 9vw, 9rem) 0 clamp(4.5rem, 8vw, 7rem);
     background: #fffaf1;
   }
   .guide-hero::before,
@@ -181,12 +200,17 @@ const bookSchema = {
   .guide-hero::after { bottom: -17rem; left: -12rem; width: 30rem; aspect-ratio: 1; }
   .guide-hero__grid { position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(22rem, .75fr); align-items: center; gap: clamp(3rem, 8vw, 7rem); }
   .guide-hero__copy { min-width: 0; }
+  .guide-hero .eyebrow,
+  .problem__eyebrow,
+  .guide-section-heading .contents__eyebrow { font-family: var(--font-body); font-size: .86rem; font-weight: 800; letter-spacing: .12em; line-height: 1.2; text-transform: uppercase; }
   .guide-hero .eyebrow { color: #94651d; }
   .guide-hero h1 { max-width: 12ch; color: var(--text); font-size: clamp(3.6rem, 6.5vw, 6.6rem); line-height: .93; }
   .guide-hero__lead { max-width: 42rem; margin: 1.6rem 0 .75rem; color: var(--vermilion); font-size: clamp(1.25rem, 2vw, 1.65rem); font-weight: 700; line-height: 1.4; }
   .guide-hero__description { max-width: 43rem; margin-bottom: 1.2rem; color: var(--text-muted); font-size: 1.02rem; }
-  .guide-highlights { display: flex; max-width: 42rem; align-items: center; gap: .65rem; margin-bottom: 1.5rem; color: #76531c; font-size: .78rem; font-weight: 800; letter-spacing: .045em; text-transform: uppercase; }
-  .guide-highlights :global(svg) { flex: 0 0 auto; }
+  .guide-highlights { display: flex; width: fit-content; max-width: 42rem; align-items: center; gap: .7rem; margin-bottom: 1.5rem; color: #a06d19; font-size: .84rem; font-weight: 800; letter-spacing: .035em; line-height: 1.4; text-transform: uppercase; }
+  .guide-highlights :global(svg) { flex: 0 0 auto; color: #a87522; stroke-width: 2.2; }
+  .guide-hero__purchase { display: grid; width: fit-content; justify-items: center; }
+  .guide-hero__purchase .guide-button { font-size: .93rem; font-weight: 800; letter-spacing: .015em; }
   .guide-button { min-height: 3.7rem; padding-inline: 1.7rem; box-shadow: 0 12px 28px rgba(133, 16, 22, .18); }
   .purchase-note { display: block; margin-top: .65rem; color: var(--text-muted); font-size: .75rem; }
   .guide-hero__visual { min-width: 0; }
@@ -201,30 +225,57 @@ const bookSchema = {
   .guide-mockup__screen > small { max-width: 14rem; color: var(--text-muted); font-size: .7rem; font-weight: 700; line-height: 1.45; text-transform: uppercase; }
   .guide-mockup__screen > div { display: flex; gap: .55rem; margin-top: 2rem; }
   .guide-mockup__screen b { display: grid; width: 2.35rem; aspect-ratio: 1; place-items: center; border: 1px solid rgba(156,14,21,.35); border-radius: 50%; color: var(--vermilion); font-size: .8rem; }
-  .guide-mockup__tag { position: absolute; right: 0; bottom: 0; padding: .55rem .8rem; transform: rotate(-2deg); border: 1px solid rgba(138,98,31,.35); background: #fffaf1; color: #80591b; font-size: .66rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  .guide-mockup__tag { position: absolute; right: -.25rem; bottom: .1rem; display: inline-flex; align-items: center; gap: .5rem; padding: .65rem 1rem; transform: rotate(-3deg); border: 1px solid rgba(156,14,21,.32); border-radius: 999px; background: #fffaf1; color: var(--vermilion); font-family: var(--font-display); font-size: .9rem; font-weight: 800; letter-spacing: -.01em; line-height: 1; box-shadow: 0 10px 25px rgba(77,9,12,.12); }
+  .guide-mockup__tag::before { width: .42rem; aspect-ratio: 1; border-radius: 50%; background: var(--vermilion); box-shadow: 0 0 0 .2rem rgba(156,14,21,.1); content: ''; }
 
-  .problem { background: var(--surface-alt); }
-  .problem__inner { max-width: 54rem; }
-  .problem h2 { max-width: 18ch; margin-bottom: 2rem; font-size: clamp(2.7rem, 5vw, 4.8rem); }
-  .problem p { max-width: 49rem; color: var(--text-muted); font-size: clamp(1.05rem, 1.4vw, 1.18rem); }
-  .problem p + p { margin-top: 1.15rem; }
+  .problem { position: relative; overflow: hidden; background: radial-gradient(circle at 20% 48%, rgba(156,14,21,.08), transparent 34%), radial-gradient(circle at 78% 45%, rgba(197,151,72,.045), transparent 31%), #251e1c; color: #f7ead8; }
+  .problem__inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .95fr); align-items: center; gap: clamp(3rem, 7vw, 6.5rem); }
+  .problem__visual { position: relative; display: grid; min-width: 0; min-height: 31rem; place-items: center; }
+  .problem__cards { display: flex; width: 100%; align-items: center; justify-content: center; padding: 2.25rem 0; }
+  .problem-card { position: relative; display: flex; width: min(31%, 13rem); aspect-ratio: .72; flex: 0 0 auto; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; margin-inline: -.35rem; padding: 1.6rem 1.15rem; border: 1px solid #c49a54; border-radius: .65rem; background: radial-gradient(circle at 35% 25%, rgba(197,151,72,.1), transparent 28%), #f7ead5; color: #241d1b; text-align: center; box-shadow: 0 20px 45px rgba(0,0,0,.28); }
+  .problem-card::before { position: absolute; inset: .7rem; border: 1px solid rgba(166,113,31,.68); border-radius: .25rem; content: ''; pointer-events: none; }
+  .problem-card:nth-child(1) { z-index: 1; transform: translateY(1.15rem) rotate(-9deg); }
+  .problem-card:nth-child(2) { z-index: 3; width: min(34%, 14.25rem); }
+  .problem-card:nth-child(3) { z-index: 2; transform: translateY(1.15rem) rotate(9deg); }
+  .problem-card strong { position: relative; color: var(--vermilion); font-family: Georgia, 'Times New Roman', serif; font-size: clamp(2.8rem, 4.5vw, 4.4rem); font-weight: 700; line-height: 1; white-space: nowrap; }
+  .problem-card span { position: relative; max-width: 8ch; font-size: clamp(.95rem, 1.45vw, 1.25rem); font-weight: 600; line-height: 1.35; }
+  .problem__ornament { position: absolute; width: 17rem; height: 4rem; opacity: .45; pointer-events: none; }
+  .problem__ornament::before, .problem__ornament::after { position: absolute; content: ''; }
+  .problem__ornament::before { width: 100%; border-top: 1px solid #b9893d; }
+  .problem__ornament::after { width: 2.5rem; height: 2.5rem; border: 1px solid #b9893d; box-shadow: 1rem 1rem 0 -1px #251e1c, 1rem 1rem 0 0 #b9893d; }
+  .problem__ornament--top { top: 0; left: 2rem; }
+  .problem__ornament--bottom { right: 1.5rem; bottom: 0; transform: rotate(180deg); }
+  .problem__copy { min-width: 0; }
+  .problem__eyebrow { margin: 0 0 1.35rem; color: #d5a64e; }
+  .problem h2 { max-width: 13ch; margin-bottom: 2rem; color: #fff4e3; font-size: clamp(2.8rem, 4.6vw, 4.5rem); line-height: .98; }
+  .problem__copy > p:not(.problem__eyebrow) { max-width: 39rem; color: #dfd0c4; font-size: clamp(1rem, 1.3vw, 1.15rem); line-height: 1.65; }
+  .problem__copy > p + p { margin-top: 1.25rem; }
 
-  .contents { background: #fffaf1; }
-  .guide-section-heading p { margin: 0; color: var(--text-muted); }
+  .contents { padding-top: clamp(4rem, 6vw, 6rem); background: radial-gradient(circle at 48% 35%, rgba(197,151,72,.07), transparent 38%), #fffaf1; }
+  .contents .guide-section-heading { width: 100%; max-width: 57rem; justify-items: start; gap: 0; }
+  .contents .guide-section-heading h2 { max-width: 18ch; font-size: clamp(3rem, 5.2vw, 5rem); line-height: .98; }
+  .contents .guide-section-heading h2 + p { margin-top: 1.8rem; }
+  .guide-section-heading p { max-width: 43rem; margin: 0; color: var(--text-muted); font-size: 1.05rem; line-height: 1.55; }
+  .guide-section-heading .contents__eyebrow { margin: 0 0 1.35rem; color: var(--vermilion); }
   .guide-section-heading--center { margin-inline: auto; text-align: center; }
-  .topic-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
-  .topic-card { display: grid; min-height: 20rem; grid-template-columns: auto 1fr; align-content: start; gap: 0 1.2rem; padding: clamp(1.6rem, 3vw, 2.5rem); border: 1px solid rgba(138,98,31,.28); background: rgba(248,241,231,.72); }
-  .topic-card__icon { display: grid; width: 3.5rem; height: 3.5rem; grid-row: 1 / span 2; place-items: center; border: 1px solid rgba(156,14,21,.28); border-radius: 50%; color: var(--vermilion); }
-  .topic-card h3 { align-self: center; font-size: clamp(1.6rem, 2.5vw, 2.25rem); }
-  .topic-card ul { grid-column: 2; margin: 1.5rem 0 0; padding: 0; color: var(--text-muted); list-style: none; }
-  .topic-card li { position: relative; padding-left: 1.1rem; }
+  .topic-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.35rem; }
+  .topic-card { position: relative; display: grid; min-height: 17rem; grid-template-columns: 4.25rem 1fr; align-content: start; gap: 0 1.35rem; overflow: hidden; padding: clamp(1.7rem, 3vw, 2.35rem); border: 1px solid rgba(181,128,43,.48); border-radius: .35rem; background: linear-gradient(135deg, rgba(255,250,241,.96), rgba(247,232,210,.78)); box-shadow: 0 12px 28px rgba(84,53,35,.1), inset 0 0 30px rgba(197,151,72,.04); }
+  .topic-card::before, .topic-card::after { position: absolute; z-index: 2; width: 3.7rem; height: 3.7rem; background: linear-gradient(#bc8732, #bc8732) 100% 0 / 3.15rem 1px no-repeat, linear-gradient(#bc8732, #bc8732) 100% 0 / 1px 3.15rem no-repeat; content: ''; opacity: .72; pointer-events: none; }
+  .topic-card::before { top: .75rem; right: .75rem; }
+  .topic-card::after { bottom: .75rem; left: .75rem; transform: rotate(180deg); }
+  .topic-card__icon { position: relative; z-index: 1; display: grid; width: 4rem; height: 4rem; grid-row: 1; align-self: center; place-items: center; border: 1px solid rgba(156,14,21,.38); border-radius: 50%; color: var(--vermilion); box-shadow: inset 0 0 0 .42rem rgba(255,250,241,.78), 0 0 0 1px rgba(197,151,72,.18); }
+  .topic-card__icon :global(svg) { width: 1.85rem; height: 1.85rem; stroke-width: 2; }
+  .topic-card h3 { position: relative; z-index: 1; align-self: center; font-size: clamp(1.65rem, 2.4vw, 2.2rem); line-height: 1.05; }
+  .topic-card ul { position: relative; z-index: 1; grid-column: 2; margin: 1.25rem 0 0; padding: 0; color: #4e413b; font-size: 1.06rem; line-height: 1.55; list-style: none; }
+  .topic-card li { position: relative; padding-left: 1.25rem; }
   .topic-card li::before { position: absolute; top: .7em; left: 0; width: .32rem; height: .32rem; transform: rotate(45deg); background: var(--brass); content: ''; }
-  .topic-card li + li { margin-top: .55rem; }
+  .topic-card li + li { margin-top: .48rem; }
+  .topic-card__watermark { position: absolute; right: 2rem; bottom: .75rem; color: rgba(181,128,43,.11); font-family: Georgia, 'Times New Roman', serif; font-size: clamp(5rem, 8vw, 7.5rem); font-weight: 700; line-height: 1; pointer-events: none; }
 
   .bonuses { overflow: hidden; background: #2b211f; color: var(--on-dark); }
   .bonuses .guide-section-heading h2 { color: var(--on-dark); }
   .bonus-list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .8rem; }
-  .bonus-card { min-width: 0; padding: 1.35rem; border: 1px solid rgba(220,181,104,.3); background: #352a27; }
+  .bonus-card { min-width: 0; padding: 1.35rem; border: 1px solid rgba(220,181,104,.3); background: #3c302c; }
   .bonus-card > span { color: #d8ad59; font-size: .68rem; font-weight: 800; letter-spacing: .1em; }
   .bonus-card h3 { margin-top: 1.1rem; color: #fff8ed; font-size: 1.18rem; line-height: 1.12; }
   .bonus-card p { margin: .7rem 0 0; color: var(--on-dark-muted); font-size: .78rem; line-height: 1.55; }
@@ -265,7 +316,16 @@ const bookSchema = {
   @media (max-width: 68rem) {
     .guide-hero__grid { grid-template-columns: minmax(0, 1fr) minmax(19rem, .65fr); gap: 2.5rem; }
     .guide-hero h1 { font-size: clamp(3.2rem, 6.5vw, 5rem); }
+    .problem__inner { gap: 2.5rem; }
+    .problem__visual { min-height: 26rem; }
+    .problem-card { padding-inline: .85rem; }
     .bonus-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 68.01rem) and (max-height: 65rem) {
+    .guide-hero { padding-top: 6.75rem; }
+    .guide-hero h1 { max-width: 14ch; font-size: clamp(3.6rem, 5.8vw, 5.5rem); }
+    .guide-hero__lead { margin-top: 1.2rem; }
   }
 
   @media (max-width: 48rem) {
@@ -275,6 +335,10 @@ const bookSchema = {
     .guide-hero h1 { max-width: 11ch; }
     .guide-hero__visual { grid-row: 2; }
     .guide-mockup { width: min(90%, 23rem); }
+    .problem__inner { grid-template-columns: 1fr; }
+    .problem__visual { min-height: 25rem; }
+    .problem__copy { max-width: 39rem; }
+    .problem h2 { max-width: 15ch; }
     .topic-grid { grid-template-columns: 1fr; }
     .topic-card { min-height: 0; }
     .preview-list { grid-template-columns: repeat(3, minmax(17rem, 78vw)); margin-inline: -1rem; padding: .25rem 1rem 1.5rem; overflow-x: auto; scroll-padding-inline: 1rem; scroll-snap-type: x mandatory; }
@@ -284,11 +348,17 @@ const bookSchema = {
   }
 
   @media (max-width: 42rem) {
-    .guide-hero .eyebrow { font-size: .65rem; }
     .guide-hero h1 { font-size: clamp(2.9rem, 13vw, 4rem); }
     .guide-hero__lead { font-size: 1.2rem; }
-    .guide-highlights { align-items: flex-start; font-size: .7rem; line-height: 1.55; }
+    .guide-highlights { width: 100%; align-items: flex-start; font-size: .7rem; line-height: 1.55; }
+    .guide-hero__purchase { width: 100%; }
     .guide-button { width: 100%; padding-inline: 1rem; text-align: center; }
+    .problem__visual { min-height: 20rem; }
+    .problem__ornament { width: 11rem; }
+    .problem-card { width: 31%; gap: .65rem; padding: 1rem .55rem; }
+    .problem-card:nth-child(2) { width: 34%; }
+    .problem-card strong { font-size: clamp(2.35rem, 13vw, 3.5rem); }
+    .problem-card span { font-size: clamp(.72rem, 3.2vw, .9rem); }
     .problem h2 { font-size: clamp(2.4rem, 11vw, 3.2rem); }
     .topic-card { grid-template-columns: 1fr; }
     .topic-card__icon { grid-row: auto; margin-bottom: 1rem; }

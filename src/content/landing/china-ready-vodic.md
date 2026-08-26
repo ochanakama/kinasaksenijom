@@ -9,39 +9,51 @@ purchaseUrl: "https://kinasaksenijom.gumroad.com/l/wfqbibn"
 hero:
   eyebrow: "CHINA READY • DIGITALNI VODIČ NA SRPSKOM"
   naslov: "Praktični vodič za prvo putovanje u Kinu"
-  lead: "Podesi internet, plaćanje, aplikacije i prevoz pre nego što sletiš."
-  opis: "China Ready ti na jednom mestu daje jasna uputstva za sve praktične pripreme: od Alipaya i interneta do taksija, vozova i prvih 24 sata u Kini."
-  istaknuto: "15 praktičnih celina • 5 bonus materijala • prilagođeno telefonu"
-  cta: "Preuzmi vodič - 9,90 €"
+  lead: "Pripremi internet, plaćanje, aplikacije i prevoz pre nego što sletiš."
+  opis: "China Ready digitalni vodič ti na jednom mestu daje jasna uputstva za sve praktične pripreme: od Alipay aplikacije i interneta do taksija, vozova i prvih 24 sata u Kini."
+  istaknuto: "15 praktičnih celina • 5 bonus materijala • prilagođeno vašem telefonu"
+  cta: "Preuzmi vodič za 9,90 €"
   microcopy: "Sigurna kupovina preko Gumroada."
-  imageAlt: "China Ready vodič za prvo putovanje u Kinu"
+  imageAlt: "China Ready digitalni vodič za prvo putovanje u Kinu"
 
 problem:
+  eyebrow: "Pre nego što sletiš"
   naslov: "Prvo putovanje u Kinu zahteva malo drugačiju pripremu"
   paragrafi:
     - "Možeš imati rezervisane letove i smeštaj, a da tek po dolasku otkriješ da ti kartica ne prolazi, poznate aplikacije ne rade ili ne znaš kako da pozoveš taksi."
-    - "China Ready ti pomaže da najvažnije stvari podesiš unapred, kako prve sate u Kini ne bi proveo tražeći internet, instalirajući aplikacije i pokušavajući da shvatiš kako funkcioniše plaćanje."
+    - "China Ready digitalni vodič ti pomaže da najvažnije stvari podesiš unapred, kako prve sate u Kini ne bi proveo tražeći internet, instalirajući aplikacije i pokušavajući da shvatiš kako funkcioniše plaćanje."
+  izazovi:
+    - znak: "支付"
+      naslov: "Kartica ne prolazi"
+    - znak: "地图"
+      naslov: "Poznate mape ne rade"
+    - znak: "出行"
+      naslov: "Kako da pozovem taksi?"
 
 sadrzaj:
+  eyebrow: "Sadržaj vodiča"
   naslov: "Sve što ti treba za pripremu puta u Kinu"
   uvod: "Informacije su podeljene po praktičnim temama, tako da lako možeš da pronađeš ono što ti je potrebno pre puta ili tokom boravka."
   teme:
     - naslov: "Internet i aplikacije"
       ikonica: "compass"
+      znak: "网"
       stavke:
-        - "eSIM, roaming i VPN"
+        - "eSIM, roming i VPN"
         - "aplikacije koje treba instalirati"
         - "mape i pronalaženje adresa"
         - "rezervni plan kada internet ne radi"
     - naslov: "Plaćanje u Kini"
       ikonica: "check-circle"
+      znak: "付"
       stavke:
-        - "podešavanje Alipaya"
-        - "podešavanje WeChat Paya"
+        - "podešavanje aplikacije Alipay"
+        - "podešavanje aplikacije WeChat Pay"
         - "povezivanje bankovne kartice"
         - "mobilno plaćanje, kartice i gotovina"
     - naslov: "Prevoz i rezervacije"
       ikonica: "calendar"
+      znak: "行"
       stavke:
         - "DiDi i taksi"
         - "metro i brzi vozovi"
@@ -49,11 +61,12 @@ sadrzaj:
         - "Trip.com i rezervacije"
     - naslov: "Dolazak i snalaženje"
       ikonica: "pin"
+      znak: "到"
       stavke:
         - "priprema dve nedelje pre puta"
         - "dolazak na aerodrom"
         - "prvih 24 sata u Kini"
-        - "fraze, znakovi i česte greške"
+        - "fraze, kineski karakteri i česte greške"
 
 bonusi:
   naslov: "Uz vodič dobijaš i 5 praktičnih bonusa"
@@ -62,14 +75,14 @@ bonusi:
       opis: "Spisak aplikacija koje treba instalirati i podesiti pre puta."
     - naslov: "Checklist pred put"
       opis: "Sve važne pripreme koje možeš da pratiš korak po korak."
-    - naslov: "Kartice sa kineskim znakovima"
-      opis: "Korisni znakovi i izrazi koje možeš brzo da pokažeš ili prepoznaš."
+    - naslov: "Kartice sa kineskim karakterima"
+      opis: "Korisni kineski karakteri i izrazi koje možeš brzo da pokažeš ili prepoznaš."
     - naslov: "Prvih 24 sata u Kini"
       opis: "Najvažniji koraci sažeti na dve strane."
     - naslov: "Lista korisnih linkova"
       opis: "Važni sajtovi i alati na jednom mestu."
-  cta: "Želim China Ready vodič — 9,90 €"
-  microcopy: "Glavni vodič i svih 5 bonus materijala."
+  cta: "Preuzmi China Ready vodič"
+  microcopy: "Glavni vodič i svih 5 bonus materijala"
 
 preview:
   naslov: "Pogledaj kako vodič izgleda iznutra"

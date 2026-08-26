@@ -106,16 +106,23 @@ const landing = defineCollection({
       imageAlt: z.string(),
     }),
     problem: z.object({
+      eyebrow: z.string(),
       naslov: z.string(),
       paragrafi: z.array(z.string()),
+      izazovi: z.array(z.object({
+        znak: z.string(),
+        naslov: z.string(),
+      })).length(3),
     }),
     sadrzaj: z.object({
+      eyebrow: z.string(),
       naslov: z.string(),
       uvod: z.string(),
       teme: z.array(z.object({
         naslov: z.string(),
         stavke: z.array(z.string()),
         ikonica: z.string(),
+        znak: z.string(),
       })).length(4),
     }),
     bonusi: z.object({
