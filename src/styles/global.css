@@ -170,8 +170,8 @@ select {
   background: rgba(255, 250, 241, 0.48);
   color: var(--brass);
   font-family: var(--font-body);
-  font-size: 0.74rem;
-  font-weight: 700;
+  font-size: 13.76px;
+  font-weight: 800;
   letter-spacing: 0.11em;
   line-height: 1.2;
   text-align: center;

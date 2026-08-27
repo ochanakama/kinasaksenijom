@@ -35,16 +35,11 @@ hero:
   imageAlt: "Dvorište tradicionalnog kineskog hrama sa ukrašenim krovovima"
 
 # ---------------------------------------------------------------------
-# 2. BENTO GRID, kod Montanara "Izaberi svoju avanturu"
-#    5 kartica: 1 kontakt (mala, u boji) + 4 sadržajne.
+# 2. PONUDA, četiri sadržajne kartice
 #    size kontroliše raspored u gridu (tall / wide / normal)
 # ---------------------------------------------------------------------
 ponuda:
   heading: "ISTRAŽI Kinu"
-
-  kontaktKartica:
-    telefon: "+381 XX XXX XXXX"
-    napomena: "Pozovi ili piši na WhatsApp"
 
   kartice:
     - naslov: "Ture uskoro stižu"
@@ -65,22 +60,22 @@ ponuda:
       imageAlt: "Ulica u starom delu Čengdua"
       size: "tall"
 
-    - naslov: "Kina iz prve ruke"
-      nadnaslov: "Priče, saveti i vodiči"
-      opis: "Praktični saveti o plaćanju, aplikacijama, običajima i svakodnevnom životu u Kini — sve što vredi znati pre puta."
-      cta: "Čitaj blog"
+    - naslov: "China Ready vodič"
+      nadnaslov: "Digitalni vodič na srpskom"
+      opis: "Internet, Alipay, WeChat Pay, aplikacije i prevoz — praktične pripreme za prvo putovanje u Kinu na jednom mestu."
+      cta: "Pogledaj vodič"
+      href: "/china-ready-vodic/"
+      image: "~/assets/ponuda/vodic-ebook.jpg"
+      imageAlt: "China Ready digitalni vodič za prvo putovanje u Kinu"
+      size: "normal"
+
+    - naslov: "Blog o Kini"
+      nadnaslov: "Informativni tekstovi i priče"
+      opis: "Korisne informacije o plaćanju, aplikacijama, običajima, destinacijama i svakodnevnom životu u Kini."
+      cta: "Istraži blog"
       href: "/blog/"
       image: "~/assets/blog/placanje-u-kini/hero.png"
       imageAlt: "Noćna panorama Šangaja uz reku Huangpu"
-      size: "normal"
-
-    - naslov: "Vodič kroz Kinu"
-      nadnaslov: "E-book za samostalne putnike"
-      opis: "Alipay, WeChat, VPN, vozovi i aplikacije. Sve što podešavate pre polaska ako putujete sami."
-      cta: "Saznaj više"
-      href: "/vodic/"
-      image: "~/assets/ponuda/vodic-ebook.jpg"
-      imageAlt: "Telefon sa otvorenom kineskom aplikacijom za plaćanje"
       size: "normal"
 
 # ---------------------------------------------------------------------
@@ -199,7 +194,6 @@ Telo dokumenta se NE renderuje na homepage-u. Sve sekcije se čitaju iz
 frontmatter-a iznad. Ovaj prostor koristi za interne beleške.
 
 TODO pre lansiranja:
-- [ ] Uneti stvaran broj telefona u ponuda.kontaktKartica.telefon
 - [ ] Ubaciti slike u /src/assets/ po putanjama navedenim gore
 - [ ] Napraviti og/homepage.jpg (1200x630)
 - [ ] Odlučiti da li /ture/privatne/ ide kao zasebna stranica ili kao

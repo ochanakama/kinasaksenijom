@@ -108,7 +108,7 @@ const webSiteSchema = {
 
       <div class="journeys-grid">
         {ponuda.kartice.map((card, index) => (
-          <article class="journey-card" id={card.href === '/vodic/' ? 'vodic' : undefined}>
+          <article class="journey-card" id={card.href === '/china-ready-vodic/' ? 'vodic' : undefined}>
             <div class="journey-card__image">
               <SeoImage
                 src={resolveImage(card.image)}
@@ -138,11 +138,6 @@ const webSiteSchema = {
         ))}
       </div>
 
-      <p class="offer__contact">
-        <span aria-hidden="true">✦</span>
-        <strong>{ponuda.kontaktKartica.telefon}</strong>
-        <small>{ponuda.kontaktKartica.napomena} · kontakt će biti objavljen pre lansiranja</small>
-      </p>
     </div>
   </section>
 
@@ -245,7 +240,7 @@ const webSiteSchema = {
     padding-block: 3rem 7rem;
   }
   .hero-home__copy { position: relative; z-index: 4; min-width: 0; padding-left: .25rem; }
-  .hero-home .eyebrow { margin-bottom: 1.1rem; color: #966820; font-size: clamp(.7rem, .85vw, .77rem); }
+  .hero-home .eyebrow { margin-bottom: 1.1rem; color: #966820; }
   .hero-home h1 { max-width: 8.6ch; text-wrap: wrap; }
   .hero-home__title {
     display: block;
@@ -313,16 +308,13 @@ const webSiteSchema = {
   .journey-card:hover .journey-card__image :global(img) { transform: scale(1.035); filter: saturate(1); }
   .journey-card__badge { position: absolute; top: .65rem; left: .65rem; padding: .32rem .58rem; border-radius: 999px; background: var(--vermilion); color: white; font-size: .55rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
   .journey-card__body { display: flex; min-height: 15rem; flex-direction: column; align-items: flex-start; padding: 1.2rem .9rem .9rem; }
-  .journey-card__body > p { margin: 0 0 .45rem; color: #93691e; font-size: .58rem; font-weight: 800; letter-spacing: .1em; line-height: 1.45; text-transform: uppercase; }
+  .journey-card__body > p { margin: 0 0 .45rem; color: #93691e; font-family: var(--font-body); font-size: 13.76px; font-weight: 800; letter-spacing: .1em; line-height: 1.45; text-transform: uppercase; }
   .journey-card h3 { margin-bottom: .75rem; font-size: clamp(1.35rem, 2vw, 1.75rem); }
   .journey-card__description { color: var(--text-muted); font-size: .78rem; line-height: 1.65; }
   .journey-card__link { display: inline-flex; align-items: center; gap: .45rem; margin-top: auto; padding-top: 1rem; color: var(--vermilion); font-size: .65rem; font-weight: 800; letter-spacing: .08em; text-decoration: none; text-transform: uppercase; }
   .journey-card__cities { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: auto; padding-top: .85rem; }
   .journey-card__cities a { padding: .35rem .52rem; border: 1px solid rgba(156,14,21,.25); border-radius: 999px; color: var(--vermilion); font-size: .64rem; font-weight: 800; text-decoration: none; }
   .journey-card__cities a:hover { background: var(--vermilion); color: white; }
-  .offer__contact { display: flex; width: max-content; max-width: 100%; align-items: center; gap: .65rem; margin: 1.4rem auto 0; color: #7e5a1e; font-size: .76rem; }
-  .offer__contact strong { color: var(--vermilion); }
-  .offer__contact small { color: var(--text-muted); }
 
   .benefits { position: relative; min-height: 12rem; overflow: hidden; color: var(--on-dark); }
   .benefits > :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -390,7 +382,7 @@ const webSiteSchema = {
   .button--gold:hover { background: #f1d08b; color: #5a0a0d; }
   .button--light-outline { border-color: rgba(255,246,233,.65); background: transparent; color: white; }
   @media (min-width: 58.01rem) {
-    .hero-home { min-height: min(45rem, 100svh); padding-top: 5.6rem; }
+    .hero-home { min-height: 100svh; padding-top: 5.6rem; }
     .hero-home__grid {
       grid-template-columns: minmax(25rem, .92fr) minmax(28rem, 1.08fr);
       padding-block: 2rem 5rem;
@@ -407,7 +399,7 @@ const webSiteSchema = {
   }
 
   @media (min-width: 125rem) {
-    .hero-home { min-height: clamp(45rem, 82svh, 56rem); }
+    .hero-home { min-height: 100svh; }
     .hero-home__grid {
       width: min(calc(100% - 6rem), 85rem);
       grid-template-columns: minmax(27rem, 1fr) minmax(30rem, 1fr);
@@ -452,7 +444,6 @@ const webSiteSchema = {
     .hero-home .lead { width: 100%; max-width: 100%; }
     .journeys-grid { grid-template-columns: 1fr; }
     .journey-card__body { min-height: 0; }
-    .offer__contact { align-items: flex-start; flex-wrap: wrap; justify-content: center; text-align: center; }
     .benefits article { padding-inline: .5rem; }
     .credentials { grid-template-columns: 1fr; gap: 1.4rem; }
     .credentials article { display: grid; grid-template-columns: auto 1fr; gap: 0 .9rem; }

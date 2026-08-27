@@ -86,7 +86,7 @@ bonusi:
 
 preview:
   naslov: "Pogledaj kako vodič izgleda iznutra"
-  opis: "Jasna uputstva, konkretni koraci i praktične checkliste koje možeš da koristiš tokom pripreme i samog putovanja."
+  opis: "Zaviri u nekoliko stranica vodiča: od podešavanja aplikacije Alipay do praktičnih checklista i korisnih kineskih karaktera."
   stavke:
     - naslov: "Stranica sa uputstvom za Alipay"
       alt: "Uputstvo za podešavanje Alipaya u Kini"

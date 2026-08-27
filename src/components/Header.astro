@@ -125,7 +125,7 @@ const isDestination = destinationLinks.some((link) => path === link.href);
   .nav-dropdown__menu { position: absolute; top: calc(100% + .35rem); right: -2rem; display: grid; width: 20rem; padding: .65rem; transform: translateY(.55rem); border: 1px solid rgba(38,29,27,.13); border-radius: 1rem; background: rgba(248,241,231,.98); box-shadow: 0 22px 55px rgba(75,49,40,.2); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease; }
   .nav-dropdown[open] .nav-dropdown__menu { transform: translateY(0); opacity: 1; visibility: visible; pointer-events: auto; }
   .nav-dropdown[open] .nav-dropdown__caret { transform: translateY(.1rem) rotate(225deg); }
-  .nav-dropdown__eyebrow { padding: .65rem .85rem .5rem; color: var(--vermilion); font-size: .58rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+  .nav-dropdown__eyebrow { padding: .65rem .85rem .5rem; color: var(--vermilion); font-family: var(--font-body); font-size: 13.76px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
   .nav-dropdown__menu a { display: grid; grid-template-columns: 1.6rem 1fr auto; align-items: center; gap: .75rem; padding: .8rem .85rem; border-radius: .7rem; color: var(--text); text-decoration: none; }
   .nav-dropdown__menu a:hover, .nav-dropdown__menu a:focus-visible, .nav-dropdown__menu a[aria-current='page'] { background: var(--surface-alt); color: var(--vermilion); }
   .nav-dropdown__number { color: var(--brass); font-size: .6rem; font-weight: 800; letter-spacing: .08em; }

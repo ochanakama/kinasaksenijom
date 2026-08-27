@@ -37,7 +37,6 @@ const stranice = defineCollection({
     }),
     ponuda: z.object({
       heading: z.string(),
-      kontaktKartica: z.object({ telefon: z.string(), napomena: z.string() }),
       kartice: z.array(z.object({
         naslov: z.string(),
         nadnaslov: z.string(),

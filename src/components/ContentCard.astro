@@ -24,7 +24,7 @@ const { href, title, description, image, alt, eyebrow } = Astro.props;
   :global(.content-card img) { width: 100%; height: auto; aspect-ratio: 3/2; object-fit: cover; filter: saturate(.72); transition: transform 350ms ease, filter 350ms ease; }
   a:hover :global(img) { transform: scale(1.025); filter: saturate(1); }
   .content-card__body { display: grid; align-content: start; gap: .8rem; padding: 1.5rem; }
-  p { margin: 0; color: var(--brass); font-size: .7rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+  p { margin: 0; color: var(--brass); font-family: var(--font-body); font-size: 13.76px; font-weight: 800; letter-spacing: .12em; line-height: 1.2; text-transform: uppercase; }
   h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); line-height: 1; }
   .content-card__body > span:not(.content-card__link) { color: var(--paper-muted); font-size: .9rem; }
   .content-card__link { display: inline-flex; align-items: center; gap: .55rem; margin-top: .5rem; color: var(--vermilion); font-size: .8rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
