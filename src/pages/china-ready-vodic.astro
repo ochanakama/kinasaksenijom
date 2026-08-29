@@ -6,6 +6,7 @@ import Faq from '../components/Faq.astro';
 import Icon from '../components/Icon.astro';
 import JsonLd from '../components/JsonLd.astro';
 import authorImage from '../assets/hero/ks_kina.jpg';
+import guideCover from '../chinareadyslika.png';
 
 const landingPages = await getCollection('landing');
 const page = landingPages.find((entry) => entry.id === 'china-ready-vodic');
@@ -48,18 +49,23 @@ const bookSchema = {
       </div>
 
       <div class="guide-hero__visual">
-        <!-- TODO: zameniti CSS mockup finalnim assetom src/assets/china-ready/china-ready-cover-mockup.webp -->
-        <div class="guide-mockup" role="img" aria-label={hero.imageAlt}>
-          <div class="guide-mockup__device">
-            <div class="guide-mockup__screen">
-              <span>Kina sa Ksenijom</span>
-              <strong>China<br /><i>Ready</i></strong>
-              <small>Praktični vodič za prvo putovanje u Kinu</small>
-              <div aria-hidden="true"><b>支付</b><b>地图</b><b>出行</b></div>
+        <figure class="guide-phone">
+          <div class="guide-phone__device">
+            <span class="guide-phone__speaker" aria-hidden="true"></span>
+            <div class="guide-phone__screen">
+              <SeoImage
+                src={guideCover}
+                alt="Naslovna stranica China Ready digitalnog vodica"
+                width={guideCover.width}
+                height={guideCover.height}
+                widths={[280, 360, 453]}
+                sizes="(max-width: 48rem) 72vw, 21rem"
+                priority
+                class="guide-phone__image"
+              />
             </div>
           </div>
-          <span class="guide-mockup__tag">Digitalni PDF vodič</span>
-        </div>
+        </figure>
       </div>
     </div>
   </section>
@@ -214,19 +220,12 @@ const bookSchema = {
   .guide-button { min-height: 3.7rem; padding-inline: 1.7rem; box-shadow: 0 12px 28px rgba(133, 16, 22, .18); }
   .purchase-note { display: block; margin-top: .65rem; color: var(--text-muted); font-size: .75rem; }
   .guide-hero__visual { min-width: 0; }
-  .guide-mockup { position: relative; width: min(100%, 27rem); margin-inline: auto; padding: 1.25rem 2rem 3rem; }
-  .guide-mockup::before { position: absolute; right: .5rem; bottom: 2.15rem; left: .5rem; height: 2rem; border-radius: 50%; background: rgba(64, 38, 30, .16); content: ''; filter: blur(14px); }
-  .guide-mockup__device { position: relative; padding: .65rem; transform: rotate(2.5deg); border: 1px solid #2d2422; border-radius: 1.8rem; background: #2b2523; box-shadow: 0 28px 60px rgba(71, 39, 28, .23); }
-  .guide-mockup__device::before { position: absolute; top: .32rem; left: 50%; width: 3.2rem; height: .28rem; transform: translateX(-50%); border-radius: 999px; background: #4d4541; content: ''; }
-  .guide-mockup__screen { display: flex; aspect-ratio: .73; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; border-radius: 1.25rem; background: #f4e5cc; color: #291e1c; text-align: center; }
-  .guide-mockup__screen > span { color: var(--vermilion); font-family: var(--font-script); font-size: 1.55rem; line-height: 1; }
-  .guide-mockup__screen > strong { margin-block: 2rem 1rem; font-family: var(--font-display); font-size: clamp(3.2rem, 7vw, 5.1rem); font-weight: 900; letter-spacing: -.05em; line-height: .72; text-transform: uppercase; }
-  .guide-mockup__screen > strong i { color: var(--vermilion); font-family: var(--font-script); font-size: 1.15em; font-style: normal; font-weight: 400; letter-spacing: 0; text-transform: none; }
-  .guide-mockup__screen > small { max-width: 14rem; color: var(--text-muted); font-size: .7rem; font-weight: 700; line-height: 1.45; text-transform: uppercase; }
-  .guide-mockup__screen > div { display: flex; gap: .55rem; margin-top: 2rem; }
-  .guide-mockup__screen b { display: grid; width: 2.35rem; aspect-ratio: 1; place-items: center; border: 1px solid rgba(156,14,21,.35); border-radius: 50%; color: var(--vermilion); font-size: .8rem; }
-  .guide-mockup__tag { position: absolute; right: -.25rem; bottom: .1rem; display: inline-flex; align-items: center; gap: .5rem; padding: .65rem 1rem; transform: rotate(-3deg); border: 1px solid rgba(156,14,21,.32); border-radius: 999px; background: #fffaf1; color: var(--vermilion); font-family: var(--font-display); font-size: .9rem; font-weight: 800; letter-spacing: -.01em; line-height: 1; box-shadow: 0 10px 25px rgba(77,9,12,.12); }
-  .guide-mockup__tag::before { width: .42rem; aspect-ratio: 1; border-radius: 50%; background: var(--vermilion); box-shadow: 0 0 0 .2rem rgba(156,14,21,.1); content: ''; }
+  .guide-phone { position: relative; width: min(88%, 22rem); margin: 0 auto; padding: 1rem 0 1.65rem; }
+  .guide-phone::before { position: absolute; right: -.5rem; bottom: .5rem; left: -.5rem; height: 2.2rem; border-radius: 50%; background: rgba(64, 38, 30, .2); content: ''; filter: blur(16px); }
+  .guide-phone__device { position: relative; padding: .75rem; transform: rotate(2deg); border: 1px solid #2d2422; border-radius: 2.2rem; background: #2b2523; box-shadow: 0 28px 60px rgba(71, 39, 28, .23); }
+  .guide-phone__speaker { position: absolute; z-index: 1; top: .34rem; left: 50%; width: 3.25rem; height: .25rem; transform: translateX(-50%); border-radius: 999px; background: #5b514d; }
+  .guide-phone__screen { overflow: hidden; border-radius: 1.55rem; background: #f4e5cc; }
+  .guide-phone__screen :global(.guide-phone__image) { display: block; width: 100%; height: auto; }
 
   .problem { position: relative; overflow: hidden; background: radial-gradient(circle at 20% 48%, rgba(156,14,21,.08), transparent 34%), radial-gradient(circle at 78% 45%, rgba(197,151,72,.045), transparent 31%), #251e1c; color: #f7ead8; }
   .problem__inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .95fr); align-items: center; gap: clamp(3rem, 7vw, 6.5rem); }
@@ -271,6 +270,37 @@ const bookSchema = {
   .topic-card li::before { position: absolute; top: .7em; left: 0; width: .32rem; height: .32rem; transform: rotate(45deg); background: var(--brass); content: ''; }
   .topic-card li + li { margin-top: .48rem; }
   .topic-card__watermark { position: absolute; right: 2rem; bottom: .75rem; color: rgba(181,128,43,.11); font-family: Georgia, 'Times New Roman', serif; font-size: clamp(5rem, 8vw, 7.5rem); font-weight: 700; line-height: 1; pointer-events: none; }
+
+  @media (hover: hover) and (pointer: fine) {
+    .topic-card {
+      transform-origin: center;
+      transition: transform 250ms ease, border-color 250ms ease, background 250ms ease, box-shadow 250ms ease;
+    }
+    .topic-card::before,
+    .topic-card::after { transition: opacity 250ms ease; }
+    .topic-card__icon { transition: color 250ms ease, border-color 250ms ease, box-shadow 250ms ease; }
+    .topic-card:hover {
+      transform: translateY(-3px) scale(1.015);
+      border-color: color-mix(in srgb, var(--brass) 78%, #d9b363);
+      background: linear-gradient(135deg, var(--on-dark), #f9ead4);
+      box-shadow: 0 18px 40px rgba(84, 53, 35, .17), 0 0 0 3px rgba(197, 151, 72, .08), inset 0 0 34px rgba(197, 151, 72, .07);
+    }
+    .topic-card:hover::before,
+    .topic-card:hover::after { opacity: .95; }
+    .topic-card:hover .topic-card__icon {
+      border-color: color-mix(in srgb, var(--vermilion-bright) 76%, transparent);
+      color: var(--vermilion-bright);
+      box-shadow: inset 0 0 0 .42rem rgba(255, 250, 241, .9), 0 0 0 2px rgba(183, 25, 34, .12), 0 6px 18px rgba(156, 14, 21, .1);
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
+    .topic-card,
+    .topic-card::before,
+    .topic-card::after,
+    .topic-card__icon { transition: none; }
+    .topic-card:hover { transform: none; }
+  }
 
   .bonuses { overflow: hidden; background: #2b211f; color: var(--on-dark); }
   .bonuses .guide-section-heading h2 { color: var(--on-dark); }
@@ -334,7 +364,7 @@ const bookSchema = {
     .guide-hero__copy { display: flex; flex-direction: column; align-items: flex-start; }
     .guide-hero h1 { max-width: 11ch; }
     .guide-hero__visual { grid-row: 2; }
-    .guide-mockup { width: min(90%, 23rem); }
+    .guide-phone { width: min(78%, 20rem); }
     .problem__inner { grid-template-columns: 1fr; }
     .problem__visual { min-height: 25rem; }
     .problem__copy { max-width: 39rem; }

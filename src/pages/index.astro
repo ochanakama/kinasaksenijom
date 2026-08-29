@@ -199,9 +199,8 @@ const webSiteSchema = {
         <p>{ctaBaner.tekst}</p>
         <div>
           <a class="button button--gold" href={ctaBaner.primarniCta.href}>{ctaBaner.primarniCta.label}<Icon name="arrow" size={18} /></a>
-          <span class="button button--light-outline" aria-disabled="true" title="Kontakt podaci biće objavljeni pre lansiranja">{ctaBaner.sekundarniCta.label}</span>
+          <a class="button button--light-outline" href={ctaBaner.sekundarniCta.href}>{ctaBaner.sekundarniCta.label}</a>
         </div>
-        <small>Kontakt podaci biće objavljeni pre lansiranja.</small>
       </div>
     </div>
   </section>

@@ -1,6 +1,5 @@
 const replacements = new Map([
   ['/vodic/', '/#kontakt'],
-  ['/kontakt/', '/#kontakt'],
   ['/o-meni/', '/#o-meni'],
   ['/ture/privatne/', '/#kontakt'],
 ]);

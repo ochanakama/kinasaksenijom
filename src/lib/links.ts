@@ -1,8 +1,6 @@
 const remappedLinks: Record<string, string> = {
   '/vodic/': '/#kontakt',
   '/ture/privatne/': '/#kontakt',
-  '/o-meni/': '/#o-meni',
-  '/kontakt/': '/#kontakt',
 };
 
 export function safeHref(href: string): string {

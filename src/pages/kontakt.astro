@@ -1,0 +1,327 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Icon from '../components/Icon.astro';
+
+const title = 'Kontakt | Kina sa Ksenijom';
+const description = 'Imaš pitanje o putovanju u Kinu, vodiču ili budućim turama? Pošalji mi poruku putem kontakt forme i odgovoriću ti u najkraćem mogućem roku.';
+const canonical = new URL('/kontakt/', Astro.site).href;
+---
+
+<Layout
+  title={title}
+  description={description}
+  canonical={canonical}
+  ogImage="/og/default.jpg"
+  ogImageAlt="Kina sa Ksenijom"
+>
+  <article class="contact-page">
+    <section class="contact-section" aria-labelledby="contact-title">
+      <Breadcrumbs items={[{ label: 'Početna', href: '/' }, { label: 'Kontakt' }]} />
+
+      <div class="container contact-grid">
+        <div class="contact-details">
+          <div class="contact-card">
+            <h1 id="contact-title">Piši mi</h1>
+            <p>Imaš pitanje o putovanju u Kinu, China Ready vodiču ili budućim turama? Pošalji mi poruku i potrudiću se da ti odgovorim što pre.</p>
+          </div>
+          <div class="contact-card__email">
+            <span>E-mail</span>
+            <a href="mailto:info@kinasaksenijom.com">info@kinasaksenijom.com</a>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <form class="contact-form" action="/api/contact" method="post" novalidate data-contact-form>
+            <div class="form-grid">
+              <div class="field">
+                <label for="fullName">Ime i prezime <span aria-hidden="true">*</span><span class="sr-only">, obavezno polje</span></label>
+                <input id="fullName" name="fullName" type="text" placeholder="Tvoje ime i prezime" autocomplete="name" minlength="2" maxlength="120" required aria-describedby="fullName-error" />
+                <p class="field-error" id="fullName-error" data-error-for="fullName" aria-live="polite"></p>
+              </div>
+
+              <div class="field">
+                <label for="email">E-mail <span aria-hidden="true">*</span><span class="sr-only">, obavezno polje</span></label>
+                <input id="email" name="email" type="email" placeholder="tvoj@email.com" autocomplete="email" maxlength="254" required aria-describedby="email-error" />
+                <p class="field-error" id="email-error" data-error-for="email" aria-live="polite"></p>
+              </div>
+
+              <div class="field">
+                <label for="phone">Broj telefona <span aria-hidden="true">*</span><span class="sr-only">, obavezno polje</span></label>
+                <input id="phone" name="phone" type="tel" placeholder="Na primer: +381 6X XXX XXXX" autocomplete="tel" minlength="6" maxlength="50" required aria-describedby="phone-error" />
+                <p class="field-error" id="phone-error" data-error-for="phone" aria-live="polite"></p>
+              </div>
+
+              <div class="field">
+                <label for="topic">Tema <span aria-hidden="true">*</span><span class="sr-only">, obavezno polje</span></label>
+                <input id="topic" name="topic" type="text" placeholder="Na šta se odnosi tvoj upit?" autocomplete="off" minlength="2" maxlength="160" required aria-describedby="topic-error" />
+                <p class="field-error" id="topic-error" data-error-for="topic" aria-live="polite"></p>
+              </div>
+
+              <div class="field field--wide">
+                <label for="message">Poruka <span aria-hidden="true">*</span><span class="sr-only">, obavezno polje</span></label>
+                <textarea id="message" name="message" placeholder="Napiši mi kako mogu da ti pomognem..." rows="5" minlength="10" maxlength="5000" required aria-describedby="message-error"></textarea>
+                <p class="field-error" id="message-error" data-error-for="message" aria-live="polite"></p>
+              </div>
+            </div>
+
+            <div class="honeypot" aria-hidden="true">
+              <label for="company">Naziv kompanije</label>
+              <input id="company" name="company" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <div class="form-actions">
+              <button class="button submit-button" type="submit" data-submit-button>
+                <span data-submit-label>Pošalji poruku</span>
+                <Icon name="arrow" size={18} />
+              </button>
+              <p>Tvoje podatke koristim isključivo kako bih odgovorila na poslati upit.</p>
+            </div>
+
+            <div class="form-status form-status--success" role="status" aria-live="polite" tabindex="-1" hidden data-success-status>
+              <h2>Poruka je poslata!</h2>
+              <p>Hvala na poruci. Odgovor ćete dobiti u najkraćem mogućem roku.</p>
+            </div>
+
+            <div class="form-status form-status--error" role="alert" tabindex="-1" hidden data-error-status>
+              <p>Poruka trenutno nije mogla da se pošalje. Pokušaj ponovo ili mi piši direktno na <a href="mailto:info@kinasaksenijom.com">info@kinasaksenijom.com</a>.</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </article>
+</Layout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+
+  if (form) {
+    const submitButton = form.querySelector<HTMLButtonElement>('[data-submit-button]');
+    const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]');
+    const successStatus = form.querySelector<HTMLElement>('[data-success-status]');
+    const errorStatus = form.querySelector<HTMLElement>('[data-error-status]');
+    const fieldNames = ['fullName', 'email', 'phone', 'topic', 'message'] as const;
+
+    type FieldName = typeof fieldNames[number];
+    type FormControl = HTMLInputElement | HTMLTextAreaElement;
+
+    const controls = Object.fromEntries(
+      fieldNames.map((name) => [name, form.elements.namedItem(name)]),
+    ) as Record<FieldName, FormControl>;
+
+    const errorFor = (name: FieldName) => form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+
+    const validationMessage = (name: FieldName, value: string): string => {
+      const trimmed = value.trim();
+
+      if (!trimmed) {
+        return name === 'message' ? 'Unesi poruku.' : `Unesi ${name === 'fullName' ? 'ime i prezime' : name === 'email' ? 'e-mail adresu' : name === 'phone' ? 'broj telefona' : 'temu'}.`;
+      }
+
+      if (name === 'fullName' && trimmed.length < 2) return 'Ime i prezime moraju imati najmanje 2 znaka.';
+      if (name === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return 'Unesi ispravnu e-mail adresu.';
+      if (name === 'phone') {
+        if (!/^[0-9+()\s./-]+$/.test(trimmed) || (trimmed.match(/\d/g)?.length ?? 0) < 6) return 'Unesi ispravan broj telefona.';
+      }
+      if (name === 'topic' && trimmed.length < 2) return 'Tema mora imati najmanje 2 znaka.';
+      if (name === 'message' && trimmed.length < 10) return 'Poruka mora imati najmanje 10 znakova.';
+
+      return '';
+    };
+
+    const showFieldError = (name: FieldName, message: string) => {
+      const control = controls[name];
+      const error = errorFor(name);
+      control.setAttribute('aria-invalid', message ? 'true' : 'false');
+      if (error) error.textContent = message;
+    };
+
+    const validateField = (name: FieldName): boolean => {
+      const message = validationMessage(name, controls[name].value);
+      showFieldError(name, message);
+      return !message;
+    };
+
+    fieldNames.forEach((name) => {
+      controls[name].addEventListener('blur', () => validateField(name));
+      controls[name].addEventListener('input', () => {
+        if (controls[name].getAttribute('aria-invalid') === 'true') validateField(name);
+      });
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      successStatus?.setAttribute('hidden', '');
+      errorStatus?.setAttribute('hidden', '');
+
+      const validationResults = fieldNames.map((name) => validateField(name));
+      const invalidIndex = validationResults.findIndex((isValid) => !isValid);
+      const invalidField = invalidIndex >= 0 ? fieldNames[invalidIndex] : undefined;
+      if (invalidField) {
+        controls[invalidField].focus();
+        return;
+      }
+
+      if (!submitButton || !submitLabel) return;
+      submitButton.disabled = true;
+      form.setAttribute('aria-busy', 'true');
+      submitLabel.textContent = 'Poruka se šalje...';
+
+      const formData = new FormData(form);
+      const payload = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok || result.ok !== true) {
+          if (result.fieldErrors && typeof result.fieldErrors === 'object') {
+            for (const name of fieldNames) {
+              const message = result.fieldErrors[name];
+              if (typeof message === 'string') showFieldError(name, message);
+            }
+
+            const firstInvalidField = fieldNames.find((name) => controls[name].getAttribute('aria-invalid') === 'true');
+            firstInvalidField && controls[firstInvalidField].focus();
+            return;
+          }
+          throw new Error('Slanje nije uspelo');
+        }
+
+        form.reset();
+        fieldNames.forEach((name) => showFieldError(name, ''));
+        successStatus?.removeAttribute('hidden');
+        successStatus?.focus();
+      } catch {
+        errorStatus?.removeAttribute('hidden');
+        errorStatus?.focus();
+      } finally {
+        submitButton.disabled = false;
+        form.removeAttribute('aria-busy');
+        submitLabel.textContent = 'Pošalji poruku';
+      }
+    });
+  }
+</script>
+
+<style>
+  .contact-page { min-height: 100svh; background: var(--surface); color: var(--text); }
+  .contact-section {
+    position: relative;
+    display: grid;
+    min-height: 100svh;
+    align-items: center;
+    padding: clamp(6.85rem, 10svh, 7.6rem) 0 clamp(1.15rem, 2.2svh, 1.75rem);
+    background:
+      radial-gradient(circle at 86% 18%, rgba(156, 14, 21, .07), transparent 23rem),
+      #eadbc5;
+  }
+  .contact-section :global(.breadcrumbs) { position: absolute; top: 6.35rem; left: 50%; transform: translateX(-50%); }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, .45fr) minmax(0, .55fr);
+    align-items: stretch;
+    gap: clamp(1.25rem, 2.5vw, 2.25rem);
+  }
+
+  .contact-details { display: grid; min-width: 0; grid-template-rows: minmax(0, 1fr) auto; filter: drop-shadow(0 24px 30px rgba(75, 49, 40, .14)); }
+
+  .contact-card {
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(2rem, 4vw, 3.5rem);
+    border: 1px solid rgba(215, 177, 100, .32);
+    border-radius: .55rem .55rem 0 0;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(156, 14, 21, .36), transparent 18rem),
+      #2b211f;
+    color: #fffaf1;
+  }
+  .contact-card h1 { max-width: 8ch; color: #fffaf1; font-size: clamp(3.5rem, 6vw, 5.8rem); }
+  .contact-card > p { max-width: 35rem; margin: 1.5rem 0 0; color: #e8ddd3; font-size: clamp(.98rem, 1.25vw, 1.12rem); line-height: 1.7; }
+  .contact-card__email { display: grid; gap: .22rem; padding: clamp(1.15rem, 2.2vw, 1.6rem) clamp(2rem, 4vw, 3.5rem); border: 1px solid rgba(138, 98, 31, .27); border-top: 0; border-radius: 0 0 .55rem .55rem; background: #f5e9d7; }
+  .contact-card__email span { color: var(--brass); font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+  .contact-card__email a { width: fit-content; color: var(--text); font-size: clamp(.92rem, 1.4vw, 1.08rem); font-weight: 800; overflow-wrap: anywhere; text-decoration-color: rgba(156, 14, 21, .48); }
+  .contact-card__email a:hover { color: var(--vermilion); }
+
+  .form-card { min-width: 0; padding: clamp(1.25rem, 2.3svh, 1.75rem) clamp(1.25rem, 2.5vw, 2rem); border: 1px solid rgba(138, 98, 31, .27); border-radius: .55rem; background: #fffaf1; box-shadow: 0 24px 60px rgba(75, 49, 40, .14); }
+  .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .1rem 1rem; }
+  .field { min-width: 0; }
+  .field--wide { grid-column: 1 / -1; }
+  .field label { display: block; margin-bottom: .3rem; color: var(--text); font-size: .8rem; font-weight: 800; }
+  .field label > span[aria-hidden='true'] { color: var(--vermilion); }
+  .field input,
+  .field textarea {
+    width: 100%;
+    border: 1px solid rgba(81, 57, 44, .28);
+    border-radius: .65rem;
+    background: #f8efe1;
+    color: var(--text);
+    transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+  }
+  .field input { min-height: 3.15rem; padding: .7rem .9rem; }
+  .field textarea { height: 7.65rem; min-height: 7.65rem; padding: .8rem .9rem; line-height: 1.5; resize: vertical; }
+  .field input::placeholder,
+  .field textarea::placeholder { color: #86756d; opacity: 1; }
+  .field input:hover,
+  .field textarea:hover { border-color: rgba(138, 98, 31, .62); background: #fff8ee; }
+  .field input:focus,
+  .field textarea:focus { border-color: var(--brass); background: #fffaf4; outline: 3px solid rgba(138, 98, 31, .2); outline-offset: 1px; box-shadow: 0 0 0 1px var(--brass); }
+  .field input[aria-invalid='true'],
+  .field textarea[aria-invalid='true'] { border-color: var(--vermilion); }
+  .field-error { min-height: 1.2rem; margin: .2rem 0 .1rem; color: #8e1117; font-size: .7rem; font-weight: 700; line-height: 1.3; }
+
+  .form-actions { display: flex; align-items: center; gap: 1rem; margin-top: .35rem; }
+  .submit-button { min-width: 11.75rem; min-height: 3.05rem; border-color: #7d080e; box-shadow: 0 10px 24px rgba(126, 13, 19, .18); cursor: pointer; }
+  .submit-button:hover:not(:disabled) { box-shadow: 0 14px 30px rgba(126, 13, 19, .25); }
+  .submit-button:disabled { cursor: wait; opacity: .62; transform: none; }
+  .form-actions > p { max-width: 24rem; margin: 0; color: var(--text-muted); font-size: .7rem; line-height: 1.45; }
+
+  .form-status { margin-top: 1.5rem; padding: 1.2rem 1.35rem; border-radius: .65rem; }
+  .form-status[hidden] { display: none; }
+  .form-status h2 { font-family: var(--font-body); font-size: 1.12rem; line-height: 1.3; }
+  .form-status p { margin: .35rem 0 0; line-height: 1.55; }
+  .form-status--success { border: 1px solid rgba(138, 98, 31, .42); background: #efe2c9; color: #3f2d20; }
+  .form-status--error { border: 1px solid rgba(156, 14, 21, .38); background: #f5deda; color: #681016; }
+  .form-status--error p { margin: 0; }
+  .form-status--error a { font-weight: 800; }
+
+  .honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+  @media (max-width: 58rem) {
+    .contact-section { min-height: auto; align-items: start; padding: 8.5rem 0 4rem; }
+    .contact-section :global(.breadcrumbs) { top: 5.15rem; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .contact-details { min-height: 25rem; }
+    .contact-card { padding: clamp(2rem, 8vw, 3.5rem); }
+    .contact-card__email { padding-inline: clamp(2rem, 8vw, 3.5rem); }
+  }
+
+  @media (max-width: 40rem) {
+    .form-grid { grid-template-columns: 1fr; }
+    .field--wide { grid-column: auto; }
+    .form-actions { align-items: stretch; flex-direction: column; }
+    .submit-button { width: 100%; }
+  }
+
+  @media (min-width: 58.01rem) and (max-height: 50rem) {
+    .contact-section { padding: 6.6rem 0 .85rem; }
+    .contact-card { padding: 2.15rem 2.5rem; }
+    .contact-card h1 { font-size: clamp(3.4rem, 5.4vw, 5rem); }
+    .contact-card > p { margin-top: 1.15rem; font-size: .98rem; line-height: 1.6; }
+    .contact-card__email { padding: 1rem 2.5rem; }
+    .form-card { padding: 1rem 1.35rem; }
+    .field input { min-height: 2.9rem; }
+    .field textarea { height: 6.5rem; min-height: 6.5rem; }
+    .field-error { min-height: 1.05rem; }
+    .form-actions { margin-top: .2rem; }
+  }
+</style>

@@ -1,0 +1,302 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SeoImage from '../components/SeoImage.astro';
+import Icon from '../components/Icon.astro';
+import ChineseCloud from '../components/ChineseCloud.astro';
+import aboutImage from '../assets/hero/ks_kina.jpg';
+import wallImage from '../assets/ks-kineski-zid.jpg';
+
+const title = 'O meni | Kina sa Ksenijom';
+const description = 'Upoznaj ko stoji iza projekta Kina sa Ksenijom i kako svojim znanjem kineskog jezika, kulture i iskustvom sa terena približavam Kinu ljudima sa Balkana.';
+const canonical = new URL('/o-meni/', Astro.site).href;
+---
+
+<Layout
+  title={title}
+  description={description}
+  canonical={canonical}
+  ogImage={aboutImage.src}
+  ogImageAlt="Ksenija ispred panorame Šangaja"
+>
+  <article class="about-page">
+    <header class="about-hero" aria-labelledby="about-page-title">
+      <ChineseCloud class="about-hero__cloud about-hero__cloud--left" />
+      <ChineseCloud class="about-hero__cloud about-hero__cloud--right" />
+
+      <div class="container about-hero__grid">
+        <div class="about-hero__copy">
+          <p class="eyebrow">O MENI</p>
+          <h1 id="about-page-title">Kina sa Ksenijom</h1>
+          <p class="about-hero__lead">Kina sa Ksenijom je nastala iz jedne ideje: da ljudi sa Balkana upoznaju Kinu onakvu kakva stvarno jeste. Ne kroz stereotipe, ne kroz dvominutne viralne snimke, nego kroz stvarno razumevanje jezika, kulture i svakodnevice.</p>
+        </div>
+
+        <figure class="about-hero__portrait">
+          <SeoImage
+            src={aboutImage}
+            alt="Ksenija ispred panorame Šangaja"
+            width={713}
+            height={620}
+            widths={[420, 620, 713]}
+            sizes="(max-width: 58rem) calc(100vw - 2rem), 42vw"
+            priority
+          />
+          <svg class="about-hero__blossom" viewBox="0 0 460 260" aria-hidden="true">
+            <defs>
+              <g id="plum-flower">
+                <ellipse class="about-hero__petal" cx="0" cy="-8" rx="6.5" ry="10" />
+                <ellipse class="about-hero__petal" cx="0" cy="-8" rx="6.5" ry="10" transform="rotate(72)" />
+                <ellipse class="about-hero__petal" cx="0" cy="-8" rx="6.5" ry="10" transform="rotate(144)" />
+                <ellipse class="about-hero__petal" cx="0" cy="-8" rx="6.5" ry="10" transform="rotate(216)" />
+                <ellipse class="about-hero__petal" cx="0" cy="-8" rx="6.5" ry="10" transform="rotate(288)" />
+                <circle class="about-hero__flower-center" r="3.25" />
+              </g>
+            </defs>
+
+            <g class="about-hero__branches">
+              <path d="M458 229c-58-7-106-36-151-73-55-46-97-67-164-73C88 78 47 64 5 38" />
+              <path d="M315 161c5-42 27-77 63-107 18-15 40-29 66-43" />
+              <path d="M221 111c15-39 40-69 76-94" />
+              <path d="M146 83c-17-29-39-49-69-64" />
+              <path d="M371 60c25 1 47 10 67 27" />
+              <path d="M95 73c-15 7-31 18-46 33" />
+            </g>
+
+            <g class="about-hero__leaves">
+              <path d="M343 112c18-15 35-14 45-5-15 11-30 15-45 5Z" />
+              <path d="M269 65c11-17 26-22 39-17-9 14-21 21-39 17Z" />
+              <path d="M183 89c-17-13-34-14-46-5 14 12 29 17 46 5Z" />
+              <path d="M103 65c-10-16-24-22-37-18 8 14 20 21 37 18Z" />
+              <path d="M400 39c15-12 29-12 40-5-12 11-25 14-40 5Z" />
+            </g>
+
+            <g class="about-hero__flowers">
+              <g transform="translate(425 28) scale(1.25)"><use href="#plum-flower" /></g>
+              <g transform="translate(378 57) scale(1.05)"><use href="#plum-flower" /></g>
+              <g transform="translate(342 118) scale(1.2)"><use href="#plum-flower" /></g>
+              <g transform="translate(298 20) scale(.95)"><use href="#plum-flower" /></g>
+              <g transform="translate(255 72) scale(1.3)"><use href="#plum-flower" /></g>
+              <g transform="translate(220 111) scale(.9)"><use href="#plum-flower" /></g>
+              <g transform="translate(151 83) scale(1.2)"><use href="#plum-flower" /></g>
+              <g transform="translate(79 20) scale(.95)"><use href="#plum-flower" /></g>
+              <g transform="translate(55 91) scale(.8)"><use href="#plum-flower" /></g>
+              <circle class="about-hero__bud" cx="438" cy="86" r="6" />
+              <circle class="about-hero__bud" cx="308" cy="151" r="5" />
+              <circle class="about-hero__bud" cx="107" cy="75" r="5.5" />
+              <circle class="about-hero__bud" cx="23" cy="48" r="4.5" />
+            </g>
+          </svg>
+        </figure>
+      </div>
+    </header>
+
+    <section class="brand-story section" aria-labelledby="brand-story-heading">
+      <div class="container">
+        <h2 id="brand-story-heading">Zašto ovaj brend postoji</h2>
+
+        <div class="brand-story__columns">
+          <p>Kina je u našim krajevima i dalje uglavnom nepoznanica. Deluje toliko daleko i drugačije da izgleda nepristupačno za samostalno istraživanje. A realnost je potpuno drugačija: Kina je danas jedna od najuzbudljivijih destinacija na svetu, spremna da se otkrije nekome ko zna kako.</p>
+          <p>Odlučila sam da budem taj most, neko ko poznaje jezik, kulturu i teren, i ko tu autentičnu Kinu prevodi na način razumljiv i dostupan ljudima sa Balkana. Ne ulepšanu razglednicu, nego pravu sliku: dobru i lošu stranu, ono što oduševljava i ono na šta treba da se pripremiš.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bio section" aria-labelledby="bio-heading">
+      <div class="container bio__inner">
+        <figure class="bio__image">
+          <SeoImage
+            src={wallImage}
+            alt="Ksenija na Kineskom zidu"
+            width={810}
+            height={1080}
+            widths={[420, 620, 810, 1080]}
+            sizes="(max-width: 58rem) calc(100vw - 2rem), 33vw"
+          />
+        </figure>
+        <div class="bio__copy">
+          <h2 id="bio-heading">Ko sam ja</h2>
+          <p>Diplomirani sam sinolog, što znači da moje znanje o Kini ne dolazi samo iz ličnih putovanja, nego i iz godina formalnog izučavanja jezika, istorije i kulture. Ta kombinacija akademskog znanja i stvarnog iskustva na terenu je ono što unosim u svaku turu i svaki tekst koji podelim.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="work section" aria-labelledby="work-heading">
+      <div class="container">
+        <header class="work__heading">
+          <p class="eyebrow work__eyebrow">DVA NAČINA DA OTKRIJEŠ KINU</p>
+          <h2 id="work-heading">Šta radimo zajedno</h2>
+          <p>Kina sa Ksenijom danas okuplja ljude oko dve stvari:</p>
+        </header>
+
+        <div class="work__cards">
+          <article class="work-card">
+            <div class="work-card__title">
+              <span class="work-card__icon"><Icon name="users" size={27} /></span>
+              <h3>Organizovana putovanja u Kinu</h3>
+            </div>
+            <p>Grupne ture koje vodim lično, osmišljene da pokažu autentičnu Kinu, uz nekoga ko razume jezik i zna kako da izbegne turističke zamke.</p>
+            <a href="/ture/">Pogledaj putovanja <Icon name="arrow" size={18} /></a>
+          </article>
+
+          <article class="work-card work-card--guide">
+            <div class="work-card__title">
+              <span class="work-card__icon"><Icon name="compass" size={27} /></span>
+              <h3>China Ready digitalni vodič</h3>
+            </div>
+            <p>Praktičan vodič za sve koji žele da putuju samostalno, ali žele da to urade pripremljeno, bez nagađanja oko plaćanja, interneta, prevoza i osnovnih kulturoloških razlika.</p>
+            <a href="/china-ready-vodic/">Pogledaj China Ready vodič <Icon name="arrow" size={18} /></a>
+          </article>
+        </div>
+      </div>
+
+      <div class="work__closing-band">
+        <div class="container work__closing-inner">
+          <p class="work__closing">Bilo da putuješ sa nama ili sam, cilj je isti: da tvoje iskustvo Kine bude autentično, pripremljeno i bez nepotrebnog stresa.</p>
+          <div class="work__actions">
+            <a class="button work__action work__action--primary" href="/ture/">Pogledaj putovanja</a>
+            <a class="button work__action work__action--secondary" href="/china-ready-vodic/">Preuzmi vodič</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</Layout>
+
+<style>
+  .about-page { background: var(--surface); color: var(--text); }
+
+  .about-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: min(54rem, 100svh);
+    padding: clamp(8rem, 11vw, 10rem) 0 clamp(5rem, 8vw, 7rem);
+    background:
+      radial-gradient(circle at 8% 78%, rgba(138, 98, 31, .1), transparent 22rem),
+      linear-gradient(118deg, #fffaf1 0%, #f4eadb 100%);
+  }
+  .about-hero__grid { position: relative; z-index: 2; display: grid; min-height: 39rem; grid-template-columns: minmax(0, 1fr) minmax(22rem, .82fr); align-items: center; gap: clamp(3rem, 8vw, 7.5rem); }
+  .about-hero__copy { position: relative; z-index: 2; }
+  .about-hero :global(.about-hero__cloud) { position: absolute; z-index: 1; color: var(--vermilion); opacity: .13; pointer-events: none; }
+  .about-hero :global(.about-hero__cloud--left) { top: 8.5rem; left: -4.5rem; width: clamp(17rem, 24vw, 24rem); }
+  .about-hero :global(.about-hero__cloud--right) { right: -3.5rem; bottom: 2rem; width: clamp(14rem, 19vw, 19rem); transform: scaleX(-1); }
+  .about-hero .eyebrow { color: #90651f; }
+  .about-hero h1 { max-width: 9ch; color: var(--text); font-size: clamp(4.1rem, 7.5vw, 7rem); }
+  .about-hero__lead { max-width: 43rem; margin: 2rem 0 0; color: var(--text-muted); font-size: clamp(1.08rem, 1.5vw, 1.27rem); line-height: 1.75; }
+  .about-hero__portrait { position: relative; width: min(100%, 31rem); aspect-ratio: 4 / 5; align-self: center; justify-self: center; margin: 0; padding: .65rem; background: #fffaf1; box-shadow: 0 28px 70px rgba(75, 49, 40, .2); }
+  .about-hero__portrait :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 51% 50%; }
+  .about-hero__blossom { position: absolute; z-index: 2; top: -5.5rem; right: -12rem; width: clamp(20rem, 27vw, 28rem); overflow: visible; transform: scaleY(-1); transform-origin: center; filter: drop-shadow(0 8px 10px rgba(72, 35, 30, .08)); pointer-events: none; }
+  .about-hero__branches { fill: none; stroke: #38262a; stroke-linecap: round; stroke-linejoin: round; stroke-width: 7; }
+  .about-hero__branches path:not(:first-child) { stroke-width: 4.5; }
+  .about-hero__leaves { fill: #493039; }
+  .about-hero__petal { fill: #a91019; stroke: #731016; stroke-width: 1.25; }
+  .about-hero__flower-center { fill: #d7aa51; }
+  .about-hero__bud { fill: #b71922; stroke: #731016; stroke-width: 1.5; }
+
+  .brand-story { padding-block: clamp(6rem, 7vw, 7rem); background: #eadbc5; }
+  .brand-story h2 { width: 100%; color: var(--text); font-size: clamp(3rem, 5vw, 4.8rem); text-align: center; }
+  .brand-story__columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: clamp(4rem, 5.5vw, 5rem); margin-top: clamp(3.5rem, 5vw, 4.5rem); }
+  .brand-story__columns > p { max-width: 36rem; margin: 0 auto; color: var(--text); font-size: 1.1rem; line-height: 1.7; text-align: center; }
+
+  .bio { padding-block: clamp(5.25rem, 7vw, 7rem); background: #2b211f; color: #fffaf1; }
+  .bio__inner { display: grid; grid-template-columns: minmax(15rem, .65fr) minmax(0, 1.35fr); align-items: center; gap: clamp(3rem, 9vw, 8rem); }
+  .bio__image { width: min(100%, 22rem); justify-self: center; margin: 0; padding: .45rem; background: #fffaf1; box-shadow: 0 24px 60px rgba(0, 0, 0, .24); }
+  .bio__image :global(img) { width: 100%; height: auto; }
+  .bio h2 { color: #fffaf1; }
+  .bio__copy p { max-width: 47rem; margin: 1.8rem 0 0; color: #e8e2d8; font-size: clamp(1.08rem, 1.45vw, 1.22rem); line-height: 1.8; }
+
+  .work {
+    padding: 0;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(197, 151, 72, .11), transparent 22rem),
+      #f7ead4;
+  }
+  .work > .container { padding-block: clamp(4.75rem, 7vw, 6.75rem) clamp(3rem, 5vw, 4.5rem); }
+  .work__heading { display: grid; max-width: 58rem; gap: .85rem; margin-bottom: clamp(2rem, 3vw, 2.75rem); }
+  .work__heading h2 { font-size: clamp(3.4rem, 6vw, 5.8rem); line-height: .98; }
+  .work__heading p { margin: 0; color: var(--text); font-size: clamp(1.05rem, 1.4vw, 1.2rem); }
+  .work__heading .work__eyebrow { margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--vermilion); font-size: 13.76px; font-weight: 800; letter-spacing: .13em; text-align: left; }
+  .work__cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.25rem, 2.5vw, 2rem); }
+  .work-card {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    min-width: 0;
+    min-height: 26rem;
+    flex-direction: column;
+    overflow: hidden;
+    padding: clamp(2rem, 4vw, 3.25rem);
+    border: 2px solid #c9a252;
+    border-radius: .45rem;
+    background:
+      radial-gradient(circle at 24% 18%, rgba(190, 28, 37, .72), transparent 22rem),
+      #930d14;
+    box-shadow: 0 12px 28px rgba(74, 38, 29, .12);
+    color: #f8e5bd;
+  }
+  .work-card--guide {
+    border-color: #c9a252;
+    background:
+      radial-gradient(circle at 76% 20%, rgba(210, 167, 91, .1), transparent 17rem),
+      #f1dfc4;
+    color: var(--text);
+  }
+  .work-card > * { position: relative; z-index: 2; }
+  .work-card__title { display: flex; align-items: flex-start; gap: clamp(1.25rem, 2.5vw, 2rem); }
+  .work-card__icon { display: grid; width: 4.75rem; height: 4.75rem; flex: 0 0 auto; place-items: center; border: 2px solid #d4ad5e; border-radius: 50%; color: #e2bc6d; }
+  .work-card--guide .work-card__icon { border-color: var(--vermilion); color: var(--vermilion); }
+  .work-card h3 { color: inherit; font-size: clamp(2rem, 3.2vw, 2.8rem); line-height: 1.05; }
+  .work-card p { max-width: 34rem; margin: 1.65rem 0 2rem 6.75rem; color: #f5e6cc; font-size: clamp(1rem, 1.25vw, 1.1rem); line-height: 1.75; }
+  .work-card--guide p { color: var(--text-muted); }
+  .work-card a { display: inline-flex; width: fit-content; align-items: center; gap: .65rem; margin: auto 0 0 6.75rem; color: #f4d998; font-size: .88rem; font-weight: 800; letter-spacing: .045em; text-decoration: none; text-transform: uppercase; }
+  .work-card--guide a { color: var(--vermilion); }
+  .work-card a :global(svg) { transition: transform 180ms ease; }
+  .work-card a:hover :global(svg), .work-card a:focus-visible :global(svg) { transform: translateX(.22rem); }
+  .work__closing-band {
+    border-top: 3px solid #c9a252;
+    background:
+      radial-gradient(circle at 75% 35%, rgba(156, 14, 21, .13), transparent 24rem),
+      #2b211f;
+  }
+  .work__closing-inner { display: grid; grid-template-columns: minmax(0, 1.2fr) auto; align-items: center; gap: clamp(2rem, 6vw, 6rem); padding-block: clamp(2.5rem, 4vw, 3.75rem); }
+  .work__closing { max-width: 45rem; margin: 0; color: #f7e5c2; font-family: var(--font-display); font-size: clamp(1.75rem, 3vw, 2.65rem); font-weight: 700; line-height: 1.2; text-wrap: balance; }
+  .work__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 1rem; }
+  .work__action { min-width: 12.5rem; justify-content: center; border: 2px solid #d6b265; border-radius: .35rem; color: #f8e5bd; font-size: .82rem; font-weight: 800; letter-spacing: .035em; text-transform: uppercase; }
+  .work__action--primary { background: linear-gradient(115deg, #9c0e15, #b71922); color: #fff3dc; }
+  .work__action--primary:hover, .work__action--primary:focus-visible { background: #c02029; color: white; }
+  .work__action--secondary { background: transparent; }
+  .work__action--secondary:hover, .work__action--secondary:focus-visible { background: rgba(255, 255, 255, .08); color: white; }
+
+  @media (max-width: 58rem) {
+    .about-hero { min-height: auto; padding-top: 8.25rem; }
+    .about-hero__grid { min-height: 0; grid-template-columns: minmax(0, 1fr); }
+    .about-hero__copy { min-width: 0; max-width: 46rem; }
+    .about-hero h1 { max-width: 12ch; }
+    .about-hero__portrait { min-width: 0; width: min(calc(100% - 1.5rem), 38rem); justify-self: center; }
+    .about-hero__blossom { top: -4.75rem; right: -5rem; width: min(24rem, 58vw); }
+    .brand-story__columns, .bio__inner { grid-template-columns: 1fr; }
+    .brand-story__columns { gap: 2.5rem; }
+    .work__closing-inner { grid-template-columns: 1fr; }
+    .work__actions { justify-content: flex-start; }
+  }
+
+  @media (max-width: 44rem) {
+    .about-hero { padding-bottom: 5.5rem; }
+    .about-hero__grid { gap: 3.5rem; }
+    .about-hero :global(.about-hero__cloud--left) { top: 6.5rem; left: -8rem; width: 17rem; }
+    .about-hero :global(.about-hero__cloud--right) { right: -5rem; bottom: 1rem; width: 14rem; }
+    .about-hero__portrait { width: calc(100% - 1rem); justify-self: center; }
+    .about-hero__blossom { top: -3.75rem; right: -2.75rem; width: min(19rem, 66vw); opacity: .94; }
+    .brand-story { padding-block: 4.5rem; }
+    .brand-story__columns { margin-top: 2.75rem; }
+    .work__cards { grid-template-columns: 1fr; }
+    .work-card { min-height: 0; }
+    .work-card p, .work-card a { margin-left: 0; }
+    .work-card a { margin-top: 1.5rem; }
+    .work__actions { width: 100%; }
+    .work__action { width: 100%; }
+  }
+
+  @media (max-width: 27rem) {
+    .work-card__title { align-items: flex-start; }
+    .work-card__icon { width: 3.15rem; height: 3.15rem; }
+  }
+</style>

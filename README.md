@@ -17,6 +17,24 @@ npm run build
 npm run preview
 ```
 
+## Kontakt forma
+
+Forma na `/kontakt/` šalje poruke preko Resend API-ja iz Netlify serverless funkcije `netlify/functions/contact.mjs`. API ključ ostaje na serveru i ne ulazi u Astro bundle.
+
+Za lokalno testiranje kopirati `.env.example` u `.env`, uneti stvarne vrednosti i pokrenuti sajt kroz Netlify Dev:
+
+```bash
+npx netlify-cli dev
+```
+
+U Netlify kontrolnoj tabli, u `Project configuration > Environment variables`, dodati sledeće promenljive sa scope-om koji uključuje Functions:
+
+- `RESEND_API_KEY`: API ključ iz Resend naloga.
+- `CONTACT_FROM_EMAIL`: verifikovani pošiljalac, na primer `Kina sa Ksenijom <kontakt@kinasaksenijom.com>`.
+- `CONTACT_TO_EMAIL`: primalac poruka. Podrazumevana vrednost u funkciji je `info@kinasaksenijom.com`.
+
+U Resend-u je potrebno verifikovati domen `kinasaksenijom.com` kroz DNS zapise koje servis prikaže. Vrednost `CONTACT_FROM_EMAIL` mora koristiti verifikovani domen. Posle izmene environment promenljivih pokrenuti novi deploy.
+
 ## Dodavanje sadržaja
 
 - Destinacija: kopirati `src/content/destinacije/_template.md` u novi fajl čije ime postaje slug, na primer `sudžou.md` treba preimenovati bez dijakritike u `sudzou.md`.

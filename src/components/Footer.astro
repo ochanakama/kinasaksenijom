@@ -1,11 +1,12 @@
 ---
 import { Image } from 'astro:assets';
+import logoImage from '../kinasaksenijom-kruz-providna-pozadina.png';
 ---
 
 <footer class="site-footer">
   <div class="container site-footer__top">
     <div>
-      <a class="footer-brand" href="/"><Image src="/logo (1).webp" alt="" width={56} height={56} loading="lazy" />Kina sa Ksenijom</a>
+      <a class="footer-brand" href="/"><Image src={logoImage} alt="" width={56} loading="lazy" />Kina sa Ksenijom</a>
       <p>Organizovana putovanja u Kinu iz Srbije i regiona, u malim grupama i uz lično vođenje.</p>
     </div>
     <nav aria-label="Destinacije">
@@ -21,9 +22,8 @@ import { Image } from 'astro:assets';
     </nav>
     <div class="contact">
       <strong>Kontakt</strong>
-      <span>Telefon i WhatsApp</span>
-      <span class="placeholder">+381 XX XXX XXXX</span>
-      <small>Kontakt podaci biće objavljeni pre lansiranja.</small>
+      <a href="/kontakt/">Kontakt forma</a>
+      <a href="mailto:info@kinasaksenijom.com">info@kinasaksenijom.com</a>
     </div>
   </div>
   <div class="container site-footer__bottom">
@@ -40,9 +40,8 @@ import { Image } from 'astro:assets';
   p { max-width: 25rem; margin-top: 1rem; color: var(--text); font-size: .9rem; }
   nav, .contact { display: grid; align-content: start; gap: .6rem; }
   strong { margin-bottom: .35rem; color: var(--vermilion); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; }
-  nav a, .contact span { color: var(--text); font-size: .86rem; text-decoration: none; }
-  nav a:hover { color: var(--vermilion); }
-  .placeholder { font-weight: 800; }
+  nav a, .contact a { color: var(--text); font-size: .86rem; text-decoration: none; }
+  nav a:hover, .contact a:hover { color: var(--vermilion); }
   small { max-width: 16rem; color: var(--text); line-height: 1.5; }
   .site-footer__bottom { display: flex; justify-content: space-between; gap: 1rem; padding-block: 1.2rem; border-top: 1px solid var(--line); color: var(--text); font-size: .72rem; }
   @media (max-width: 52rem) { .site-footer__top { grid-template-columns: 1fr 1fr; } }

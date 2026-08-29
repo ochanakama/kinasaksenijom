@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import logoImage from '../kinasaksenijom-kruz-providna-pozadina.png';
 
 const path = Astro.url.pathname;
 const linksBeforeDestinations = [
@@ -14,8 +15,8 @@ const destinationLinks = [
 const linksAfterDestinations = [
   { label: 'Vodič', href: '/china-ready-vodic/' },
   { label: 'Blog', href: '/blog/' },
-  { label: 'O meni', href: '/#o-meni' },
-  { label: 'Kontakt', href: '/#kontakt' },
+  { label: 'O meni', href: '/o-meni/' },
+  { label: 'Kontakt', href: '/kontakt/' },
 ];
 const isDestination = destinationLinks.some((link) => path === link.href);
 ---
@@ -23,7 +24,7 @@ const isDestination = destinationLinks.some((link) => path === link.href);
 <header class="site-header">
   <div class="container site-header__inner">
     <a class="brand" href="/">
-      <Image class="brand__logo" src="/logo (1).webp" alt="" width={64} height={64} loading="eager" />
+      <Image class="brand__logo" src={logoImage} alt="" width={64} loading="eager" />
       <strong>Kina sa Ksenijom</strong>
     </a>
     <nav class="desktop-nav" aria-label="Glavna navigacija">
