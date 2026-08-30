@@ -12,7 +12,7 @@ hero:
   lead: "Pripremi internet, plaćanje, aplikacije i prevoz pre nego što sletiš."
   opis: "China Ready digitalni vodič ti na jednom mestu daje jasna uputstva za sve praktične pripreme: od Alipay aplikacije i interneta do taksija, vozova i prvih 24 sata u Kini."
   istaknuto: "15 praktičnih celina • 5 bonus materijala • prilagođeno vašem telefonu"
-  cta: "Preuzmi vodič za 9,90 €"
+  cta: "Preuzmi vodič"
   microcopy: "Sigurna kupovina preko Gumroada."
   imageAlt: "China Ready digitalni vodič za prvo putovanje u Kinu"
 

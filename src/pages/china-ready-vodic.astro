@@ -105,7 +105,6 @@ const bookSchema = {
             <span class="topic-card__icon"><Icon name={tema.ikonica} size={28} /></span>
             <h3>{tema.naslov}</h3>
             <ul>{tema.stavke.map((stavka) => <li>{stavka}</li>)}</ul>
-            <span class="topic-card__watermark" lang="zh-Hans" aria-hidden="true">{tema.znak}</span>
           </article>
         ))}
       </div>
@@ -269,8 +268,6 @@ const bookSchema = {
   .topic-card li { position: relative; padding-left: 1.25rem; }
   .topic-card li::before { position: absolute; top: .7em; left: 0; width: .32rem; height: .32rem; transform: rotate(45deg); background: var(--brass); content: ''; }
   .topic-card li + li { margin-top: .48rem; }
-  .topic-card__watermark { position: absolute; right: 2rem; bottom: .75rem; color: rgba(181,128,43,.11); font-family: Georgia, 'Times New Roman', serif; font-size: clamp(5rem, 8vw, 7.5rem); font-weight: 700; line-height: 1; pointer-events: none; }
-
   @media (hover: hover) and (pointer: fine) {
     .topic-card {
       transform-origin: center;
