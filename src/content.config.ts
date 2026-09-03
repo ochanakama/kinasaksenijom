@@ -126,11 +126,12 @@ const landing = defineCollection({
     }),
     bonusi: z.object({
       naslov: z.string(),
-      stavke: z.array(z.object({ naslov: z.string(), opis: z.string() })).length(5),
+      stavke: z.array(z.object({ naslov: z.string(), opis: z.string() })).length(3),
       cta: z.string(),
       microcopy: z.string(),
     }),
     preview: z.object({
+      eyebrow: z.string(),
       naslov: z.string(),
       opis: z.string(),
       stavke: z.array(z.object({ naslov: z.string(), alt: z.string(), filename: z.string() })).length(3),

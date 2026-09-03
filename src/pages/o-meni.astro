@@ -36,8 +36,8 @@ const canonical = new URL('/o-meni/', Astro.site).href;
             alt="Ksenija ispred panorame Šangaja"
             width={713}
             height={620}
-            widths={[420, 620, 713]}
-            sizes="(max-width: 58rem) calc(100vw - 2rem), 42vw"
+            widths={[288, 420, 620, 713]}
+            sizes="(max-width: 44rem) 78vw, (max-width: 58rem) calc(100vw - 2rem), 42vw"
             priority
           />
           <svg class="about-hero__blossom" viewBox="0 0 460 260" aria-hidden="true">
@@ -108,8 +108,8 @@ const canonical = new URL('/o-meni/', Astro.site).href;
             alt="Ksenija na Kineskom zidu"
             width={810}
             height={1080}
-            widths={[420, 620, 810, 1080]}
-            sizes="(max-width: 58rem) calc(100vw - 2rem), 33vw"
+            widths={[256, 420, 620, 810, 1080]}
+            sizes="(max-width: 44rem) 68vw, (max-width: 58rem) calc(100vw - 2rem), 33vw"
           />
         </figure>
         <div class="bio__copy">
@@ -150,11 +150,7 @@ const canonical = new URL('/o-meni/', Astro.site).href;
 
       <div class="work__closing-band">
         <div class="container work__closing-inner">
-          <p class="work__closing">Bilo da putuješ sa nama ili sam, cilj je isti: da tvoje iskustvo Kine bude autentično, pripremljeno i bez nepotrebnog stresa.</p>
-          <div class="work__actions">
-            <a class="button work__action work__action--primary" href="/ture/">Pogledaj putovanja</a>
-            <a class="button work__action work__action--secondary" href="/china-ready-vodic/">Preuzmi vodič</a>
-          </div>
+          <p class="work__closing">Bilo da putuješ sa nama ili organizuješ putovanje u sopstvenoj režiji, cilj je isti: da Kinu doživiš autentično, spremno i bez nepotrebnog stresa.</p>
         </div>
       </div>
     </section>
@@ -168,7 +164,7 @@ const canonical = new URL('/o-meni/', Astro.site).href;
     position: relative;
     overflow: hidden;
     min-height: min(54rem, 100svh);
-    padding: clamp(8rem, 11vw, 10rem) 0 clamp(5rem, 8vw, 7rem);
+    padding: clamp(7rem, 8vw, 8rem) 0 clamp(4rem, 6vw, 5.5rem);
     background:
       radial-gradient(circle at 8% 78%, rgba(138, 98, 31, .1), transparent 22rem),
       linear-gradient(118deg, #fffaf1 0%, #f4eadb 100%);
@@ -176,7 +172,7 @@ const canonical = new URL('/o-meni/', Astro.site).href;
   .about-hero__grid { position: relative; z-index: 2; display: grid; min-height: 39rem; grid-template-columns: minmax(0, 1fr) minmax(22rem, .82fr); align-items: center; gap: clamp(3rem, 8vw, 7.5rem); }
   .about-hero__copy { position: relative; z-index: 2; }
   .about-hero :global(.about-hero__cloud) { position: absolute; z-index: 1; color: var(--vermilion); opacity: .13; pointer-events: none; }
-  .about-hero :global(.about-hero__cloud--left) { top: 8.5rem; left: -4.5rem; width: clamp(17rem, 24vw, 24rem); }
+  .about-hero :global(.about-hero__cloud--left) { top: 5.75rem; left: -5.5rem; width: clamp(14rem, 19vw, 18rem); }
   .about-hero :global(.about-hero__cloud--right) { right: -3.5rem; bottom: 2rem; width: clamp(14rem, 19vw, 19rem); transform: scaleX(-1); }
   .about-hero .eyebrow { color: #90651f; }
   .about-hero h1 { max-width: 9ch; color: var(--text); font-size: clamp(4.1rem, 7.5vw, 7rem); }
@@ -253,17 +249,11 @@ const canonical = new URL('/o-meni/', Astro.site).href;
   .work__closing-band {
     border-top: 3px solid #c9a252;
     background:
-      radial-gradient(circle at 75% 35%, rgba(156, 14, 21, .13), transparent 24rem),
-      #2b211f;
+      radial-gradient(circle at 75% 35%, rgba(43, 33, 31, .2), transparent 24rem),
+      var(--vermilion);
   }
-  .work__closing-inner { display: grid; grid-template-columns: minmax(0, 1.2fr) auto; align-items: center; gap: clamp(2rem, 6vw, 6rem); padding-block: clamp(2.5rem, 4vw, 3.75rem); }
-  .work__closing { max-width: 45rem; margin: 0; color: #f7e5c2; font-family: var(--font-display); font-size: clamp(1.75rem, 3vw, 2.65rem); font-weight: 700; line-height: 1.2; text-wrap: balance; }
-  .work__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 1rem; }
-  .work__action { min-width: 12.5rem; justify-content: center; border: 2px solid #d6b265; border-radius: .35rem; color: #f8e5bd; font-size: .82rem; font-weight: 800; letter-spacing: .035em; text-transform: uppercase; }
-  .work__action--primary { background: linear-gradient(115deg, #9c0e15, #b71922); color: #fff3dc; }
-  .work__action--primary:hover, .work__action--primary:focus-visible { background: #c02029; color: white; }
-  .work__action--secondary { background: transparent; }
-  .work__action--secondary:hover, .work__action--secondary:focus-visible { background: rgba(255, 255, 255, .08); color: white; }
+  .work__closing-inner { padding-block: clamp(2.5rem, 4vw, 3.75rem); }
+  .work__closing { max-width: 70rem; margin: 0 auto; color: #fff4e3; font-family: var(--font-display); font-size: clamp(1.75rem, 3vw, 2.65rem); font-weight: 700; line-height: 1.2; text-align: center; text-wrap: balance; }
 
   @media (max-width: 58rem) {
     .about-hero { min-height: auto; padding-top: 8.25rem; }
@@ -274,25 +264,24 @@ const canonical = new URL('/o-meni/', Astro.site).href;
     .about-hero__blossom { top: -4.75rem; right: -5rem; width: min(24rem, 58vw); }
     .brand-story__columns, .bio__inner { grid-template-columns: 1fr; }
     .brand-story__columns { gap: 2.5rem; }
-    .work__closing-inner { grid-template-columns: 1fr; }
-    .work__actions { justify-content: flex-start; }
   }
 
   @media (max-width: 44rem) {
-    .about-hero { padding-bottom: 5.5rem; }
-    .about-hero__grid { gap: 3.5rem; }
-    .about-hero :global(.about-hero__cloud--left) { top: 6.5rem; left: -8rem; width: 17rem; }
+    .about-hero { padding-bottom: 4rem; }
+    .about-hero__grid { gap: 2.75rem; }
+    .about-hero :global(.about-hero__cloud--left) { top: 6rem; right: -2.5rem; left: auto; width: 10rem; transform: scaleX(-1); }
     .about-hero :global(.about-hero__cloud--right) { right: -5rem; bottom: 1rem; width: 14rem; }
-    .about-hero__portrait { width: calc(100% - 1rem); justify-self: center; }
-    .about-hero__blossom { top: -3.75rem; right: -2.75rem; width: min(19rem, 66vw); opacity: .94; }
+    .about-hero__portrait { width: min(78vw, 18rem); justify-self: center; }
+    .about-hero__blossom { top: -3.25rem; right: -5.5rem; width: min(16rem, 60vw); opacity: .94; }
     .brand-story { padding-block: 4.5rem; }
     .brand-story__columns { margin-top: 2.75rem; }
+    .bio { padding-block: 4rem; }
+    .bio__inner { gap: 2.5rem; }
+    .bio__image { width: min(68vw, 16rem); }
     .work__cards { grid-template-columns: 1fr; }
     .work-card { min-height: 0; }
     .work-card p, .work-card a { margin-left: 0; }
     .work-card a { margin-top: 1.5rem; }
-    .work__actions { width: 100%; }
-    .work__action { width: 100%; }
   }
 
   @media (max-width: 27rem) {

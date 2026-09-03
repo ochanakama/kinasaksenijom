@@ -11,7 +11,7 @@ hero:
   naslov: "Praktični vodič za prvo putovanje u Kinu"
   lead: "Pripremi internet, plaćanje, aplikacije i prevoz pre nego što sletiš."
   opis: "China Ready digitalni vodič ti na jednom mestu daje jasna uputstva za sve praktične pripreme: od Alipay aplikacije i interneta do taksija, vozova i prvih 24 sata u Kini."
-  istaknuto: "15 praktičnih celina • 5 bonus materijala • prilagođeno vašem telefonu"
+  istaknuto: "16 praktičnih celina • 3 bonus materijala • prilagođeno vašem telefonu"
   cta: "Preuzmi vodič"
   microcopy: "Sigurna kupovina preko Gumroada."
   imageAlt: "China Ready digitalni vodič za prvo putovanje u Kinu"
@@ -69,34 +69,31 @@ sadrzaj:
         - "fraze, kineski karakteri i česte greške"
 
 bonusi:
-  naslov: "Uz vodič dobijaš i 5 praktičnih bonusa"
+  naslov: "Uz vodič dobijaš i 3 praktična bonusa"
   stavke:
     - naslov: "App Checklist"
       opis: "Spisak aplikacija koje treba instalirati i podesiti pre puta."
     - naslov: "Checklist pred put"
       opis: "Sve važne pripreme koje možeš da pratiš korak po korak."
-    - naslov: "Kartice sa kineskim karakterima"
-      opis: "Korisni kineski karakteri i izrazi koje možeš brzo da pokažeš ili prepoznaš."
-    - naslov: "Prvih 24 sata u Kini"
-      opis: "Najvažniji koraci sažeti na dve strane."
     - naslov: "Lista korisnih linkova"
       opis: "Važni sajtovi i alati na jednom mestu."
   cta: "Preuzmi China Ready vodič"
-  microcopy: "Glavni vodič i svih 5 bonus materijala"
+  microcopy: "Glavni vodič i sva tri bonus materijala"
 
 preview:
+  eyebrow: "ZAVIRI U VODIČ"
   naslov: "Pogledaj kako vodič izgleda iznutra"
-  opis: "Zaviri u nekoliko stranica vodiča: od podešavanja aplikacije Alipay do praktičnih checklista i korisnih kineskih karaktera."
+  opis: "Zaviri u sadržaj vodiča, praktične mogućnosti aplikacije Alipay i osnovne fraze koje će ti koristiti u Kini."
   stavke:
-    - naslov: "Stranica sa uputstvom za Alipay"
-      alt: "Uputstvo za podešavanje Alipaya u Kini"
-      filename: "china-ready-alipay.webp"
-    - naslov: "Kartice sa korisnim kineskim znakovima"
-      alt: "Kartice sa korisnim kineskim znakovima za putnike"
-      filename: "china-ready-kineski-znakovi.webp"
-    - naslov: "Checklist za pripremu puta"
-      alt: "Checklist za pripremu putovanja u Kinu"
-      filename: "china-ready-checklist.webp"
+    - naslov: "Sadržaj China Ready vodiča"
+      alt: "Sadržaj China Ready digitalnog vodiča"
+      filename: "sadrzaj.png"
+    - naslov: "Za šta se sve koristi Alipay osim plaćanja"
+      alt: "Stranica vodiča o tome za šta se sve koristi Alipay osim plaćanja"
+      filename: "alipay.png"
+    - naslov: "Osnovne fraze za putovanje u Kinu"
+      alt: "Neke od osnovnih fraza sa kojima ćete se najčešće susretati u Kini"
+      filename: "osnovne-fraze.png"
 
 autor:
   naslov: "Vodič zasnovan na poznavanju kineskog jezika i kulture"
@@ -124,6 +121,6 @@ faq:
 zavrsniCta:
   naslov: "Spremi telefon, novac i putovanje pre nego što poletiš"
   tekst: "Sve najvažnije informacije za prvo putovanje u Kinu imaj na jednom mestu — dostupne kad god ti zatrebaju."
-  cta: "Preuzmi China Ready vodič — 9,90 €"
-  microcopy: "Digitalni vodič na srpskom • 15 celina + 5 bonusa"
+  cta: "Preuzmi China Ready vodič"
+  microcopy: "Digitalni vodič na srpskom • 16 celina + 3 bonusa"
 ---

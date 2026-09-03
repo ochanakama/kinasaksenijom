@@ -6,6 +6,9 @@ import Faq from '../components/Faq.astro';
 import Icon from '../components/Icon.astro';
 import JsonLd from '../components/JsonLd.astro';
 import authorImage from '../assets/hero/ks_kina.jpg';
+import previewContents from '../assets/china-ready/sadrzaj.png';
+import previewAlipay from '../assets/china-ready/alipay.png';
+import previewPhrases from '../assets/china-ready/osnovne-fraze.png';
 import guideCover from '../chinareadyslika.png';
 
 const landingPages = await getCollection('landing');
@@ -13,6 +16,7 @@ const page = landingPages.find((entry) => entry.id === 'china-ready-vodic');
 if (!page) throw new Error('Nedostaje src/content/landing/china-ready-vodic.md');
 
 const { seo, purchaseUrl, hero, problem, sadrzaj, bonusi, preview, autor, faq, zavrsniCta } = page.data;
+const previewImages = [previewContents, previewAlipay, previewPhrases] as const;
 const bookSchema = {
   '@context': 'https://schema.org',
   '@type': 'Book',
@@ -135,21 +139,30 @@ const bookSchema = {
   <section class="preview section" aria-labelledby="preview-heading">
     <div class="container">
       <header class="section-heading guide-section-heading">
+        <p class="preview__eyebrow">{preview.eyebrow}</p>
         <h2 id="preview-heading">{preview.naslov}</h2>
         <p>{preview.opis}</p>
       </header>
       <div class="preview-list">
-        {preview.stavke.map((item, index) => (
-          <figure class="preview-card">
-            <!-- TODO: zameniti placeholder sa src/assets/china-ready/{item.filename} -->
-            <div class="preview-placeholder" role="img" aria-label={item.alt}>
-              <span>CHINA READY</span>
-              <strong>0{index + 1}</strong>
-              <div aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-            </div>
-            <figcaption>{item.naslov}</figcaption>
-          </figure>
-        ))}
+        {preview.stavke.map((item, index) => {
+          const image = previewImages[index];
+
+          return (
+            <figure class="preview-card">
+              <div class="preview-card__media">
+                <SeoImage
+                  src={image}
+                  alt={item.alt}
+                  width={image.width}
+                  height={image.height}
+                  sizes="(max-width: 48rem) 78vw, 30vw"
+                  class="preview-card__image"
+                />
+              </div>
+              <figcaption>{item.naslov}</figcaption>
+            </figure>
+          );
+        })}
       </div>
     </div>
   </section>
@@ -204,10 +217,11 @@ const bookSchema = {
   .guide-hero::before { top: 7rem; right: -13rem; width: 36rem; aspect-ratio: 1; box-shadow: 0 0 0 2.5rem rgba(138, 98, 31, .045); }
   .guide-hero::after { bottom: -17rem; left: -12rem; width: 30rem; aspect-ratio: 1; }
   .guide-hero__grid { position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(22rem, .75fr); align-items: center; gap: clamp(3rem, 8vw, 7rem); }
-  .guide-hero__copy { min-width: 0; }
+  .guide-hero__copy { min-width: 0; transform: translateY(-1rem); }
   .guide-hero .eyebrow,
   .problem__eyebrow,
-  .guide-section-heading .contents__eyebrow { font-family: var(--font-body); font-size: 13.76px; font-weight: 800; letter-spacing: .12em; line-height: 1.2; text-transform: uppercase; }
+  .guide-section-heading .contents__eyebrow,
+  .guide-section-heading .preview__eyebrow { font-family: var(--font-body); font-size: 13.76px; font-weight: 800; letter-spacing: .12em; line-height: 1.2; text-transform: uppercase; }
   .guide-hero .eyebrow { color: #94651d; }
   .guide-hero h1 { max-width: 12ch; color: var(--text); font-size: clamp(3.6rem, 6.5vw, 6.6rem); line-height: .93; }
   .guide-hero__lead { max-width: 42rem; margin: 1.6rem 0 .75rem; color: var(--vermilion); font-size: clamp(1.25rem, 2vw, 1.65rem); font-weight: 700; line-height: 1.4; }
@@ -254,7 +268,8 @@ const bookSchema = {
   .contents .guide-section-heading h2 { max-width: 18ch; font-size: clamp(3rem, 5.2vw, 5rem); line-height: .98; }
   .contents .guide-section-heading h2 + p { margin-top: 1.8rem; }
   .guide-section-heading p { max-width: 43rem; margin: 0; color: var(--text-muted); font-size: 1.05rem; line-height: 1.55; }
-  .guide-section-heading .contents__eyebrow { margin: 0 0 1.35rem; color: var(--vermilion); }
+  .guide-section-heading .contents__eyebrow,
+  .guide-section-heading .preview__eyebrow { margin: 0 0 1.35rem; color: var(--vermilion); }
   .guide-section-heading--center { margin-inline: auto; text-align: center; }
   .topic-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.35rem; }
   .topic-card { position: relative; display: grid; min-height: 17rem; grid-template-columns: 4.25rem 1fr; align-content: start; gap: 0 1.35rem; overflow: hidden; padding: clamp(1.7rem, 3vw, 2.35rem); border: 1px solid rgba(181,128,43,.48); border-radius: .35rem; background: linear-gradient(135deg, rgba(255,250,241,.96), rgba(247,232,210,.78)); box-shadow: 0 12px 28px rgba(84,53,35,.1), inset 0 0 30px rgba(197,151,72,.04); }
@@ -301,7 +316,7 @@ const bookSchema = {
 
   .bonuses { overflow: hidden; background: #2b211f; color: var(--on-dark); }
   .bonuses .guide-section-heading h2 { color: var(--on-dark); }
-  .bonus-list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .8rem; }
+  .bonus-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
   .bonus-card { min-width: 0; padding: 1.35rem; border: 1px solid rgba(220,181,104,.3); background: #3c302c; }
   .bonus-card > span { color: #d8ad59; font-size: .68rem; font-weight: 800; letter-spacing: .1em; }
   .bonus-card h3 { margin-top: 1.1rem; color: #fff8ed; font-size: 1.18rem; line-height: 1.12; }
@@ -309,18 +324,17 @@ const bookSchema = {
   .section-purchase { display: grid; justify-items: center; margin-top: 2.5rem; text-align: center; }
   .bonuses .purchase-note { color: #d7cac0; }
 
-  .preview { background: #f6ecdd; }
-  .preview-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
-  .preview-card { min-width: 0; margin: 0; padding: .7rem; border: 1px solid rgba(138,98,31,.28); background: #fffaf1; box-shadow: 0 18px 45px rgba(75,49,40,.09); }
-  .preview-placeholder { display: grid; aspect-ratio: .76; align-content: center; justify-items: center; padding: 2rem; border: 1px solid rgba(156,14,21,.2); background: #f1dfc4; color: var(--text); text-align: center; }
-  .preview-placeholder > span { color: var(--vermilion); font-size: .65rem; font-weight: 800; letter-spacing: .15em; }
-  .preview-placeholder > strong { margin-block: 1.25rem; color: rgba(156,14,21,.18); font-family: var(--font-display); font-size: clamp(5rem, 10vw, 8rem); line-height: 1; }
-  .preview-placeholder > div { display: grid; width: min(100%, 13rem); gap: .45rem; }
-  .preview-placeholder i { display: block; height: .38rem; background: rgba(38,29,27,.16); }
-  .preview-placeholder i:nth-child(2) { width: 84%; }
-  .preview-placeholder i:nth-child(3) { width: 92%; }
-  .preview-placeholder i:nth-child(4) { width: 68%; }
-  .preview-card figcaption { padding: 1rem .45rem .45rem; color: var(--text); font-weight: 700; line-height: 1.35; }
+  .preview { padding-top: clamp(3rem, 5vw, 4.75rem); padding-bottom: clamp(4.5rem, 7vw, 7rem); background: #f6ecdd; }
+  .preview .guide-section-heading { gap: 0; }
+  .preview .guide-section-heading h2 + p { margin-top: 1rem; }
+  .preview-list { display: flex; width: min(100%, 72rem); align-items: center; justify-content: center; margin: -1rem auto 0; padding: .5rem 1.5rem 1rem; isolation: isolate; }
+  .preview-card { position: relative; display: flex; min-width: 0; flex: 0 1 24rem; flex-direction: column; margin: 0; padding: .7rem; border: 1px solid rgba(138,98,31,.28); background: #fffaf1; box-shadow: 0 18px 45px rgba(75,49,40,.13); }
+  .preview-card:nth-child(1) { z-index: 1; transform: translate(1.35rem, .9rem) rotate(-5deg); transform-origin: right bottom; }
+  .preview-card:nth-child(2) { z-index: 3; }
+  .preview-card:nth-child(3) { z-index: 1; transform: translate(-1.35rem, .9rem) rotate(5deg); transform-origin: left bottom; }
+  .preview-card__media { overflow: hidden; aspect-ratio: 562 / 878; border: 1px solid rgba(156,14,21,.2); background: #f1dfc4; }
+  .preview-card__media :global(.preview-card__image) { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .preview-card figcaption { min-height: 4.35rem; padding: 1rem .45rem .45rem; color: var(--text); font-weight: 700; line-height: 1.35; }
 
   .author { background: #fffaf1; }
   .author__grid { display: grid; grid-template-columns: minmax(20rem, .85fr) minmax(0, 1.15fr); align-items: center; gap: clamp(3rem, 8vw, 7rem); }
@@ -349,16 +363,19 @@ const bookSchema = {
     .bonus-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 
-  @media (min-width: 68.01rem) and (max-height: 65rem) {
-    .guide-hero { padding-top: 6.75rem; }
+  @media (min-width: 68.01rem) and (max-height: 70rem) {
+    .guide-hero { padding: 6.25rem 0 3.5rem; }
+    .guide-hero__copy { transform: translateY(-.5rem); }
     .guide-hero h1 { max-width: 14ch; font-size: clamp(3.6rem, 5.8vw, 5.5rem); }
     .guide-hero__lead { margin-top: 1.2rem; }
+    .guide-hero__description { margin-bottom: .9rem; }
+    .guide-highlights { margin-bottom: 1.15rem; }
   }
 
   @media (max-width: 48rem) {
     .guide-hero { padding-top: 7.5rem; }
     .guide-hero__grid { grid-template-columns: 1fr; }
-    .guide-hero__copy { display: flex; flex-direction: column; align-items: flex-start; }
+    .guide-hero__copy { display: flex; flex-direction: column; align-items: flex-start; transform: none; }
     .guide-hero h1 { max-width: 11ch; }
     .guide-hero__visual { grid-row: 2; }
     .guide-phone { width: min(78%, 20rem); }
@@ -368,8 +385,11 @@ const bookSchema = {
     .problem h2 { max-width: 15ch; }
     .topic-grid { grid-template-columns: 1fr; }
     .topic-card { min-height: 0; }
-    .preview-list { grid-template-columns: repeat(3, minmax(17rem, 78vw)); margin-inline: -1rem; padding: .25rem 1rem 1.5rem; overflow-x: auto; scroll-padding-inline: 1rem; scroll-snap-type: x mandatory; }
-    .preview-card { scroll-snap-align: start; }
+    .preview-list { display: grid; width: auto; grid-template-columns: repeat(3, minmax(17rem, 78vw)); align-items: stretch; justify-content: initial; margin-inline: -1rem; padding: 1rem 1rem 1rem; overflow-x: auto; scroll-padding-inline: 1rem; scroll-snap-type: x mandatory; }
+    .preview-card,
+    .preview-card:nth-child(1),
+    .preview-card:nth-child(2),
+    .preview-card:nth-child(3) { z-index: 1; transform: none; scroll-snap-align: start; }
     .author__grid { grid-template-columns: 1fr; }
     .author__image { width: min(86vw, 31rem); margin-inline: auto; }
   }
@@ -390,7 +410,7 @@ const bookSchema = {
     .topic-card { grid-template-columns: 1fr; }
     .topic-card__icon { grid-row: auto; margin-bottom: 1rem; }
     .topic-card ul { grid-column: 1; }
-    .bonus-list { display: grid; grid-template-columns: repeat(5, minmax(16rem, 82vw)); margin-inline: -1rem; padding: .25rem 1rem 1.5rem; overflow-x: auto; scroll-padding-inline: 1rem; scroll-snap-type: x mandatory; }
+    .bonus-list { display: grid; grid-template-columns: repeat(3, minmax(16rem, 82vw)); margin-inline: -1rem; padding: .25rem 1rem 1.5rem; overflow-x: auto; scroll-padding-inline: 1rem; scroll-snap-type: x mandatory; }
     .bonus-card { scroll-snap-align: start; }
   }
 </style>

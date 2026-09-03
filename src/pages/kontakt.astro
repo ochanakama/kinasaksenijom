@@ -32,7 +32,7 @@ const canonical = new URL('/kontakt/', Astro.site).href;
         </div>
 
         <div class="form-card">
-          <form class="contact-form" action="/api/contact" method="post" novalidate data-contact-form>
+          <form class="contact-form" action="https://formspree.io/f/mjyvrjkn" method="post" novalidate data-contact-form>
             <div class="form-grid">
               <div class="field">
                 <label for="fullName">Ime i prezime <span aria-hidden="true">*</span><span class="sr-only">, obavezno polje</span></label>
@@ -67,7 +67,7 @@ const canonical = new URL('/kontakt/', Astro.site).href;
 
             <div class="honeypot" aria-hidden="true">
               <label for="company">Naziv kompanije</label>
-              <input id="company" name="company" type="text" tabindex="-1" autocomplete="off" />
+              <input id="company" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
             </div>
 
             <div class="form-actions">
@@ -169,26 +169,30 @@ const canonical = new URL('/kontakt/', Astro.site).href;
       submitLabel.textContent = 'Poruka se šalje...';
 
       const formData = new FormData(form);
-      const payload = Object.fromEntries(formData.entries());
 
       try {
         const response = await fetch(form.action, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify(payload),
+          headers: { Accept: 'application/json' },
+          body: formData,
         });
         const result = await response.json().catch(() => ({}));
 
-        if (!response.ok || result.ok !== true) {
-          if (result.fieldErrors && typeof result.fieldErrors === 'object') {
-            for (const name of fieldNames) {
-              const message = result.fieldErrors[name];
-              if (typeof message === 'string') showFieldError(name, message);
+        if (!response.ok) {
+          if (Array.isArray(result.errors)) {
+            for (const error of result.errors) {
+              const name = error?.field;
+              const message = error?.message;
+              if (fieldNames.includes(name) && typeof message === 'string') {
+                showFieldError(name, message);
+              }
             }
 
             const firstInvalidField = fieldNames.find((name) => controls[name].getAttribute('aria-invalid') === 'true');
-            firstInvalidField && controls[firstInvalidField].focus();
-            return;
+            if (firstInvalidField) {
+              controls[firstInvalidField].focus();
+              return;
+            }
           }
           throw new Error('Slanje nije uspelo');
         }
