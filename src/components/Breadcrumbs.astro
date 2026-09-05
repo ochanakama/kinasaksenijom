@@ -17,7 +17,13 @@ const schema = {
 
 <nav class="breadcrumbs container" aria-label="Putanja">
   <ol>
-    {items.map((item) => <li>{item.href ? <a href={item.href}>{item.label}</a> : <span aria-current="page">{item.label}</span>}</li>)}
+    {items.map((item, index) => (
+      <li>
+        {item.href
+          ? <a href={item.href}>{item.label}</a>
+          : <span aria-current={index === items.length - 1 ? 'page' : undefined}>{item.label}</span>}
+      </li>
+    ))}
   </ol>
 </nav>
 <JsonLd data={schema} />

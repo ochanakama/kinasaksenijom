@@ -1,23 +1,23 @@
 ---
 naslov: "Šangaj"
-title: "Šangaj: šta videti i koliko dana treba | Kina sa Ksenijom"
-description: "Vodič kroz Šangaj. Šta videti, koliko dana ostati, gde odsesti, kako se kretati i kada je najbolje vreme za dolazak."
-uvod: "Grad u kome se francuska četvrt iz dvadesetih godina naslanja na drugi najviši neboder na svetu."
+title: "Šangaj, Kina: šta videti i kada putovati"
+description: "Planiraš putovanje u Šangaj? Saznaj šta videti, gde odsesti, kako se kretati, koliko dana ostati i kada je najbolje posetiti grad."
+uvod: "Na jednoj strani reke Huangpu nižu se istorijske fasade Bunda, a na drugoj neboderi Pudonga. Između njih je Šangaj koji se najbolje upoznaje deo po deo, kroz različite četvrti, ukuse i prizore."
 
-heroImage: "~/assets/destinacije/sangaj/hero.jpg"
-heroImageAlt: "Panorama Pudonga preko reke Huangpu u sumrak"
+heroImage: "~/assets/destinacije/sangaj/sangaj-hero.png"
+heroImageAlt: "Panorama Pudonga preko reke Huangpu tokom dana"
 
 regija: "Istočna Kina"
 kineskiNaziv: "上海"
 transliteracije: ["sangaj", "shanghai", "šangaj"]
 
 podaci:
-  brojStanovnika: "24.9 miliona"
-  vremenskaZona: "UTC+8"
+  brojStanovnika: "Oko 24,9 miliona"
+  vremenskaZona: "UTC+8, odnosno 6–7 sati ispred Srbije"
   aerodrom: "PVG (Pudong) i SHA (Hongćjao)"
-  preporucenoTrajanje: "3 do 4 dana"
-  najboljeVreme: "mart do maja, septembar do novembra"
-  valuta: "juan (CNY)"
+  preporucenoTrajanje: "3–4 dana"
+  najboljeVreme: "Mart–maj i septembar–novembar"
+  valuta: "Kineski juan (CNY/RMB)"
 
 znamenitosti:
   - naziv: "Bund"
@@ -78,7 +78,7 @@ istaknuto: true
 redosled: 1
 draft: false
 datumObjave: 2026-08-01
-datumIzmene: 2026-08-01
+datumIzmene: 2026-09-05
 ---
 
 Šangaj radi kao ulazna vrata u Kinu. Let iz Evrope sleće direktno, metro pokriva ceo grad, natpisi stoje i na engleskom, a razdaljina između kolonijalne prošlosti i današnje Kine meri se širinom jedne reke. Zato Šangaj stavljam na početak rute za svakoga ko dolazi prvi put.

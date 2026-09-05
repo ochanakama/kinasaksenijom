@@ -127,7 +127,7 @@ const webSiteSchema = {
               {card.href === '/destinacije/' ? (
                 <nav class="journey-card__cities" aria-label="Izaberite grad">
                   {destinations.map((destination) => (
-                    <a href={`/${destination.id}/`}>{destination.data.naslov}</a>
+                    <a href={`/destinacije/${destination.id}/`}>{destination.data.naslov}</a>
                   ))}
                 </nav>
               ) : (

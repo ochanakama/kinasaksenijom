@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import SeoImage from '../components/SeoImage.astro';
 import Faq from '../components/Faq.astro';
 import Icon from '../components/Icon.astro';
@@ -39,6 +40,7 @@ const bookSchema = {
   <JsonLd data={bookSchema} />
 
   <section class="guide-hero" aria-labelledby="guide-title">
+    <Breadcrumbs items={[{ label: 'Početna', href: '/' }, { label: 'China Ready vodič' }]} />
     <div class="container guide-hero__grid">
       <div class="guide-hero__copy">
         <p class="eyebrow">{hero.eyebrow}</p>
@@ -216,6 +218,7 @@ const bookSchema = {
   }
   .guide-hero::before { top: 7rem; right: -13rem; width: 36rem; aspect-ratio: 1; box-shadow: 0 0 0 2.5rem rgba(138, 98, 31, .045); }
   .guide-hero::after { bottom: -17rem; left: -12rem; width: 30rem; aspect-ratio: 1; }
+  .guide-hero :global(.breadcrumbs) { position: absolute; top: 6.25rem; left: 50%; z-index: 2; transform: translateX(-50%); }
   .guide-hero__grid { position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(22rem, .75fr); align-items: center; gap: clamp(3rem, 8vw, 7rem); }
   .guide-hero__copy { min-width: 0; transform: translateY(-1rem); }
   .guide-hero .eyebrow,
@@ -364,7 +367,8 @@ const bookSchema = {
   }
 
   @media (min-width: 68.01rem) and (max-height: 70rem) {
-    .guide-hero { padding: 6.25rem 0 3.5rem; }
+    .guide-hero { padding: 8rem 0 1.75rem; }
+    .guide-hero :global(.breadcrumbs) { top: 5.75rem; padding-block: 0; }
     .guide-hero__copy { transform: translateY(-.5rem); }
     .guide-hero h1 { max-width: 14ch; font-size: clamp(3.6rem, 5.8vw, 5.5rem); }
     .guide-hero__lead { margin-top: 1.2rem; }
@@ -374,6 +378,7 @@ const bookSchema = {
 
   @media (max-width: 48rem) {
     .guide-hero { padding-top: 7.5rem; }
+    .guide-hero :global(.breadcrumbs) { top: 5.05rem; }
     .guide-hero__grid { grid-template-columns: 1fr; }
     .guide-hero__copy { display: flex; flex-direction: column; align-items: flex-start; transform: none; }
     .guide-hero h1 { max-width: 11ch; }

@@ -4,8 +4,8 @@ title: "Peking: šta videti i koliko dana treba | Kina sa Ksenijom"
 description: "Vodič kroz Peking. Zabranjeni grad, Kineski zid, Hram neba i hutonzi. Koliko dana ostati, gde odsesti i kada doći."
 uvod: "Prestonica koja u istom danu nudi carsku palatu od 980 zgrada i deonicu zida staru dva milenijuma."
 
-heroImage: "~/assets/destinacije/peking/hero.jpg"
-heroImageAlt: "Krovovi Zabranjenog grada u kasno popodne"
+heroImage: "~/assets/destinacije/peking/peking-hero.png"
+heroImageAlt: "Hram molitve za dobru žetvu u kompleksu Hrama neba u Pekingu"
 
 regija: "Severna Kina"
 kineskiNaziv: "北京"

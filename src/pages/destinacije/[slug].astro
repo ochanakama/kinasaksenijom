@@ -1,16 +1,18 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-import Breadcrumbs from '../components/Breadcrumbs.astro';
-import SeoImage from '../components/SeoImage.astro';
-import Faq from '../components/Faq.astro';
-import JsonLd from '../components/JsonLd.astro';
-import Icon from '../components/Icon.astro';
-import { resolveImage } from '../lib/images';
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import SeoImage from '../../components/SeoImage.astro';
+import Faq from '../../components/Faq.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import Icon from '../../components/Icon.astro';
+import { resolveImage } from '../../lib/images';
 
 export async function getStaticPaths() {
   const entries = await getCollection('destinacije', ({ data }) => !data.draft);
-  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+  return entries
+    .filter((entry) => entry.id !== 'sangaj')
+    .map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 
 interface Props { entry: CollectionEntry<'destinacije'>; }
@@ -28,7 +30,7 @@ const relatedDestinations = entry.data.susedneDestinacije.map((id) => destinatio
 const relatedBlogs = entry.data.povezaniBlogovi.map((id) => blogMap.get(id)).filter(Boolean) as CollectionEntry<'blog'>[];
 const relatedTours = entry.data.povezaneTure.map((id) => tourMap.get(id)).filter(Boolean) as CollectionEntry<'ture'>[];
 const hero = resolveImage(entry.data.heroImage);
-const canonical = new URL(`/${entry.id}/`, Astro.site).href;
+const canonical = new URL(`/destinacije/${entry.id}/`, Astro.site).href;
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'TouristDestination',
@@ -54,7 +56,11 @@ const dataLabels: Record<string, string> = {
       <SeoImage src={hero} alt={entry.data.heroImageAlt} width={1600} height={900} widths={[720, 1100, 1600]} sizes="100vw" priority />
       <div class="detail-hero__overlay"></div>
       <div class="container detail-hero__inner">
-        <Breadcrumbs items={[{ label: 'Početna', href: '/' }, { label: entry.data.naslov }]} />
+        <Breadcrumbs items={[
+          { label: 'Početna', href: '/' },
+          { label: 'Destinacije' },
+          { label: entry.data.naslov },
+        ]} />
         <div class="detail-hero__copy">
           <p class="eyebrow">{entry.data.regija} · {entry.data.kineskiNaziv}</p>
           <h1>{entry.data.naslov}</h1>
@@ -70,10 +76,7 @@ const dataLabels: Record<string, string> = {
     </section>
 
     <section class="section story">
-      <div class="container story__grid">
-        <aside><p class="eyebrow">Vodič iz prve ruke</p><h2>Upoznajte grad<br /><span class="accent">pre polaska</span></h2></aside>
-        <div class="prose"><Content /></div>
-      </div>
+      <div class="container story__content prose"><Content /></div>
     </section>
 
     {entry.data.znamenitosti.length > 0 && (
@@ -109,7 +112,7 @@ const dataLabels: Record<string, string> = {
       <div class="container">
         <div class="section-heading"><p class="eyebrow">Nastavite istraživanje</p><h2 id="related-heading">Povezano sa ovom rutom</h2></div>
         <div class="related__links">
-          {relatedDestinations.map((item) => <a href={`/${item.id}/`}><span>Destinacija</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
+          {relatedDestinations.map((item) => <a href={`/destinacije/${item.id}/`}><span>Destinacija</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
           {relatedBlogs.map((item) => <a href={`/blog/${item.id}/`}><span>Blog</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
           {relatedTours.map((item) => <a href={`/ture/${item.id}/`}><span>Tura</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
         </div>
@@ -133,9 +136,7 @@ const dataLabels: Record<string, string> = {
   .facts__grid div:nth-child(3n) { border-right: 1px solid var(--line); }
   .facts dt { color: var(--brass); font-size: .67rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
   .facts dd { margin: .4rem 0 0; font-weight: 700; }
-  .story__grid { display: grid; grid-template-columns: minmax(16rem, .65fr) minmax(0, 1.35fr); gap: clamp(3rem, 8vw, 8rem); }
-  .story aside { position: sticky; top: 2rem; align-self: start; }
-  .story h2 { font-size: clamp(2.5rem, 5vw, 4rem); }
+  .story__content { max-width: 64rem; }
   .sights { background: var(--surface); color: var(--text); }
   .sights .eyebrow { color: #8b651d; }
   .sights__grid { display: grid; gap: 1.25rem; }
@@ -161,8 +162,6 @@ const dataLabels: Record<string, string> = {
     .detail-hero__inner { min-height: 37.75rem; }
     .facts__grid { grid-template-columns: 1fr 1fr; }
     .facts__grid div:nth-child(3n) { border-right: 0; }
-    .story__grid { grid-template-columns: 1fr; }
-    .story aside { position: static; }
     .sight { grid-template-columns: 1fr; }
     .sight--reverse :global(img) { order: 0; }
     .sight :global(img) { max-height: 27rem; }

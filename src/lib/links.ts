@@ -4,8 +4,6 @@ const remappedLinks: Record<string, string> = {
 };
 
 export function safeHref(href: string): string {
-  const destinationMatch = href.match(/^\/destinacije\/([^/]+)\/?$/);
-  if (destinationMatch) return `/${destinationMatch[1]}/`;
   return remappedLinks[href] ?? href;
 }
 

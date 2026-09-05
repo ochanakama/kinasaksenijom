@@ -4,8 +4,8 @@ title: "Hainan: kineski tropi, plaže i Sanja | Kina sa Ksenijom"
 description: "Vodič kroz Hainan, kinesko tropsko ostrvo. Plaže Sanje, kada doći, koliko dana ostati i šta videti van resorta."
 uvod: "Tropsko ostrvo na jugu Kine, na geografskoj širini Havaja, gde sezona traje dok je kod nas zima."
 
-heroImage: "~/assets/destinacije/hainan/hero.jpg"
-heroImageAlt: "Peščana plaža zaliva Jalong sa palmama"
+heroImage: "~/assets/destinacije/hainan/hainan-hero.png"
+heroImageAlt: "Panoramski pogled na grad Sanju i zaliv na ostrvu Hainan"
 
 regija: "Južna Kina"
 kineskiNaziv: "海南"

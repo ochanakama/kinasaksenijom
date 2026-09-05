@@ -286,22 +286,42 @@ p {
 .breadcrumbs {
   padding-block: 1.25rem;
   color: var(--paper-muted);
-  font-size: 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
 }
 
 .breadcrumbs ol {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.45rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+.breadcrumbs li {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .breadcrumbs li:not(:last-child)::after {
-  margin-left: 0.5rem;
+  margin-left: 0.45rem;
   color: var(--brass);
   content: '/';
+}
+
+.breadcrumbs a {
+  text-decoration-color: transparent;
+  transition: color 160ms ease, text-decoration-color 160ms ease;
+}
+
+.breadcrumbs a:hover {
+  color: var(--vermilion);
+  text-decoration-color: currentColor;
 }
 
 .prose {

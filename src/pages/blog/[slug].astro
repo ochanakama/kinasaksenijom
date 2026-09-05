@@ -76,7 +76,7 @@ const schema = {
       <div class="container">
         <div class="section-heading"><p class="eyebrow">Nastavite čitanje</p><h2 id="related-heading">Povezane stranice</h2></div>
         <div class="related__links">
-          {relatedDestinations.map((item) => <a href={`/${item.id}/`}><span>Destinacija</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
+          {relatedDestinations.map((item) => <a href={`/destinacije/${item.id}/`}><span>Destinacija</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
           {relatedBlogs.map((item) => <a href={`/blog/${item.id}/`}><span>Blog</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
           {relatedTours.map((item) => <a href={`/ture/${item.id}/`}><span>Tura</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
         </div>

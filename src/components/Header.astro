@@ -8,9 +8,9 @@ const linksBeforeDestinations = [
   { label: 'Ture', href: '/ture/' },
 ];
 const destinationLinks = [
-  { label: 'Šangaj', description: 'Neboderi i francuska četvrt', href: '/sangaj/' },
-  { label: 'Peking', description: 'Carska prestonica i Kineski zid', href: '/peking/' },
-  { label: 'Hainan', description: 'Tropsko ostrvo i plaže Sanje', href: '/hainan/' },
+  { label: 'Šangaj', description: 'Neboderi i francuska četvrt', href: '/destinacije/sangaj/' },
+  { label: 'Peking', description: 'Carska prestonica i Kineski zid', href: '/destinacije/peking/' },
+  { label: 'Hainan', description: 'Tropsko ostrvo i plaže Sanje', href: '/destinacije/hainan/' },
 ];
 const linksAfterDestinations = [
   { label: 'Vodič', href: '/china-ready-vodic/' },
@@ -18,7 +18,7 @@ const linksAfterDestinations = [
   { label: 'O meni', href: '/o-meni/' },
   { label: 'Kontakt', href: '/kontakt/' },
 ];
-const isDestination = destinationLinks.some((link) => path === link.href);
+const isDestination = path.startsWith('/destinacije/');
 ---
 
 <header class="site-header">
