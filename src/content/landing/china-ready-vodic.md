@@ -98,9 +98,9 @@ preview:
 autor:
   naslov: "Vodič zasnovan na poznavanju kineskog jezika i kulture"
   paragrafi:
-    - "China Ready je napravila Ksenija, diplomirana sinološkinja sa iskustvom u prevođenju i radu sa Kinezima."
-    - "Vodič je namenjen putnicima iz Srbije i regiona kojima su potrebni jasni i praktični saveti za put u Kinu — objašnjeni na srpskom jeziku i organizovani na jednom mestu."
-  linkLabel: "Upoznaj Kseniju"
+    - "Ja sam Ksenija, diplomirani sinolog sa iskustvom u prevođenju i radu sa Kinezima. China Ready sam napravila kako bih putnicima iz Srbije i regiona olakšala pripremu za put u Kinu."
+    - "U vodiču sam objedinila jasne i praktične savete na srpskom jeziku, tako da su ti sve važne informacije dostupne na jednom mestu."
+  linkLabel: "Saznaj više o meni"
   linkHref: "/o-meni/"
   imageAlt: "Ksenija, autorka China Ready vodiča za Kinu"
 

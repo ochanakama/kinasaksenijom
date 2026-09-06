@@ -4,12 +4,39 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import SeoImage from '../components/SeoImage.astro';
 import Icon from '../components/Icon.astro';
 import ChineseCloud from '../components/ChineseCloud.astro';
+import JsonLd from '../components/JsonLd.astro';
+import { getSchemaIds } from '../lib/schema';
 import aboutImage from '../assets/hero/ks_kina.jpg';
 import wallImage from '../assets/ks-kineski-zid.jpg';
 
 const title = 'O meni | Kina sa Ksenijom';
 const description = 'Upoznaj ko stoji iza projekta Kina sa Ksenijom i kako svojim znanjem kineskog jezika, kulture i iskustvom sa terena približavam Kinu ljudima sa Balkana.';
 const canonical = new URL('/o-meni/', Astro.site).href;
+const schemaIds = getSchemaIds(Astro.site);
+const aboutSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'AboutPage',
+      '@id': `${canonical}#webpage`,
+      url: canonical,
+      name: title,
+      description,
+      inLanguage: 'sr-Latn',
+      isPartOf: { '@id': schemaIds.website },
+      mainEntity: { '@id': schemaIds.person },
+    },
+    {
+      '@type': 'Person',
+      '@id': schemaIds.person,
+      name: 'Ksenija',
+      url: canonical,
+      image: new URL(aboutImage.src, Astro.site).href,
+      description,
+      jobTitle: 'Diplomirani sinolog',
+    },
+  ],
+};
 ---
 
 <Layout
@@ -19,6 +46,7 @@ const canonical = new URL('/o-meni/', Astro.site).href;
   ogImage={aboutImage.src}
   ogImageAlt="Ksenija ispred panorame Šangaja"
 >
+  <JsonLd data={aboutSchema} />
   <article class="about-page">
     <header class="about-hero" aria-labelledby="about-page-title">
       <ChineseCloud class="about-hero__cloud about-hero__cloud--left" />

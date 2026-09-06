@@ -2,7 +2,7 @@
 naslov: "Šangaj"
 title: "Šangaj, Kina: šta videti i kada putovati"
 description: "Planiraš putovanje u Šangaj? Saznaj šta videti, gde odsesti, kako se kretati, koliko dana ostati i kada je najbolje posetiti grad."
-uvod: "Na jednoj strani reke Huangpu nižu se istorijske fasade Bunda, a na drugoj neboderi Pudonga. Između njih je Šangaj koji se najbolje upoznaje deo po deo, kroz različite četvrti, ukuse i prizore."
+uvod: "Upoznaj grad pre polaska, od istorijskih fasada Bunda do nebodera Pudonga."
 
 heroImage: "~/assets/destinacije/sangaj/sangaj-hero.png"
 heroImageAlt: "Panorama Pudonga preko reke Huangpu tokom dana"

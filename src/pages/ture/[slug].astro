@@ -6,6 +6,7 @@ import SeoImage from '../../components/SeoImage.astro';
 import Faq from '../../components/Faq.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import { resolveImage } from '../../lib/images';
+import { destinationHref } from '../../lib/routes';
 
 export async function getStaticPaths() {
   const entries = await getCollection('ture', ({ data }) => !data.draft);
@@ -17,14 +18,35 @@ const { entry } = Astro.props as Props;
 const { Content } = await render(entry);
 const hero = resolveImage(entry.data.heroImage);
 const canonical = new URL(`/ture/${entry.id}/`, Astro.site).href;
+const destinations = await getCollection('destinacije', ({ data }) => !data.draft);
+const destinationMap = new Map(destinations.map((destination) => [destination.id, destination]));
+const itineraryItems = entry.data.destinacije.map((id, index) => {
+  const destination = destinationMap.get(id);
+
+  return {
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'TouristDestination',
+      name: destination?.data.naslov ?? id,
+      ...(destination ? { url: new URL(destinationHref(destination.id), Astro.site).href } : {}),
+    },
+  };
+});
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'TouristTrip',
+  '@id': `${canonical}#tourist-trip`,
   name: entry.data.naslov,
   description: entry.data.description,
   url: canonical,
   image: new URL(hero.src, Astro.site).href,
-  itinerary: entry.data.destinacije.join(', '),
+  tripOrigin: { '@type': 'Place', name: entry.data.polazakIz },
+  itinerary: {
+    '@type': 'ItemList',
+    numberOfItems: itineraryItems.length,
+    itemListElement: itineraryItems,
+  },
 };
 ---
 

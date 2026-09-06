@@ -1,0 +1,477 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import SeoImage from '../../components/SeoImage.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import { resolveImage } from '../../lib/images';
+
+const destinations = await getCollection('destinacije');
+const entry = destinations.find((destination) => destination.id === 'hainan');
+if (!entry) throw new Error('Nedostaje src/content/destinacije/hainan.md');
+
+const title = 'Sanya, Hainan: šta videti i kada putovati';
+const description = 'Planiraš putovanje u Sanyu na Hainanu? Saznaj šta videti, gde odsesti, kako se kretati, koliko dana ostati i kada je najbolje putovati.';
+const canonical = new URL('/destinacije/sanya-hainan/', Astro.site).href;
+const hero = resolveImage('~/assets/destinacije/hainan/hainan-hero.jpg');
+const editorialImage = resolveImage('~/assets/destinacije/hainan/hainan1.png');
+
+const facts = [
+  ['Lokacija', 'Južni deo ostrva Hainan'],
+  ['Vremenska zona', 'UTC+8, odnosno 6–7 sati ispred Srbije'],
+  ['Aerodrom', 'Sanya Phoenix International Airport (SYX)'],
+  ['Preporučeno trajanje', '5–7 dana'],
+  ['Najbolje vreme', 'Novembar–april'],
+  ['Valuta', 'Kineski juan (CNY/RMB)'],
+];
+
+const attractions = [
+  {
+    title: 'Yalong Bay',
+    image: resolveImage('~/assets/destinacije/hainan/yalong-bay.jpg'),
+    plannedPath: '/destinacije/sanya-hainan/atrakcije/yalong-bay/',
+    alt: 'Peščana plaža i tropska obala zaliva Yalong Bay u Sanyi',
+  },
+  {
+    title: 'Kulturno-turistička zona Nanshan',
+    image: resolveImage('~/assets/destinacije/hainan/nanshan.jpg'),
+    plannedPath: '/destinacije/sanya-hainan/atrakcije/nanshan/',
+    alt: 'Statua Guan Yin na moru u kompleksu Nanshan u Sanyi',
+  },
+  {
+    title: 'Ostrvo Wuzhizhou',
+    image: resolveImage('~/assets/destinacije/hainan/wuzhi.png'),
+    plannedPath: '/destinacije/sanya-hainan/atrakcije/ostrvo-wuzhizhou/',
+    alt: 'Tirkizno more i obala ostrva Wuzhizhou kod Sanye',
+  },
+  {
+    title: 'Tianya Haijiao',
+    image: resolveImage('~/assets/destinacije/hainan/tianya-haijiao.jpg'),
+    plannedPath: '/destinacije/sanya-hainan/atrakcije/tianya-haijiao/',
+    alt: 'Velike stene na obali u turističkoj zoni Tianya Haijiao',
+  },
+];
+
+const stayAreas = [
+  {
+    title: 'Sanya Bay',
+    text: 'Sanya Bay je praktičan ako ti je važna blizina aerodroma, gradske zone i duge obale pogodne za šetnju. Duž zaliva se nalaze hoteli različitih kategorija, lokalni restorani i poznato šetalište sa kokosovim palmama. Ovo je dobar izbor za kraći boravak i lakše kretanje, posebno ako ne planiraš da sve vreme provedeš u resortu.',
+  },
+  {
+    title: 'Dadonghai',
+    text: 'Dadonghai spaja plažu sa življom gradskom atmosferom. U okolini ima mnogo restorana, prodavnica i večernjih sadržaja, pa odgovara putnicima koji žele da im većina svakodnevnih potreba bude blizu. Oblast može biti prometnija od udaljenijih zaliva, naročito u popularnim periodima.',
+  },
+  {
+    title: 'Yalong Bay',
+    text: 'Yalong Bay je poznat po dugoj peščanoj plaži, čistijoj vodi i velikim resortima okruženim tropskim zelenilom. Dobar je izbor ako su ti odmor, kupanje i hotelski sadržaji glavni prioritet. Nalazi se dalje od centralnih delova grada, pa za večernje izlaske i obilazak drugih oblasti treba računati na duže vožnje.',
+  },
+  {
+    title: 'Haitang Bay',
+    text: 'Haitang Bay odgovara putnicima koji traže savremene luksuzne resorte, mirniju atmosferu i blizinu duty-free centra i kompleksa Atlantis. Zaliv je udaljeniji od aerodroma i gradskog centra, pa nije najpraktičnija baza ako planiraš svakodnevno obilazak različitih delova Sanye.',
+  },
+];
+
+const transportOptions = [
+  {
+    title: 'Taksi i DiDi',
+    text: 'Taksi i DiDi su najjednostavniji za direktne vožnje između hotela, plaža i atrakcija. Sačuvaj naziv hotela i odredišta na kineskom jeziku jer vozač možda neće prepoznati naziv napisan samo na engleskom. Pre polaska proveri približno trajanje vožnje, posebno ako prelaziš iz jednog udaljenog zaliva u drugi.',
+  },
+  {
+    title: 'Gradski autobusi',
+    text: 'Autobuska mreža povezuje aerodrom, gradsku zonu i glavne zalive. Ovo je povoljnija opcija, ali vožnje mogu trajati duže i zahtevati presedanje. Za planiranje koristi aktuelne informacije u lokalnim aplikacijama i na stanici, umesto da se oslanjaš na stare redove vožnje.',
+  },
+  {
+    title: 'Aerodromski i hotelski transferi',
+    text: 'Sa aerodroma Sanya Phoenix možeš nastaviti taksijem, organizovanim transferom ili autobusom ka pojedinim delovima grada. Određeni hoteli u većim zalivima nude sopstveni prevoz, pa pre dolaska proveri da li je potrebno unapred rezervisati mesto.',
+  },
+  {
+    title: 'Šetnja u okviru oblasti',
+    text: 'Šetnja je najprijatnija duž obale i unutar oblasti kao što su Sanya Bay i Dadonghai. Ipak, Sanya je prevelika da bi se cela obišla hodanjem. Tokom toplijih meseci duže šetnje planiraj ujutru ili predveče.',
+  },
+];
+
+const durationOptions = [
+  {
+    title: 'Ako imaš tri dana',
+    text: 'Za tri dana usredsredi se na jedan zaliv i nekoliko najvažnijih mesta. Jedan dan možeš provesti uz more, drugi posvetiti kompleksu Nanshan i lokaciji Tianya Haijiao, a treći ostaviti za Yalong Bay ili vidikovac iznad grada. Ovo je dovoljno za prvi utisak, ali ne i za sporiji odmor.',
+  },
+  {
+    title: 'Ako imaš pet dana',
+    text: 'Pet dana omogućava da spojiš obilazak sa vremenom na plaži. Pored kulturnih znamenitosti možeš izdvojiti ceo dan za Yalong Bay, istražiti tropsku prirodu i upoznati lokalnu hranu bez potrebe da svakog dana menjaš nekoliko udaljenih lokacija.',
+  },
+  {
+    title: 'Ako ostaješ sedam dana',
+    text: 'Sedam dana je dobar izbor ako želiš da putovanje zaista uključuje i odmor. Imaćeš vremena za ostrvo Wuzhizhou, različite zalive, kulturne atrakcije, vidikovce i lokalne pijace, uz najmanje jedan slobodniji dan bez unapred ispunjenog rasporeda.',
+  },
+];
+
+const seasons = [
+  {
+    title: 'Od novembra do aprila',
+    paragraphs: ['Period od novembra do aprila uglavnom donosi prijatnije temperature, manje vlage i povoljnije uslove za boravak napolju. Zbog toga je ovo najpopularnije vreme za plaže, izlete i obilazak prirodnih atrakcija. Istovremeno treba računati na više cene smeštaja i veću potražnju.'],
+  },
+  {
+    title: 'Od maja do oktobra',
+    paragraphs: [
+      'Od maja do oktobra vreme je toplije, vlažnije i kišovitije. Pljuskovi ne moraju da traju ceo dan, ali mogu uticati na izlete brodom i aktivnosti na vodi. U ovom periodu postoji i veća mogućnost tropskih oluja, pa vremensku prognozu treba pratiti neposredno pre planiranih izleta.',
+      'Za aktivnosti na otvorenom ponesi zaštitu od sunca, laganu odeću, dovoljno vode i zaštitu od kiše.',
+    ],
+  },
+  {
+    title: 'Praznici i periodi najvećih gužvi',
+    paragraphs: ['Tokom kineske Nove godine i drugih velikih državnih praznika Sanya može biti veoma posećena. Smeštaj, prevoz i ulaznice tada je potrebno rezervisati ranije. Ako želiš mirniji boravak, proveri datume kineskih praznika pre nego što izabereš termin putovanja.'],
+  },
+];
+
+const faq = [
+  {
+    question: 'Da li su Sanya i Hainan isto?',
+    answer: 'Ne. Hainan je kinesko ostrvo i provincija, dok je Sanya grad na njegovom južnom delu. Sanya je jedno od najpoznatijih turističkih područja na ostrvu i obuhvata više zaliva, plaža i gradskih četvrti.',
+  },
+  {
+    question: 'Koliko dana je potrebno za Sanyu?',
+    answer: 'Za kombinaciju obilaska i odmora najbolje je izdvojiti pet do sedam dana. Kraći boravak od tri dana dovoljan je za nekoliko najpoznatijih mesta, ali ostavlja malo vremena za plaže i udaljenije zalive.',
+  },
+  {
+    question: 'Koji deo Sanye je najbolji za prvi boravak?',
+    answer: 'Dadonghai i Sanya Bay praktični su ako želiš više restorana, gradskih sadržaja i jednostavnije kretanje. Yalong Bay je bolji za klasičan odmor u resortu, dok Haitang Bay najviše odgovara putnicima kojima su prioritet luksuzni hoteli i mirnija atmosfera.',
+  },
+  {
+    question: 'Da li je državljanima Srbije potrebna viza za Hainan?',
+    answer: 'Državljani Srbije sa običnim pasošem mogu da borave u Kini bez vize do 30 dana. Ovo nije ograničeno samo na Hainan. Pošto se uslovi ulaska mogu menjati, pre svakog putovanja proveri aktuelne informacije kod nadležnih kineskih institucija i avio-kompanije.',
+  },
+  {
+    question: 'Da li u Sanyi može da se kupa tokom cele godine?',
+    answer: 'Sanya ima toplu klimu i dugačku sezonu za boravak na plaži, ali uslovi za kupanje zavise od vremena, vetra, talasa i konkretnog zaliva. Na plaži uvek prati lokalna upozorenja i zastave, posebno tokom kišovitijeg perioda.',
+  },
+  {
+    question: 'Da li je Sanya skupa za turiste?',
+    answer: 'Troškovi najviše zavise od zaliva i vrste smeštaja. Luksuzni resorti, privatni transferi i aktivnosti na vodi mogu značajno povećati budžet. Lokalni restorani, gradski autobusi i smeštaj van najskupljih resort zona omogućavaju umerenije troškove.',
+  },
+];
+
+const destinationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristDestination',
+  name: 'Sanya, Hainan',
+  alternateName: '三亚',
+  description,
+  url: canonical,
+  image: new URL(hero.src, Astro.site).href,
+  geo: { '@type': 'GeoCoordinates', latitude: 18.2528, longitude: 109.5122 },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+---
+
+<Layout title={title} description={description} canonical={canonical} ogImage={hero.src} ogImageAlt={entry.data.heroImageAlt}>
+  <JsonLd data={destinationSchema} />
+  <JsonLd data={faqSchema} />
+
+  <article class="hainan-page">
+    <header class="hainan-hero">
+      <SeoImage src={hero} alt={entry.data.heroImageAlt} width={1600} height={900} widths={[720, 1100, 1600]} sizes="100vw" priority />
+      <div class="hainan-hero__overlay"></div>
+      <div class="container hainan-hero__inner">
+        <Breadcrumbs items={[
+          { label: 'Početna', href: '/' },
+          { label: 'Destinacije' },
+          { label: 'Sanya, Hainan' },
+        ]} />
+        <div class="hainan-hero__copy">
+          <p class="eyebrow">HAINAN · 三亚</p>
+          <h1>Sanya, Hainan</h1>
+          <p class="lead">Tropska strana Kine, sa plažama pod palmama, zelenim brdima i zalivima uz Južno kinesko more.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="hainan-facts" aria-label="Osnovne informacije o Sanyi">
+      <dl class="container hainan-facts__grid">
+        {facts.map(([label, value]) => (
+          <div><dt>{label}</dt><dd>{value}</dd></div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="section editorial" aria-labelledby="why-sanya">
+      <div class="container editorial__grid">
+        <div class="editorial__copy">
+          <h2 id="why-sanya">Zašto posetiti Sanyu</h2>
+          <p>Sanya se nalazi na krajnjem jugu ostrva Hainan i pokazuje stranu Kine koja izgleda sasvim drugačije od Pekinga, Šangaja i drugih velikih gradova. Ovde se putovanje odvija između peščanih plaža, kokosovih palmi, tropskih šuma i zaliva u kojima se nalaze neka od najpoznatijih letovališta u zemlji.</p>
+          <p>Ipak, Sanya nije samo mesto za odmor pored mora. Budistički kompleks Nanshan, lokalna kultura, vidikovci iznad obale i hainanska kuhinja daju dovoljno razloga da napustiš hotelsku plažu i istražiš okolinu. Pošto se grad prostire između nekoliko udaljenih zaliva, dobar izbor smeštaja i realan plan obilaska posebno su važni.</p>
+        </div>
+        <figure class="editorial__image">
+          <SeoImage src={editorialImage} alt="Panorama grada Sanye i zaliva na ostrvu Hainan" width={840} height={680} widths={[440, 640, 840]} sizes="(max-width: 800px) 100vw, 42vw" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="section attractions" aria-labelledby="sanya-attractions">
+      <div class="container">
+        <div class="section-heading attractions__heading">
+          <h2 id="sanya-attractions">Šta videti u Sanyi</h2>
+          <p>Najpoznatija mesta u Sanyi nalaze se između obale, okolnih brda i manjih ostrva. Izdvojene lokacije pružaju dobar spoj plaža, tropske prirode i kulturnih znamenitosti po kojima se ovaj deo Hainana razlikuje od ostatka Kine.</p>
+        </div>
+        <div class="attractions__grid">
+          {attractions.map((attraction) => (
+            <article class="attraction-card" data-planned-href={attraction.plannedPath} data-image-alt={attraction.alt}>
+              {attraction.image
+                ? <SeoImage src={attraction.image} alt={attraction.alt} width={640} height={800} widths={[320, 480, 640]} sizes="(max-width: 608px) 100vw, (max-width: 1024px) 50vw, 25vw" />
+                : <div class="attraction-card__media" aria-hidden="true"></div>}
+              <div class="attraction-card__overlay"></div>
+              <h3>{attraction.title}</h3>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section stay" aria-labelledby="where-to-stay">
+      <div class="container">
+        <div class="section-heading stay__heading">
+          <h2 id="where-to-stay">Gde odsesti u Sanyi</h2>
+          <p>Sanya nema jedan centar iz kog se lako stiže do svih plaža i atrakcija. Zalivi se razlikuju po atmosferi, udaljenosti od aerodroma, ponudi restorana i vrsti smeštaja, pa oblast treba izabrati prema načinu na koji želiš da provedeš putovanje.</p>
+        </div>
+        <div class="info-grid">
+          {stayAreas.map((area, index) => (
+            <article class="info-block"><span>0{index + 1}</span><h3>{area.title}</h3><p>{area.text}</p></article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section transport" aria-labelledby="getting-around">
+      <div class="container transport__grid">
+        <div class="transport__heading">
+          <h2 id="getting-around">Kako se kretati po Sanyi</h2>
+          <p>Atrakcije i zalivi u Sanyi mogu biti udaljeni jedni od drugih, zbog čega je korisno da svaki dan organizuješ oko jednog dela grada. Pešačenje je praktično unutar pojedinačnih oblasti, ali za prelazak između zaliva uglavnom će ti biti potreban prevoz.</p>
+        </div>
+        <div class="transport__content">
+          {transportOptions.map((option) => (
+            <article><h3>{option.title}</h3><p>{option.text}</p></article>
+          ))}
+          <aside class="ksenija-tip">
+            <strong>Ksenijin savet:</strong>
+            <p>Nemoj birati hotel samo prema fotografijama plaže. Pre rezervacije proveri u kom se zalivu nalazi i koliko je udaljen od mesta koja želiš da posetiš. Tako možeš da izbegneš duge vožnje i nepotrebno vraćanje kroz grad.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section duration" aria-labelledby="how-many-days">
+      <div class="container">
+        <div class="section-heading"><h2 id="how-many-days">Koliko dana je dovoljno za Sanyu?</h2></div>
+        <div class="duration__grid">
+          {durationOptions.map((option) => (
+            <article><h3>{option.title}</h3><p>{option.text}</p></article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section weather" aria-labelledby="best-time">
+      <div class="container weather__inner">
+        <div class="section-heading weather__heading">
+          <h2 id="best-time">Kada je najbolje putovati u Sanyu?</h2>
+          <p>Sanya ima tropsku klimu, sa toplim vremenom tokom cele godine. Razlika između perioda putovanja najviše se primećuje u količini padavina, vlažnosti, jačini sunca i broju posetilaca.</p>
+        </div>
+        <div class="weather__list">
+          {seasons.map((season) => (
+            <article><h3>{season.title}</h3>{season.paragraphs.map((paragraph) => <p>{paragraph}</p>)}</article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section hainan-faq" aria-labelledby="hainan-faq-title">
+      <div class="container hainan-faq__grid">
+        <div class="section-heading"><h2 id="hainan-faq-title">Česta pitanja o Sanyi i Hainanu</h2></div>
+        <div class="hainan-faq__list">
+          {faq.map((item, index) => {
+            const panelId = `hainan-faq-panel-${index + 1}`;
+            return (
+              <article class="hainan-faq__item">
+                <h3>
+                  <button type="button" aria-expanded="false" aria-controls={panelId} data-faq-button>
+                    <span>{item.question}</span><span class="hainan-faq__icon" aria-hidden="true">+</span>
+                  </button>
+                </h3>
+                <div id={panelId} class="hainan-faq__answer" hidden><p>{item.answer}</p></div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <section class="section hainan-cta" aria-labelledby="hainan-cta-title">
+      <div class="container hainan-cta__inner">
+        <h2 id="hainan-cta-title">Želiš da otkriješ Hainan?</h2>
+        <p>Grupna putovanja za Hainan trenutno su u pripremi. Pogledaj buduće ture kroz Kinu ili mi piši ako želiš da saznaš više o planiranim destinacijama i polascima.</p>
+        <div class="hainan-cta__actions">
+          <a class="button" href="/ture/">Pogledaj buduće ture</a>
+          <a class="button button--outline" href="/kontakt/">Piši mi</a>
+        </div>
+      </div>
+    </section>
+  </article>
+</Layout>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.hainan-page [data-faq-button]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const panelId = button.getAttribute('aria-controls');
+      const panel = panelId ? document.getElementById(panelId) : null;
+      if (!panel) return;
+      const expanded = button.getAttribute('aria-expanded') === 'true';
+      button.setAttribute('aria-expanded', String(!expanded));
+      panel.hidden = expanded;
+    });
+  });
+</script>
+
+<style>
+  .hainan-page { background: var(--surface); color: var(--text); }
+
+  .hainan-hero { position: relative; min-height: 50rem; overflow: hidden; padding-top: 6.5rem; color: var(--on-dark); }
+  .hainan-hero > :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 48%; }
+  .hainan-hero__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(18,14,12,.94), rgba(18,14,12,.16) 72%); }
+  .hainan-hero__inner { position: relative; display: grid; min-height: 43.5rem; align-content: space-between; }
+  .hainan-hero__inner :global(.breadcrumbs) { width: 100%; margin: 0; padding-inline: 0; color: var(--on-dark-muted); }
+  .hainan-hero__copy { max-width: 42.5rem; padding-bottom: clamp(4rem, 8vw, 6.5rem); }
+  .hainan-hero .eyebrow { margin-bottom: clamp(1.5rem, 2vw, 2rem); }
+  .hainan-hero h1 { max-width: none; font-size: clamp(3.8rem, 6.8vw, 6.25rem); line-height: .9; white-space: nowrap; }
+  .hainan-hero .lead { max-width: 42.5rem; margin: .9rem 0 0; color: #eee4d8; }
+
+  .hainan-facts { border-bottom: 1px solid var(--line); background: var(--surface-alt); }
+  .hainan-facts__grid { display: grid; grid-template-columns: repeat(3, 1fr); margin-block: 0; padding-block: 2rem; }
+  .hainan-facts__grid > div { min-width: 0; padding: 1rem clamp(1rem, 2.5vw, 2rem); }
+  .hainan-facts__grid > div:not(:nth-child(3n + 1)) { border-left: 1px solid var(--line); }
+  .hainan-facts dt { color: var(--brass); font-size: .67rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+  .hainan-facts dd { margin: .4rem 0 0; font-weight: 700; line-height: 1.45; }
+
+  .editorial { background: #f8f1e7; }
+  .editorial__grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(20rem, .92fr); align-items: center; gap: clamp(3rem, 8vw, 7rem); }
+  .editorial__copy { max-width: 42rem; }
+  .editorial__copy h2 { margin-bottom: 2rem; }
+  .editorial__copy p { color: var(--text-muted); }
+  .editorial__copy p + p { margin-top: 1.35rem; }
+  .editorial__image { height: clamp(25rem, 42vw, 36rem); margin: 0; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow); }
+  .editorial__image :global(img) { width: 100%; height: 100%; object-fit: cover; }
+
+  .attractions { background: #2b211f; color: #fffaf1; }
+  .attractions__heading { max-width: 57rem; margin-bottom: 3rem; }
+  .attractions__heading p { max-width: 52rem; margin-top: 1.3rem; color: #e9dcd2; }
+  .attractions__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+  .attraction-card { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border: 1px solid rgba(231,189,103,.35); border-radius: var(--radius-sm); box-shadow: 0 14px 36px rgba(0,0,0,.22); transition: transform 220ms ease, box-shadow 220ms ease; }
+  .attraction-card > :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 260ms ease, filter 260ms ease; }
+  .attraction-card__media { position: absolute; inset: 0; background: radial-gradient(circle at 72% 20%, rgba(183,22,31,.42), transparent 30%), linear-gradient(145deg, #49302b, #1d1716 70%); transition: transform 260ms ease, filter 260ms ease; }
+  .attraction-card__overlay { position: absolute; inset: 35% 0 0; background: linear-gradient(to top, rgba(16,12,11,.96), transparent); }
+  .attraction-card h3 { position: absolute; right: 1.25rem; bottom: 1.2rem; left: 1.25rem; margin: 0; color: #fffaf1; font-size: clamp(1.45rem, 2.2vw, 2rem); line-height: 1.1; }
+  .attraction-card:hover { transform: translateY(-.3rem) scale(1.015); box-shadow: 0 22px 48px rgba(0,0,0,.3); }
+  .attraction-card:hover > :global(img) { transform: scale(1.035); filter: brightness(1.08); }
+  .attraction-card:hover .attraction-card__media { transform: scale(1.035); filter: brightness(1.08); }
+  .attraction-card:focus-visible { outline: 3px solid #f4ce82; outline-offset: .25rem; }
+
+  .stay { background: #eadbc5; }
+  .stay__heading { max-width: 60rem; margin-bottom: 3rem; }
+  .stay__heading p { max-width: 52rem; margin-top: 1.3rem; color: var(--text-muted); }
+  .info-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .info-block { padding: clamp(1.75rem, 3vw, 2.5rem); }
+  .info-block:nth-child(even) { border-left: 1px solid var(--line); }
+  .info-block:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  .info-block > span { color: var(--vermilion); font-size: .72rem; font-weight: 800; letter-spacing: .12em; }
+  .info-block h3 { margin-top: 1rem; font-size: clamp(1.65rem, 2.5vw, 2.25rem); }
+  .info-block p { margin-top: 1.2rem; color: var(--text-muted); }
+
+  .transport { background: #f8f1e7; }
+  .transport__grid { display: grid; grid-template-columns: minmax(17rem, .7fr) minmax(0, 1.3fr); gap: clamp(3rem, 8vw, 7rem); }
+  .transport__heading { align-self: start; }
+  .transport__heading p { margin-top: 1.5rem; color: var(--text-muted); }
+  .transport__content > article { padding: 0 0 2rem; border-bottom: 1px solid var(--line); }
+  .transport__content > article + article { padding-top: 2rem; }
+  .transport__content h3 { font-size: clamp(1.6rem, 2.5vw, 2.2rem); }
+  .transport__content p { margin-top: .8rem; color: var(--text-muted); }
+  .ksenija-tip { margin-top: 2.25rem; padding: 1.5rem 1.7rem; border-left: .3rem solid var(--vermilion); background: #efe2cf; }
+  .ksenija-tip strong { color: var(--vermilion); }
+  .ksenija-tip p { margin-top: .45rem; }
+
+  .duration { background: #2b211f; color: #fffaf1; }
+  .duration .section-heading { margin-bottom: 3rem; }
+  .duration__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .duration__grid article { padding: clamp(1.6rem, 3vw, 2.35rem); border: 1px solid rgba(231,189,103,.4); border-radius: var(--radius-sm); }
+  .duration__grid h3 { color: #f4ce82; font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+  .duration__grid p { margin-top: 1rem; color: #e9dcd2; }
+
+  .weather { background: #eadbc5; }
+  .weather__inner { display: grid; grid-template-columns: minmax(18rem, .8fr) minmax(0, 1.2fr); gap: clamp(3rem, 8vw, 7rem); }
+  .weather__heading p { max-width: 35rem; margin-top: 1.5rem; color: var(--text-muted); }
+  .weather__list { border-top: 1px solid var(--line); }
+  .weather__list article { padding: 2rem 0; border-bottom: 1px solid var(--line); }
+  .weather__list h3 { font-size: clamp(1.55rem, 2.5vw, 2.15rem); }
+  .weather__list p { margin-top: .85rem; color: var(--text-muted); }
+
+  .hainan-faq { background: #f8f1e7; }
+  .hainan-faq__grid { display: grid; grid-template-columns: minmax(17rem, .75fr) minmax(0, 1.25fr); gap: clamp(3rem, 8vw, 7rem); }
+  .hainan-faq__list { border-top: 1px solid var(--line); }
+  .hainan-faq__item { border-bottom: 1px solid var(--line); }
+  .hainan-faq__item h3 { margin: 0; font-family: var(--font-body); font-size: 1rem; }
+  .hainan-faq__item button { display: flex; width: 100%; min-height: 5rem; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 0; border: 0; background: transparent; color: var(--text); font-weight: 750; text-align: left; cursor: pointer; }
+  .hainan-faq__item button:focus-visible { outline: 3px solid var(--vermilion); outline-offset: .25rem; }
+  .hainan-faq__icon { flex: 0 0 auto; color: var(--vermilion); font-family: var(--font-display); font-size: 1.8rem; transition: transform 180ms ease; }
+  .hainan-faq__item button[aria-expanded='true'] .hainan-faq__icon { transform: rotate(45deg); }
+  .hainan-faq__answer p { max-width: 43rem; padding: 0 2rem 1.5rem 0; color: var(--text-muted); }
+
+  .hainan-cta { background: var(--vermilion); color: #fffaf1; }
+  .hainan-cta__inner { display: grid; max-width: 62rem; justify-items: center; text-align: center; }
+  .hainan-cta h2 { color: #fffaf1; }
+  .hainan-cta p { max-width: 48rem; margin: 1.5rem 0 2rem; color: #f5e3da; font-size: 1.08rem; }
+  .hainan-cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .85rem; }
+  .hainan-cta .button { background: #e7bd67; color: #4d090c; }
+  .hainan-cta .button:hover { background: #f1d08b; color: #4d090c; }
+  .hainan-cta .button--outline { border-color: #e7bd67; background: transparent; color: #fffaf1; }
+  .hainan-cta .button--outline:hover { background: rgba(255,255,255,.09); color: #fffaf1; }
+
+  @media (max-width: 64rem) {
+    .attractions__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .duration__grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 50rem) {
+    .hainan-hero { min-height: 43rem; padding-top: 5.25rem; }
+    .hainan-hero__inner { min-height: 37.75rem; }
+    .hainan-hero > :global(img) { object-position: 58% 48%; }
+    .hainan-hero h1 { max-width: 8ch; font-size: clamp(3.2rem, 14vw, 5rem); white-space: normal; }
+    .hainan-facts__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .hainan-facts__grid > div { border-left: 0 !important; }
+    .hainan-facts__grid > div:nth-child(even) { border-left: 1px solid var(--line) !important; }
+    .editorial__grid, .transport__grid, .weather__inner, .hainan-faq__grid { grid-template-columns: 1fr; }
+    .editorial__image { height: min(105vw, 31rem); }
+    .info-grid { grid-template-columns: 1fr; }
+    .info-block:nth-child(n) { border-top: 1px solid var(--line); border-left: 0; }
+    .info-block:first-child { border-top: 0; }
+  }
+
+  @media (max-width: 38rem) {
+    .hainan-facts__grid, .attractions__grid { grid-template-columns: 1fr; }
+    .hainan-facts__grid > div { padding: 1.15rem 0; border-top: 1px solid var(--line); border-left: 0 !important; }
+    .hainan-facts__grid > div:first-child { border-top: 0; }
+    .hainan-cta__actions, .hainan-cta .button { width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .attraction-card, .attraction-card > :global(img), .attraction-card__media, .hainan-faq__icon { transition: none; }
+    .attraction-card:hover { transform: none; }
+    .attraction-card:hover > :global(img) { transform: none; }
+    .attraction-card:hover .attraction-card__media { transform: none; }
+  }
+</style>

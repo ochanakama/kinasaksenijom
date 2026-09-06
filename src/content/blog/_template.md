@@ -36,8 +36,8 @@ faq:
   - pitanje: "Da li mi treba viza za tranzit kroz Kinu?"
     odgovor: "Za kratke tranzite postoje posebna izuzeća. Proverite pravila aerodroma na kome presedate."
 istaknuto: false
-draft: false
-noindex: false                       # true samo za stranice koje ne treba indeksirati
+draft: true                          # šablon nikada nije javno objavljen
+noindex: true                        # dodatna zaštita ako se šablon slučajno učita
 ---
 
 Glavni tekst posta u Markdownu.

@@ -7,11 +7,12 @@ import Faq from '../../components/Faq.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import Icon from '../../components/Icon.astro';
 import { resolveImage } from '../../lib/images';
+import { destinationHref } from '../../lib/routes';
 
 export async function getStaticPaths() {
   const entries = await getCollection('destinacije', ({ data }) => !data.draft);
   return entries
-    .filter((entry) => entry.id !== 'sangaj')
+    .filter((entry) => !['sangaj', 'hainan', 'peking'].includes(entry.id))
     .map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 
@@ -112,7 +113,7 @@ const dataLabels: Record<string, string> = {
       <div class="container">
         <div class="section-heading"><p class="eyebrow">Nastavite istraživanje</p><h2 id="related-heading">Povezano sa ovom rutom</h2></div>
         <div class="related__links">
-          {relatedDestinations.map((item) => <a href={`/destinacije/${item.id}/`}><span>Destinacija</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
+          {relatedDestinations.map((item) => <a href={destinationHref(item.id)}><span>Destinacija</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
           {relatedBlogs.map((item) => <a href={`/blog/${item.id}/`}><span>Blog</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
           {relatedTours.map((item) => <a href={`/ture/${item.id}/`}><span>Tura</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
         </div>

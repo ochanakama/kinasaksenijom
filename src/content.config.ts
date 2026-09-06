@@ -236,7 +236,7 @@ const ture = defineCollection({
 });
 
 const blog = defineCollection({
-  loader: glob({ pattern: '**/[!_]*.md', base: './src/content/blog' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: z.object({
     naslov: z.string(),
     title: z.string(),

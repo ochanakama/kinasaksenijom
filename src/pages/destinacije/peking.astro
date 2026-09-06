@@ -1,0 +1,476 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import SeoImage from '../../components/SeoImage.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import { resolveImage } from '../../lib/images';
+import editorialImage from '../../assets/destinacije/peking/peking-sta-videti.png';
+
+const destinations = await getCollection('destinacije');
+const entry = destinations.find((destination) => destination.id === 'peking');
+if (!entry) throw new Error('Nedostaje src/content/destinacije/peking.md');
+
+const title = 'Peking, Kina: šta videti i kada putovati';
+const description = 'Planiraš putovanje u Peking? Saznaj šta videti, gde odsesti, kako se kretati, koliko dana ostati i kada je najbolje posetiti grad.';
+const canonical = new URL('/destinacije/peking/', Astro.site).href;
+const hero = resolveImage(entry.data.heroImage);
+
+const facts = [
+  ['Lokacija', 'Severni deo Kine'],
+  ['Vremenska zona', 'UTC+8, odnosno 6–7 sati ispred Srbije'],
+  ['Aerodromi', 'PEK (Capital) i PKX (Daxing)'],
+  ['Preporučeno trajanje', '4–5 dana'],
+  ['Najbolje vreme', 'April–maj i septembar–oktobar'],
+  ['Valuta', 'Kineski juan (CNY/RMB)'],
+];
+
+const attractions = [
+  {
+    title: 'Kineski zid',
+    image: resolveImage('~/assets/destinacije/peking/zid-kartica.jpg'),
+    plannedPath: '/destinacije/peking/atrakcije/kineski-zid/',
+    alt: 'Kineski zid koji se pruža preko planinskih grebena u okolini Pekinga',
+    objectPosition: 'center center',
+  },
+  {
+    title: 'Zabranjeni grad',
+    image: resolveImage('~/assets/destinacije/peking/zabranjeni-grad.jpg'),
+    plannedPath: '/destinacije/peking/atrakcije/zabranjeni-grad/',
+    alt: 'Crveni zidovi i tradicionalni krovovi Zabranjenog grada u Pekingu',
+    objectPosition: 'center center',
+  },
+  {
+    title: 'Letnja palata',
+    image: resolveImage('~/assets/destinacije/peking/letnja-palata1.jpg'),
+    plannedPath: '/destinacije/peking/atrakcije/letnja-palata/',
+    alt: 'Jezero Kunming i tradicionalni paviljoni Letnje palate u Pekingu',
+    objectPosition: 'center 42%',
+  },
+  {
+    title: 'Hram neba',
+    image: resolveImage('~/assets/destinacije/peking/temple-of-heaven.jpg'),
+    plannedPath: '/destinacije/peking/atrakcije/hram-neba/',
+    alt: 'Dvorana molitve za dobru žetvu u kompleksu Hram neba u Pekingu',
+    objectPosition: '62% center',
+  },
+];
+
+const stayAreas = [
+  {
+    title: 'Wangfujing i Dongcheng',
+    text: 'Ova oblast je praktična za prvu posetu jer se nalazi blizu Zabranjenog grada, trga Tiananmen i nekoliko važnih metro linija. U okolini ima mnogo hotela, prodavnica i restorana, ali su pojedine ulice veoma usmerene na turiste i mogu biti prometne.',
+  },
+  {
+    title: 'Qianmen i Dashilan',
+    text: 'Qianmen i Dashilan odgovaraju putnicima koji žele da ostanu u istorijskom delu grada, u blizini tradicionalnih trgovačkih ulica i centralne ose Pekinga. Lokacija je dobra za obilazak južnog dela starog grada i Hrama neba, uz jednostavan pristup metrou.',
+  },
+  {
+    title: 'Shichahai i Gulou',
+    text: 'Oblast oko jezera Shichahai i Kule bubnja pruža mirniju atmosferu, stare hutonge, male restorane i prijatne večernje šetnje. Dobar je izbor ako ti je važan karakter stare gradske četvrti, ali proveri koliko je smeštaj udaljen od najbliže metro stanice.',
+  },
+  {
+    title: 'Sanlitun i Chaoyang',
+    text: 'Sanlitun i širi deo Chaoyanga odgovaraju putnicima koji žele savremene restorane, kafiće, kupovinu i večernje sadržaje. Ovaj deo grada je udaljeniji od većine carskih znamenitosti, pa nije najpraktičniji ako ostaješ kratko i prvi put posećuješ Peking.',
+  },
+];
+
+const transportOptions = [
+  {
+    title: 'Metro',
+    text: 'Metro povezuje većinu glavnih turističkih oblasti, železničke stanice i oba aerodroma. Nazivi stanica i najvažnije oznake dostupni su i na engleskom. Na ulazu u stanice prolazi se kroz bezbednosnu kontrolu, pa za presedanja i ulazak ostavi malo više vremena.',
+  },
+  {
+    title: 'Taksi i DiDi',
+    text: 'Taksi i DiDi korisni su za kraće direktne vožnje ili povratak u hotel kasnije tokom dana. Sačuvaj naziv i adresu odredišta na kineskom jeziku. Tokom jutarnjeg i popodnevnog špica vožnja može trajati znatno duže nego što pokazuje sama udaljenost.',
+  },
+  {
+    title: 'Šetnja kroz četvrti',
+    text: 'Pojedinačne oblasti, poput hutonga, Wangfujinga i prostora oko jezera Shichahai, najbolje se upoznaju u šetnji. Ipak, nemoj planirati da između udaljenih znamenitosti ideš samo hodanjem. Organizuj svaki dan oko jednog dela grada i koristi metro za prelazak između oblasti.',
+  },
+  {
+    title: 'Put do Kineskog zida',
+    text: 'Kineski zid se ne nalazi u centralnom delu Pekinga. Način dolaska zavisi od deonice koju izabereš, pa pre polaska proveri aktuelne autobuske i turističke linije. Možeš koristiti javni prevoz, organizovani transfer ili unapred dogovorenu vožnju, ali za ovaj izlet svakako izdvoji veći deo dana.',
+  },
+];
+
+const durationOptions = [
+  {
+    title: 'Ako imaš tri dana',
+    text: 'Prvi dan možeš posvetiti Zabranjenom gradu i okolnom istorijskom centru, drugi Hramu neba i starijim gradskim četvrtima, a treći izletu do Kineskog zida. Ovakav plan obuhvata najpoznatije lokacije, ali ostavlja malo vremena za sporije istraživanje grada.',
+  },
+  {
+    title: 'Ako imaš četiri dana',
+    text: 'Četiri dana omogućavaju da glavne znamenitosti rasporediš bez prevelike žurbe. Pored Zabranjenog grada, Hrama neba i Kineskog zida, možeš dodati Letnju palatu i večernju šetnju kroz hutonge ili oko jezera Shichahai.',
+  },
+  {
+    title: 'Ako ostaješ pet ili šest dana',
+    text: 'Sa pet ili šest dana imaćeš dovoljno vremena za sve četiri izdvojene atrakcije, muzeje, parkove i različite delove grada. Dodatni dan možeš ostaviti za umetničku četvrt, dužu šetnju kroz hutonge ili obilazak manje posećenih istorijskih lokacija.',
+  },
+];
+
+const seasons = [
+  {
+    title: 'Proleće i jesen',
+    paragraphs: [
+      'April, maj, septembar i oktobar najprijatniji su za obilazak grada i Kineskog zida. Prolećno vreme može biti promenljivo i vetrovito, dok jesen često donosi vedrije dane i prijatnije temperature.',
+      'Ako želiš da izbegneš najveće gužve, proveri datume kineskih državnih praznika, posebno periode oko početka maja i početka oktobra.',
+    ],
+  },
+  {
+    title: 'Leto',
+    paragraphs: ['Leta su topla i vlažna, sa češćim padavinama. Jul i avgust mogu biti naporni za celodnevne posete velikim kompleksima sa malo hlada. Aktivnosti na otvorenom planiraj ranije ujutru, pravi pauze i ponesi zaštitu od sunca i kiše.'],
+  },
+  {
+    title: 'Zima',
+    paragraphs: ['Zime su hladne, suve i često vetrovite. Prednost ovog perioda mogu biti manje gužve na pojedinim lokacijama, ali za Kineski zid i duge šetnje potrebna je veoma topla garderoba. Proveri vremenske uslove pre izleta jer sneg i led mogu otežati kretanje.'],
+  },
+];
+
+const faq = [
+  {
+    question: 'Da li su Peking i Beijing isti grad?',
+    answer: 'Da. Beijing je zvanična romanizacija kineskog naziva 北京, dok se u srpskom jeziku tradicionalno koristi naziv Peking. Oba naziva odnose se na glavni grad Kine.',
+  },
+  {
+    question: 'Koliko dana je potrebno za Peking?',
+    answer: 'Za najpoznatije znamenitosti izdvoji najmanje četiri dana. Pet ili šest dana omogućavaju opušteniji tempo, posetu Kineskom zidu i više vremena za hutonge, parkove i muzeje.',
+  },
+  {
+    question: 'Koju deonicu Kineskog zida treba posetiti?',
+    answer: 'Izbor zavisi od toga koliko vremena imaš, kako planiraš prevoz i kakvo iskustvo želiš. Badaling je jedna od najpoznatijih i najposećenijih deonica, dok je Mutianyu popularan zbog očuvanih zidina, planinskog pejzaža i sadržaja koji olakšavaju uspon. Pre odlaska proveri aktuelne uslove i način dolaska.',
+  },
+  {
+    question: 'Da li je potrebno unapred rezervisati Zabranjeni grad?',
+    answer: 'Da. Zabranjeni grad ima ograničen broj dnevnih posetilaca i ulaznice se ne prodaju na dan posete. Rezervaciju napravi unapred preko zvaničnog kanala i ponesi pasoš čiji su podaci korišćeni prilikom rezervacije.',
+  },
+  {
+    question: 'Koji deo Pekinga je najbolji za prvi boravak?',
+    answer: 'Dongcheng, Wangfujing i Qianmen praktični su za prvi boravak zbog blizine istorijskog centra i dobre povezanosti metroom. Ako ti je važnija atmosfera hutonga i večernje šetnje, razmotri Shichahai ili Gulou.',
+  },
+  {
+    question: 'Da li je lako kretati se bez znanja kineskog jezika?',
+    answer: 'Metro je relativno jednostavan jer su stanice i linije označene i na engleskom. Ipak, sačuvaj kineske nazive hotela i atrakcija, posebno za taksi, manje restorane i lokacije udaljene od glavnih turističkih oblasti.',
+  },
+];
+
+const destinationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristDestination',
+  name: 'Peking',
+  alternateName: '北京',
+  description,
+  url: canonical,
+  image: new URL(hero.src, Astro.site).href,
+  geo: { '@type': 'GeoCoordinates', latitude: 39.9042, longitude: 116.4074 },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+---
+
+<Layout title={title} description={description} canonical={canonical} ogImage={hero.src} ogImageAlt={entry.data.heroImageAlt}>
+  <JsonLd data={destinationSchema} />
+  <JsonLd data={faqSchema} />
+
+  <article class="peking-page">
+    <header class="peking-hero">
+      <SeoImage src={hero} alt={entry.data.heroImageAlt} width={1600} height={900} widths={[720, 1100, 1600]} sizes="100vw" priority />
+      <div class="peking-hero__overlay"></div>
+      <div class="container peking-hero__inner">
+        <Breadcrumbs items={[
+          { label: 'Početna', href: '/' },
+          { label: 'Destinacije' },
+          { label: 'Peking' },
+        ]} />
+        <div class="peking-hero__copy">
+          <p class="eyebrow">SEVERNA KINA · 北京</p>
+          <h1>Peking</h1>
+          <p class="lead">Upoznaj kinesku prestonicu kroz carske palate, stare hutonge i spomenike koji su oblikovali istoriju zemlje.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="peking-facts" aria-label="Osnovne informacije o Pekingu">
+      <dl class="container peking-facts__grid">
+        {facts.map(([label, value]) => (
+          <div><dt>{label}</dt><dd>{value}</dd></div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="section editorial" aria-labelledby="why-peking">
+      <div class="container editorial__grid">
+        <div class="editorial__copy">
+          <h2 id="why-peking">Zašto posetiti Peking</h2>
+          <p>Peking je mesto na kom se najbolje razumeju razmere kineske istorije. Carske palate, hramovi, vrtovi i stari gradski prolazi nisu izdvojeni samo u jednoj četvrti, već čine veliki deo identiteta grada. Između njih nalaze se savremeni poslovni distrikti, široke avenije i mirniji hutonzi u kojima se svakodnevni život odvija iza tradicionalnih sivih zidova.</p>
+          <p>Grad je velik i njegove najvažnije lokacije ne treba pokušavati obići u žurbi. Poseta Zabranjenom gradu može zauzeti veći deo dana, dok je za Kineski zid potrebno planirati poseban izlet van centra. Najbolji doživljaj dobija se kada poznate znamenitosti kombinuješ sa šetnjom kroz stare četvrti, lokalnom hranom i vremenom bez strogo ispunjenog rasporeda.</p>
+        </div>
+        <figure class="editorial__image">
+          <SeoImage src={editorialImage} alt="Tradicionalna arhitektura i savremeni neboderi u Pekingu" width={840} height={680} widths={[440, 640, 840]} sizes="(max-width: 800px) 100vw, 42vw" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="section attractions" aria-labelledby="peking-attractions">
+      <div class="container">
+        <div class="section-heading attractions__heading">
+          <h2 id="peking-attractions">Šta videti u Pekingu</h2>
+          <p>Najpoznatije znamenitosti Pekinga otkrivaju različite delove prošlosti grada, od carskih rezidencija i ritualnih kompleksa do zidina koje prelaze preko planinskih grebena izvan centra. Za svaku od ovih lokacija vredi izdvojiti dovoljno vremena i unapred proveriti način kupovine ulaznica.</p>
+        </div>
+        <div class="attractions__grid">
+          {attractions.map((attraction) => (
+            <article class="attraction-card" data-planned-href={attraction.plannedPath} style={`--image-position: ${attraction.objectPosition}`}>
+              <SeoImage src={attraction.image} alt={attraction.alt} width={640} height={800} widths={[320, 480, 640]} sizes="(max-width: 608px) 100vw, (max-width: 1024px) 50vw, 25vw" />
+              <div class="attraction-card__overlay"></div>
+              <h3>{attraction.title}</h3>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section stay" aria-labelledby="where-to-stay">
+      <div class="container">
+        <div class="section-heading stay__heading">
+          <h2 id="where-to-stay">Gde odsesti u Pekingu</h2>
+          <p>Izbor smeštaja u Pekingu značajno utiče na vreme provedeno u prevozu. Grad je veoma velik, pa je za prvi boravak najbolje izabrati oblast koja ima dobru metro vezu sa znamenitostima koje planiraš da posetiš.</p>
+        </div>
+        <div class="info-grid">
+          {stayAreas.map((area, index) => (
+            <article class="info-block"><span>0{index + 1}</span><h3>{area.title}</h3><p>{area.text}</p></article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section transport" aria-labelledby="getting-around">
+      <div class="container transport__grid">
+        <div class="transport__heading">
+          <h2 id="getting-around">Kako se kretati po Pekingu</h2>
+          <p>Peking zauzima ogromnu površinu, a udaljenosti između pojedinih znamenitosti često su veće nego što deluju na mapi. Metro je najbolja osnova za kretanje kroz grad, dok su taksi i DiDi praktični za lokacije do kojih javni prevoz ne vodi direktno.</p>
+        </div>
+        <div class="transport__content">
+          {transportOptions.map((option) => (
+            <article><h3>{option.title}</h3><p>{option.text}</p></article>
+          ))}
+          <aside class="ksenija-tip">
+            <strong>Ksenijin savet:</strong>
+            <p>Sačuvaj kineske nazive hotela, atrakcija i stanica koje planiraš da koristiš. Kada posećuješ lokacije sa rezervacijom na ime, ponesi isti pasoš čiji su podaci korišćeni prilikom kupovine ulaznice.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section duration" aria-labelledby="how-many-days">
+      <div class="container">
+        <div class="section-heading"><h2 id="how-many-days">Koliko dana je dovoljno za Peking?</h2></div>
+        <div class="duration__grid">
+          {durationOptions.map((option) => (
+            <article><h3>{option.title}</h3><p>{option.text}</p></article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section weather" aria-labelledby="best-time">
+      <div class="container weather__inner">
+        <div class="section-heading weather__heading">
+          <h2 id="best-time">Kada je najbolje putovati u Peking?</h2>
+          <p>Peking ima četiri jasno izražena godišnja doba. Proleće i jesen uglavnom pružaju najprijatnije uslove za celodnevno razgledanje, dok leto donosi vrućinu i više padavina, a zima hladno i suvo vreme.</p>
+        </div>
+        <div class="weather__list">
+          {seasons.map((season) => (
+            <article><h3>{season.title}</h3>{season.paragraphs.map((paragraph) => <p>{paragraph}</p>)}</article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section peking-faq" aria-labelledby="peking-faq-title">
+      <div class="container peking-faq__grid">
+        <div class="section-heading"><h2 id="peking-faq-title">Česta pitanja o Pekingu</h2></div>
+        <div class="peking-faq__list">
+          {faq.map((item, index) => {
+            const panelId = `peking-faq-panel-${index + 1}`;
+            return (
+              <article class="peking-faq__item">
+                <h3>
+                  <button type="button" aria-expanded="false" aria-controls={panelId} data-faq-button>
+                    <span>{item.question}</span><span class="peking-faq__icon" aria-hidden="true">+</span>
+                  </button>
+                </h3>
+                <div id={panelId} class="peking-faq__answer" hidden><p>{item.answer}</p></div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <section class="section peking-cta" aria-labelledby="peking-cta-title">
+      <div class="container peking-cta__inner">
+        <h2 id="peking-cta-title">Želiš da posetiš Peking?</h2>
+        <p>Grupna putovanja koja uključuju Peking trenutno su u pripremi. Pogledaj buduće ture kroz Kinu ili mi piši ako želiš da saznaš više o planiranim destinacijama i polascima.</p>
+        <div class="peking-cta__actions">
+          <a class="button" href="/ture/">Pogledaj buduće ture</a>
+          <a class="button button--outline" href="/kontakt/">Piši mi</a>
+        </div>
+      </div>
+    </section>
+  </article>
+</Layout>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.peking-page [data-faq-button]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const panelId = button.getAttribute('aria-controls');
+      const panel = panelId ? document.getElementById(panelId) : null;
+      if (!panel) return;
+      const expanded = button.getAttribute('aria-expanded') === 'true';
+      button.setAttribute('aria-expanded', String(!expanded));
+      panel.hidden = expanded;
+    });
+  });
+</script>
+
+<style>
+  .peking-page { background: var(--surface); color: var(--text); }
+
+  .peking-hero { position: relative; min-height: 50rem; overflow: hidden; padding-top: 6.5rem; color: var(--on-dark); }
+  .peking-hero > :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 48%; }
+  .peking-hero__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(18,14,12,.94), rgba(18,14,12,.16) 72%); }
+  .peking-hero__inner { position: relative; display: grid; min-height: 43.5rem; align-content: space-between; }
+  .peking-hero__inner :global(.breadcrumbs) { width: 100%; margin: 0; padding-inline: 0; color: var(--on-dark-muted); }
+  .peking-hero__copy { max-width: 42.5rem; padding-bottom: clamp(4rem, 8vw, 6.5rem); }
+  .peking-hero .eyebrow { margin-bottom: clamp(1.5rem, 2vw, 2rem); }
+  .peking-hero h1 { max-width: none; font-size: clamp(4.25rem, 9vw, 8rem); line-height: .9; white-space: nowrap; }
+  .peking-hero .lead { max-width: 42.5rem; margin: .9rem 0 0; color: #eee4d8; }
+
+  .peking-facts { border-bottom: 1px solid var(--line); background: var(--surface-alt); }
+  .peking-facts__grid { display: grid; grid-template-columns: repeat(3, 1fr); margin-block: 0; padding-block: 2rem; }
+  .peking-facts__grid > div { min-width: 0; padding: 1rem clamp(1rem, 2.5vw, 2rem); }
+  .peking-facts__grid > div:not(:nth-child(3n + 1)) { border-left: 1px solid var(--line); }
+  .peking-facts dt { color: var(--brass); font-size: .67rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+  .peking-facts dd { margin: .4rem 0 0; font-weight: 700; line-height: 1.45; }
+
+  .editorial { background: #f8f1e7; }
+  .editorial__grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(20rem, .92fr); align-items: center; gap: clamp(3rem, 8vw, 7rem); }
+  .editorial__copy { max-width: 42rem; }
+  .editorial__copy h2 { margin-bottom: 2rem; }
+  .editorial__copy p { color: var(--text-muted); }
+  .editorial__copy p + p { margin-top: 1.35rem; }
+  .editorial__image { height: clamp(25rem, 42vw, 36rem); margin: 0; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow); }
+  .editorial__image :global(img) { width: 100%; height: 100%; object-fit: cover; }
+
+  .attractions { background: #2b211f; color: #fffaf1; }
+  .attractions__heading { max-width: 57rem; margin-bottom: 3rem; }
+  .attractions__heading p { max-width: 52rem; margin-top: 1.3rem; color: #e9dcd2; }
+  .attractions__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+  .attraction-card { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--radius-sm); box-shadow: 0 14px 36px rgba(0,0,0,.22); transition: transform 220ms ease, box-shadow 220ms ease; }
+  .attraction-card > :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: var(--image-position, center); transition: transform 260ms ease, filter 260ms ease; }
+  .attraction-card__overlay { position: absolute; inset: 35% 0 0; background: linear-gradient(to top, rgba(16,12,11,.9), transparent); }
+  .attraction-card h3 { position: absolute; right: 1.25rem; bottom: 1.2rem; left: 1.25rem; margin: 0; color: #fffaf1; font-size: clamp(1.45rem, 2.2vw, 2rem); line-height: 1.1; }
+  .attraction-card:hover { transform: translateY(-.3rem) scale(1.015); box-shadow: 0 22px 48px rgba(0,0,0,.3); }
+  .attraction-card:hover > :global(img) { transform: scale(1.035); filter: brightness(1.08); }
+  .attraction-card:focus-visible { outline: 3px solid #f4ce82; outline-offset: .25rem; }
+
+  .stay { background: #eadbc5; }
+  .stay__heading { max-width: 60rem; margin-bottom: 3rem; }
+  .stay__heading p { max-width: 52rem; margin-top: 1.3rem; color: var(--text-muted); }
+  .info-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .info-block { padding: clamp(1.75rem, 3vw, 2.5rem); }
+  .info-block:nth-child(even) { border-left: 1px solid var(--line); }
+  .info-block:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  .info-block > span { color: var(--vermilion); font-size: .72rem; font-weight: 800; letter-spacing: .12em; }
+  .info-block h3 { margin-top: 1rem; font-size: clamp(1.65rem, 2.5vw, 2.25rem); }
+  .info-block p { margin-top: 1.2rem; color: var(--text-muted); }
+
+  .transport { background: #f8f1e7; }
+  .transport__grid { display: grid; grid-template-columns: minmax(17rem, .7fr) minmax(0, 1.3fr); gap: clamp(3rem, 8vw, 7rem); }
+  .transport__heading { align-self: start; }
+  .transport__heading p { margin-top: 1.5rem; color: var(--text-muted); }
+  .transport__content > article { padding: 0 0 2rem; border-bottom: 1px solid var(--line); }
+  .transport__content > article + article { padding-top: 2rem; }
+  .transport__content h3 { font-size: clamp(1.6rem, 2.5vw, 2.2rem); }
+  .transport__content p { margin-top: .8rem; color: var(--text-muted); }
+  .ksenija-tip { margin-top: 2.25rem; padding: 1.5rem 1.7rem; border-left: .3rem solid var(--vermilion); background: #efe2cf; }
+  .ksenija-tip strong { color: var(--vermilion); }
+  .ksenija-tip p { margin-top: .45rem; }
+
+  .duration { background: #2b211f; color: #fffaf1; }
+  .duration .section-heading { margin-bottom: 3rem; }
+  .duration__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .duration__grid article { padding: clamp(1.6rem, 3vw, 2.35rem); border: 1px solid rgba(231,189,103,.4); border-radius: var(--radius-sm); }
+  .duration__grid h3 { color: #f4ce82; font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+  .duration__grid p { margin-top: 1rem; color: #e9dcd2; }
+
+  .weather { background: #eadbc5; }
+  .weather__inner { display: grid; grid-template-columns: minmax(18rem, .8fr) minmax(0, 1.2fr); gap: clamp(3rem, 8vw, 7rem); }
+  .weather__heading p { max-width: 35rem; margin-top: 1.5rem; color: var(--text-muted); }
+  .weather__list { border-top: 1px solid var(--line); }
+  .weather__list article { padding: 2rem 0; border-bottom: 1px solid var(--line); }
+  .weather__list h3 { font-size: clamp(1.55rem, 2.5vw, 2.15rem); }
+  .weather__list p { margin-top: .85rem; color: var(--text-muted); }
+
+  .peking-faq { background: #f8f1e7; }
+  .peking-faq__grid { display: grid; grid-template-columns: minmax(17rem, .75fr) minmax(0, 1.25fr); gap: clamp(3rem, 8vw, 7rem); }
+  .peking-faq__list { border-top: 1px solid var(--line); }
+  .peking-faq__item { border-bottom: 1px solid var(--line); }
+  .peking-faq__item h3 { margin: 0; font-family: var(--font-body); font-size: 1rem; }
+  .peking-faq__item button { display: flex; width: 100%; min-height: 5rem; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 0; border: 0; background: transparent; color: var(--text); font-weight: 750; text-align: left; cursor: pointer; }
+  .peking-faq__item button:focus-visible { outline: 3px solid var(--vermilion); outline-offset: .25rem; }
+  .peking-faq__icon { flex: 0 0 auto; color: var(--vermilion); font-family: var(--font-display); font-size: 1.8rem; transition: transform 180ms ease; }
+  .peking-faq__item button[aria-expanded='true'] .peking-faq__icon { transform: rotate(45deg); }
+  .peking-faq__answer p { max-width: 43rem; padding: 0 2rem 1.5rem 0; color: var(--text-muted); }
+
+  .peking-cta { background: var(--vermilion); color: #fffaf1; }
+  .peking-cta__inner { display: grid; max-width: 62rem; justify-items: center; text-align: center; }
+  .peking-cta h2 { color: #fffaf1; }
+  .peking-cta p { max-width: 48rem; margin: 1.5rem 0 2rem; color: #f5e3da; font-size: 1.08rem; }
+  .peking-cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .85rem; }
+  .peking-cta .button { background: #e7bd67; color: #4d090c; }
+  .peking-cta .button:hover { background: #f1d08b; color: #4d090c; }
+  .peking-cta .button--outline { border-color: #e7bd67; background: transparent; color: #fffaf1; }
+  .peking-cta .button--outline:hover { background: rgba(255,255,255,.09); color: #fffaf1; }
+
+  @media (max-width: 64rem) {
+    .attractions__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .duration__grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 50rem) {
+    .peking-hero { min-height: 43rem; padding-top: 5.25rem; }
+    .peking-hero__inner { min-height: 37.75rem; }
+    .peking-hero > :global(img) { object-position: 55% 48%; }
+    .peking-hero h1 { font-size: clamp(3.75rem, 17vw, 5.5rem); }
+    .peking-facts__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .peking-facts__grid > div { border-left: 0 !important; }
+    .peking-facts__grid > div:nth-child(even) { border-left: 1px solid var(--line) !important; }
+    .editorial__grid, .transport__grid, .weather__inner, .peking-faq__grid { grid-template-columns: 1fr; }
+    .editorial__image { height: min(105vw, 31rem); }
+    .info-grid { grid-template-columns: 1fr; }
+    .info-block:nth-child(n) { border-top: 1px solid var(--line); border-left: 0; }
+    .info-block:first-child { border-top: 0; }
+  }
+
+  @media (max-width: 38rem) {
+    .peking-facts__grid, .attractions__grid { grid-template-columns: 1fr; }
+    .peking-facts__grid > div { padding: 1.15rem 0; border-top: 1px solid var(--line); border-left: 0 !important; }
+    .peking-facts__grid > div:first-child { border-top: 0; }
+    .peking-cta__actions, .peking-cta .button { width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .attraction-card, .attraction-card > :global(img), .peking-faq__icon { transition: none; }
+    .attraction-card:hover { transform: none; }
+    .attraction-card:hover > :global(img) { transform: none; }
+  }
+</style>

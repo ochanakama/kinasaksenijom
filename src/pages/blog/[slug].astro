@@ -7,6 +7,8 @@ import Faq from '../../components/Faq.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import Icon from '../../components/Icon.astro';
 import { resolveImage } from '../../lib/images';
+import { destinationHref } from '../../lib/routes';
+import { getOrganizationReference, getSchemaIds } from '../../lib/schema';
 
 export async function getStaticPaths() {
   const entries = await getCollection('blog', ({ data }) => !data.draft);
@@ -29,18 +31,33 @@ const relatedBlogs = entry.data.povezaniBlogovi.map((id) => blogMap.get(id)).fil
 const relatedTours = entry.data.povezaneTure.map((id) => tourMap.get(id)).filter(Boolean) as CollectionEntry<'ture'>[];
 const hero = resolveImage(entry.data.heroImage);
 const canonical = new URL(`/blog/${entry.id}/`, Astro.site).href;
+const schemaIds = getSchemaIds(Astro.site);
 const formatDate = (date: Date) => new Intl.DateTimeFormat('sr-Latn-RS', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
+  '@id': `${canonical}#blog-posting`,
+  url: canonical,
   headline: entry.data.naslov,
   description: entry.data.description,
   image: new URL(hero.src, Astro.site).href,
   datePublished: entry.data.datumObjave.toISOString(),
   dateModified: (entry.data.datumIzmene ?? entry.data.datumObjave).toISOString(),
   inLanguage: 'sr-Latn',
-  author: { '@type': 'Person', name: entry.data.autor },
-  mainEntityOfPage: canonical,
+  author: {
+    '@type': 'Person',
+    '@id': schemaIds.person,
+    name: entry.data.autor,
+    url: new URL('/o-meni/', Astro.site).href,
+  },
+  publisher: getOrganizationReference(Astro.site),
+  isPartOf: {
+    '@type': 'Blog',
+    '@id': schemaIds.blog,
+    name: 'Blog Kina sa Ksenijom',
+    url: new URL('/blog/', Astro.site).href,
+  },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
 };
 ---
 
@@ -76,7 +93,7 @@ const schema = {
       <div class="container">
         <div class="section-heading"><p class="eyebrow">Nastavite čitanje</p><h2 id="related-heading">Povezane stranice</h2></div>
         <div class="related__links">
-          {relatedDestinations.map((item) => <a href={`/destinacije/${item.id}/`}><span>Destinacija</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
+          {relatedDestinations.map((item) => <a href={destinationHref(item.id)}><span>Destinacija</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
           {relatedBlogs.map((item) => <a href={`/blog/${item.id}/`}><span>Blog</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
           {relatedTours.map((item) => <a href={`/ture/${item.id}/`}><span>Tura</span><strong>{item.data.naslov}</strong><Icon name="arrow" size={20} /></a>)}
         </div>

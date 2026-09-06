@@ -6,6 +6,7 @@ import SeoImage from '../components/SeoImage.astro';
 import Faq from '../components/Faq.astro';
 import Icon from '../components/Icon.astro';
 import JsonLd from '../components/JsonLd.astro';
+import { getOrganizationReference, getSchemaIds } from '../lib/schema';
 import authorImage from '../assets/hero/ks_kina.jpg';
 import previewContents from '../assets/china-ready/sadrzaj.png';
 import previewAlipay from '../assets/china-ready/alipay.png';
@@ -18,21 +19,24 @@ if (!page) throw new Error('Nedostaje src/content/landing/china-ready-vodic.md')
 
 const { seo, purchaseUrl, hero, problem, sadrzaj, bonusi, preview, autor, faq, zavrsniCta } = page.data;
 const previewImages = [previewContents, previewAlipay, previewPhrases] as const;
+const schemaIds = getSchemaIds(Astro.site);
 const bookSchema = {
   '@context': 'https://schema.org',
   '@type': 'Book',
+  '@id': `${seo.canonical}#book`,
   name: 'China Ready',
   description: seo.description,
+  url: seo.canonical,
+  image: new URL(guideCover.src, Astro.site).href,
   inLanguage: 'sr-Latn',
   bookFormat: 'https://schema.org/EBook',
-  author: { '@type': 'Person', name: 'Ksenija' },
-  url: seo.canonical,
-  offers: {
-    '@type': 'Offer',
-    price: '9.90',
-    priceCurrency: 'EUR',
-    url: purchaseUrl,
+  author: {
+    '@type': 'Person',
+    '@id': schemaIds.person,
+    name: 'Ksenija',
+    url: new URL('/o-meni/', Astro.site).href,
   },
+  publisher: getOrganizationReference(Astro.site),
 };
 ---
 

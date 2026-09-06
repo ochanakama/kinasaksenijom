@@ -1,80 +1,101 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import ContentCard from '../../components/ContentCard.astro';
 import Icon from '../../components/Icon.astro';
-import { resolveImage } from '../../lib/images';
+import JsonLd from '../../components/JsonLd.astro';
+import { getOrganizationReference, getSchemaIds } from '../../lib/schema';
 
-const tours = (await getCollection('ture', ({ data }) => !data.draft))
-  .sort((a, b) => a.data.redosled - b.data.redosled);
-const title = 'Putovanje u Kinu iz Srbije | Ture sa Ksenijom';
-const description = 'Organizovano putovanje u Kinu iz Srbije i regiona. Male grupe, lično vođenje, priprema aplikacija, prevoza i smeštaja pre polaska.';
+const title = 'Organizovane ture u Kinu | Kina sa Ksenijom';
+const description = 'Prva tura u Kinu uskoro stiže. Ostavi kontakt i saznaj među prvima nove termine, plan putovanja i detalje organizovanih polazaka iz Srbije.';
+const canonical = new URL('/ture/', Astro.site).href;
+const schemaIds = getSchemaIds(Astro.site);
+const toursSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `${canonical}#webpage`,
+  url: canonical,
+  name: title,
+  description,
+  inLanguage: 'sr-Latn',
+  isPartOf: { '@id': schemaIds.website },
+  publisher: getOrganizationReference(Astro.site),
+};
 ---
 
-<Layout title={title} description={description}>
-  <div class="tour-hero">
-    <Breadcrumbs items={[{ label: 'Početna', href: '/' }, { label: 'Ture' }]} />
-    <div class="container tour-hero__grid">
-      <div>
-        <p class="eyebrow">Male grupe · lično vođenje</p>
-        <h1>Putovanje u Kinu<br /><span class="accent">bez nepoznanica</span></h1>
-      </div>
-      <p class="lead">Vodim grupe iz Srbije i regiona kroz gradove, svakodnevicu i mesta koja standardni aranžmani često preskoče. Pre puta sređujemo aplikacije, plaćanje, internet i sve praktične detalje.</p>
+<Layout title={title} description={description} canonical={canonical}>
+  <JsonLd data={toursSchema} />
+  <div class="tours-page">
+    <div class="tours-page__breadcrumbs">
+      <Breadcrumbs items={[{ label: 'Početna', href: '/' }, { label: 'Ture' }]} />
     </div>
-  </div>
 
-  {tours.length > 0 ? (
-    <section class="section" aria-label="Objavljene ture">
-      <div class="container cards-grid">
-        {tours.map((entry) => (
-          <ContentCard href={`/ture/${entry.id}/`} title={entry.data.naslov} description={entry.data.karticaOpis ?? entry.data.uvod} image={resolveImage(entry.data.heroImage)} alt={entry.data.heroImageAlt} eyebrow={`${entry.data.trajanjeDana} dana · ${entry.data.tip}`} />
-        ))}
-      </div>
-    </section>
-  ) : (
-    <section class="empty section" aria-labelledby="empty-heading">
-      <div class="container empty__inner surface">
-        <span class="empty__mark" aria-hidden="true">即</span>
+    <section class="tours-notice section" aria-labelledby="tours-heading">
+      <div class="container tours-notice__inner surface">
         <p class="eyebrow">Novi polasci su u pripremi</p>
-        <h2 id="empty-heading">Termini se uskoro objavljuju</h2>
+        <h1 id="tours-heading">Prva tura uskoro stiže</h1>
         <p>Rute, datume i veličinu grupa objavljujem kada su svi detalji potvrđeni. Prijave interesovanja otvaram zajedno sa terminima.</p>
-        <span class="button" aria-disabled="true">Ostavi kontakt <Icon name="arrow" size={18} /></span>
-        <small>Kontakt podaci biće objavljeni pre lansiranja sajta.</small>
+        <a class="button" href="/kontakt/">Ostavi kontakt <Icon name="arrow" size={18} /></a>
       </div>
     </section>
-  )}
-
-  <section class="process section" aria-labelledby="process-heading">
-    <div class="container">
-      <div class="section-heading"><p class="eyebrow">Kako izgleda priprema</p><h2 id="process-heading">Sve što treba za miran polazak</h2></div>
-      <div class="process__grid">
-        <article><span>01</span><h3>Jasan plan puta</h3><p>Dobijate dnevni raspored, informacije o smeštaju, prevozu i lokacijama koje obilazimo.</p></article>
-        <article><span>02</span><h3>Aplikacije spremne</h3><p>Alipay, WeChat i pristup internetu podešavamo pre dolaska na aerodrom.</p></article>
-        <article><span>03</span><h3>Lično vođenje</h3><p>Grupu vodim na srpskom i rešavam komunikaciju na kineskom tokom celog putovanja.</p></article>
-      </div>
-    </div>
-  </section>
+  </div>
 </Layout>
 
 <style>
-  .tour-hero { padding: 6.5rem 0 clamp(5rem, 10vw, 9rem); border-bottom: 1px solid var(--line); background: radial-gradient(circle at 75% 30%, rgba(156,14,21,.12), transparent 32rem); }
-  .tour-hero__grid { display: grid; grid-template-columns: 1.2fr .8fr; align-items: end; gap: clamp(2rem, 7vw, 7rem); padding-top: clamp(2rem, 5vw, 5rem); }
-  .tour-hero h1 { font-size: clamp(3.5rem, 8vw, 7rem); }
-  .tour-hero .lead { margin: 0; }
-  .empty__inner { display: grid; max-width: 58rem; justify-items: center; padding: clamp(2.5rem, 7vw, 5rem); text-align: center; }
-  .empty__mark { display: grid; width: 5rem; aspect-ratio: 1; place-items: center; margin-bottom: 1.5rem; border: 1px solid var(--brass); border-radius: 50%; color: var(--brass); font-family: serif; font-size: 2rem; }
-  .empty .eyebrow { justify-content: center; }
-  .empty h2 { max-width: 12ch; }
-  .empty p:not(.eyebrow) { max-width: 38rem; margin: 1.5rem auto 2rem; color: var(--paper-muted); }
-  .empty small { margin-top: 1rem; color: #837b72; }
-  .process { background: var(--surface); color: var(--text); }
-  .process .eyebrow { color: #8b651d; }
-  .process__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #cfc5b8; }
-  .process article { padding: clamp(1.8rem, 4vw, 3rem); background: var(--surface); }
-  .process article > span { color: var(--vermilion); font-family: var(--font-display); font-weight: 700; }
-  .process h3 { margin-top: 1rem; font-size: 2rem; }
-  .process p { margin: 1rem 0 0; color: #5d554c; }
-  @media (max-width: 58rem) { .tour-hero { padding-top: 5.25rem; } .tour-hero__grid { grid-template-columns: 1fr; } }
-  @media (max-width: 45rem) { .process__grid { grid-template-columns: 1fr; } }
+  .tours-page {
+    min-height: 70svh;
+    padding-top: 6.5rem;
+    background: var(--surface-alt);
+  }
+
+  .tours-page__breadcrumbs {
+    padding-top: .4rem;
+  }
+
+  .tours-page__breadcrumbs :global(.breadcrumbs) {
+    margin-block: 0;
+  }
+
+  .tours-notice {
+    padding-top: clamp(.75rem, 1.5vw, 1.25rem);
+  }
+
+  .tours-notice__inner {
+    display: grid;
+    max-width: 72rem;
+    justify-items: center;
+    padding: clamp(3.5rem, 8vw, 7rem) clamp(1.5rem, 7vw, 5rem);
+    text-align: center;
+  }
+
+  .tours-notice .eyebrow {
+    justify-content: center;
+  }
+
+  .tours-notice h1 {
+    max-width: 13ch;
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+    font-size: clamp(3rem, 7vw, 6rem);
+  }
+
+  .tours-notice__inner > p:not(.eyebrow) {
+    max-width: 42rem;
+    margin: 1.5rem auto 2rem;
+    color: var(--paper-muted);
+  }
+
+  @media (max-width: 58rem) {
+    .tours-page {
+      padding-top: 5.25rem;
+    }
+  }
+
+  @media (max-width: 42rem) {
+    .tours-notice__inner {
+      padding-inline: 1.25rem;
+    }
+
+    .tours-notice .button {
+      width: 100%;
+    }
+  }
 </style>

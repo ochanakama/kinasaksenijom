@@ -2,44 +2,375 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import ContentCard from '../../components/ContentCard.astro';
+import SeoImage from '../../components/SeoImage.astro';
+import Icon from '../../components/Icon.astro';
+import JsonLd from '../../components/JsonLd.astro';
 import { resolveImage } from '../../lib/images';
+import { getOrganizationReference, getSchemaIds } from '../../lib/schema';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.datumObjave.getTime() - a.data.datumObjave.getTime());
-const title = 'Blog o putovanju u Kinu | Kina sa Ksenijom';
-const description = 'Praktični saveti za putovanje u Kinu. Plaćanje, aplikacije, prevoz, dokumenta i vodiči koji olakšavaju pripremu pre polaska.';
+const hasPublishedPosts = posts.length > 0;
+const title = 'Blog o Kini: saveti, priče i putovanja | Kina sa Ksenijom';
+const description = 'Otkrij praktične savete za putovanje u Kinu, manje poznate destinacije, lokalnu kulturu i priče iz Kine iz prve ruke.';
+const canonical = new URL('/blog/', Astro.site).href;
+const schemaIds = getSchemaIds(Astro.site);
+const blogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  '@id': schemaIds.blog,
+  url: canonical,
+  name: title,
+  description,
+  inLanguage: 'sr-Latn',
+  publisher: getOrganizationReference(Astro.site),
+  ...(posts.length > 0 ? {
+    blogPost: posts.map((entry) => ({
+      '@type': 'BlogPosting',
+      '@id': new URL(`/blog/${entry.id}/#blog-posting`, Astro.site).href,
+      url: new URL(`/blog/${entry.id}/`, Astro.site).href,
+      headline: entry.data.naslov,
+    })),
+  } : {}),
+};
 ---
 
-<Layout title={title} description={description}>
-  <div class="listing-hero">
-    <Breadcrumbs items={[{ label: 'Početna', href: '/' }, { label: 'Blog' }]} />
-    <div class="container listing-hero__copy">
-      <p class="eyebrow">Praktično, bez komplikovanja</p>
-      <h1>Vodič za Kinu<br /><span class="accent">pre polaska</span></h1>
-      <p class="lead">Aplikacije, plaćanje, prevoz i pravila koja u Kini funkcionišu drugačije. Ovde ih sređujem u jasne korake.</p>
+<Layout title={title} description={description} canonical={canonical}>
+  <JsonLd data={blogSchema} />
+  <div class="blog-page">
+    <div class="blog-breadcrumbs">
+      <Breadcrumbs items={[{ label: 'Početna', href: '/' }, { label: 'Blog' }]} />
     </div>
+
+    <header class="blog-hero container">
+      <div class="blog-hero__card">
+        <span class="blog-hero__detail" aria-hidden="true"></span>
+        <p class="eyebrow">PRIČE, SAVETI I INSPIRACIJA</p>
+        <h1>Kina iz prve ruke</h1>
+        <p class="blog-hero__description">Praktični saveti, zanimljive priče i korisne informacije koje će ti pomoći da bolje upoznaš Kinu i lakše isplaniraš svoje putovanje.</p>
+      </div>
+    </header>
+
+    {hasPublishedPosts ? (
+      <section class="section blog-posts" aria-labelledby="latest-posts-heading">
+        <div class="container">
+          <div class="section-heading">
+            <h2 id="latest-posts-heading">Najnovije priče i saveti</h2>
+          </div>
+          <div class="posts-grid">
+            {posts.map((entry) => (
+              <article class="post-card">
+                <a href={`/blog/${entry.id}/`} aria-label={`Pročitaj tekst: ${entry.data.naslov}`}>
+                  <div class="post-card__image">
+                    <SeoImage
+                      src={resolveImage(entry.data.heroImage)}
+                      alt={entry.data.heroImageAlt}
+                      width={720}
+                      height={480}
+                      widths={[360, 540, 720]}
+                      sizes="(max-width: 672px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  </div>
+                  <div class="post-card__body">
+                    <div class="post-card__meta">
+                      <span>{entry.data.kategorija}</span>
+                      {entry.data.vremeCitanja && <span>{entry.data.vremeCitanja} min čitanja</span>}
+                    </div>
+                    <h3>{entry.data.naslov}</h3>
+                    <p>{entry.data.karticaOpis ?? entry.data.uvod}</p>
+                    <span class="post-card__link">Pročitaj tekst <Icon name="arrow" size={17} /></span>
+                  </div>
+                </a>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    ) : (
+      <section class="section blog-empty" aria-labelledby="empty-state-heading">
+        <div class="container">
+          <div class="blog-empty__card">
+            <p class="blog-empty__eyebrow">NOVO NA BLOGU</p>
+            <h2 id="empty-state-heading">Prvi tekstovi stižu uskoro</h2>
+            <p>Uskoro ćeš ovde pronaći praktične savete za pripremu putovanja, priče o manje poznatim mestima i informacije koje će ti pomoći da Kinu upoznaš iz drugačije perspektive.</p>
+            <ul class="blog-empty__topics" aria-label="Teme budućih tekstova">
+              <li>Priprema za put</li>
+              <li>Destinacije</li>
+              <li>Kultura i svakodnevica</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    )}
   </div>
-  <section class="section" aria-label="Tekstovi sa bloga">
-    <div class="container cards-grid">
-      {posts.map((entry) => (
-        <ContentCard
-          href={`/blog/${entry.id}/`}
-          title={entry.data.naslov}
-          description={entry.data.karticaOpis ?? entry.data.uvod}
-          image={resolveImage(entry.data.heroImage)}
-          alt={entry.data.heroImageAlt}
-          eyebrow={`${entry.data.kategorija} · ${entry.data.vremeCitanja ?? 1} min čitanja`}
-        />
-      ))}
-    </div>
-  </section>
 </Layout>
 
 <style>
-  .listing-hero { padding: 6.5rem 0 clamp(4rem, 9vw, 8rem); border-bottom: 1px solid var(--line); background: radial-gradient(circle at 80% 30%, rgba(156,14,21,.11), transparent 28rem); }
-  .listing-hero__copy { padding-top: clamp(2rem, 5vw, 5rem); }
-  .listing-hero h1 { max-width: 12ch; }
-  .listing-hero .lead { margin-top: 2rem; }
-  @media (max-width: 58rem) { .listing-hero { padding-top: 5.25rem; } }
+  .blog-page {
+    min-height: 70svh;
+    padding-top: 6.5rem;
+    background: #f8f1e7;
+    color: var(--text);
+  }
+
+  .blog-breadcrumbs {
+    padding-top: clamp(1.15rem, 2.5vw, 2rem);
+  }
+
+  .blog-breadcrumbs :global(.breadcrumbs) {
+    margin-block: 0;
+  }
+
+  .blog-hero {
+    padding-block: clamp(1.4rem, 3vw, 2.6rem) clamp(2.5rem, 5vw, 4.5rem);
+  }
+
+  .blog-hero__card {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(2.5rem, 6vw, 5rem);
+    border: 1px solid rgba(231, 189, 103, .42);
+    border-radius: var(--radius);
+    background: #2b211f;
+    box-shadow: var(--shadow);
+    color: #fffaf1;
+  }
+
+  .blog-hero__card::after {
+    position: absolute;
+    top: 0;
+    right: clamp(2rem, 6vw, 5rem);
+    width: clamp(4rem, 10vw, 8rem);
+    height: .3rem;
+    background: var(--vermilion-bright);
+    content: '';
+  }
+
+  .blog-hero__detail {
+    position: absolute;
+    right: clamp(1.5rem, 4vw, 3.5rem);
+    bottom: clamp(1.5rem, 4vw, 3.5rem);
+    width: clamp(2.25rem, 4vw, 3.5rem);
+    aspect-ratio: 1;
+    border-right: 1px solid rgba(231, 189, 103, .72);
+    border-bottom: 1px solid rgba(231, 189, 103, .72);
+  }
+
+  .blog-hero .eyebrow {
+    margin-bottom: clamp(1.4rem, 2.5vw, 2rem);
+    border-color: rgba(231, 189, 103, .52);
+    background: transparent;
+    color: #f4ce82;
+  }
+
+  .blog-hero h1 {
+    max-width: 11ch;
+    color: #fffaf1;
+    font-size: clamp(3.2rem, 7vw, 6rem);
+    line-height: .94;
+  }
+
+  .blog-hero__description {
+    max-width: 45rem;
+    margin: clamp(1.25rem, 2.5vw, 1.8rem) 0 0;
+    color: #e8ddd3;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    line-height: 1.7;
+  }
+
+  .blog-posts,
+  .blog-empty {
+    border-top: 1px solid var(--line);
+    background: #eadbc5;
+  }
+
+  .blog-posts .section-heading {
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .post-card {
+    width: 100%;
+    max-width: 25rem;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: #fffaf1;
+    box-shadow: 0 14px 34px rgba(75, 49, 40, .1);
+    transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+  }
+
+  .post-card > a {
+    display: grid;
+    height: 100%;
+    grid-template-rows: auto 1fr;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .post-card > a:focus-visible {
+    outline: 3px solid var(--vermilion);
+    outline-offset: -3px;
+  }
+
+  .post-card__image {
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: var(--surface-alt);
+  }
+
+  .post-card__image :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 240ms ease, filter 240ms ease;
+  }
+
+  .post-card__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+  }
+
+  .post-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem .8rem;
+    color: var(--brass);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+  }
+
+  .post-card__meta span + span::before {
+    margin-right: .8rem;
+    color: rgba(138, 98, 31, .55);
+    content: '·';
+  }
+
+  .post-card h3 {
+    margin-top: 1rem;
+    font-size: clamp(1.75rem, 2.7vw, 2.25rem);
+  }
+
+  .post-card p {
+    margin: 1rem 0 1.4rem;
+    color: var(--text-muted);
+    font-size: .95rem;
+    line-height: 1.65;
+  }
+
+  .post-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    margin-top: auto;
+    color: var(--vermilion);
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  .post-card:hover {
+    transform: translateY(-.3rem);
+    border-color: rgba(156, 14, 21, .34);
+    box-shadow: 0 22px 44px rgba(75, 49, 40, .16);
+  }
+
+  .post-card:hover .post-card__image :global(img) {
+    transform: scale(1.035);
+    filter: brightness(1.04) saturate(1.04);
+  }
+
+  .blog-empty {
+    padding-block: clamp(3.5rem, 7vw, 6.5rem);
+  }
+
+  .blog-empty__card {
+    display: grid;
+    max-width: 62rem;
+    justify-items: center;
+    margin-inline: auto;
+    padding: clamp(2.5rem, 6vw, 5rem);
+    border: 1px solid rgba(138, 98, 31, .34);
+    border-radius: var(--radius);
+    background: #fffaf1;
+    box-shadow: 0 18px 48px rgba(75, 49, 40, .11);
+    text-align: center;
+  }
+
+  .blog-empty__eyebrow {
+    margin: 0 0 1.25rem;
+    color: var(--vermilion);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .blog-empty h2 {
+    max-width: 14ch;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+  }
+
+  .blog-empty__card > p:not(.blog-empty__eyebrow) {
+    max-width: 43rem;
+    margin: 1.5rem 0 0;
+    color: var(--text-muted);
+    font-size: clamp(1rem, 1.4vw, 1.1rem);
+    line-height: 1.7;
+  }
+
+  .blog-empty__topics {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .65rem;
+    margin: 2rem 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .blog-empty__topics li {
+    padding: .55rem .9rem;
+    border: 1px solid rgba(138, 98, 31, .28);
+    border-radius: 999px;
+    background: #f8f1e7;
+    color: var(--brass);
+    font-size: .76rem;
+    font-weight: 750;
+    letter-spacing: .04em;
+  }
+
+  @media (max-width: 58rem) {
+    .blog-page { padding-top: 5.25rem; }
+  }
+
+  @media (max-width: 42rem) {
+    .blog-hero__card { padding: 2.25rem 1.5rem 2.5rem; }
+    .blog-hero__detail { display: none; }
+    .blog-hero h1 { max-width: none; font-size: clamp(2.85rem, 14vw, 4.25rem); }
+    .post-card { max-width: none; }
+    .blog-empty__card { padding-inline: 1.4rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .post-card,
+    .post-card__image :global(img) {
+      transition: none;
+    }
+
+    .post-card:hover,
+    .post-card:hover .post-card__image :global(img) {
+      transform: none;
+    }
+  }
 </style>

@@ -2,10 +2,27 @@
 import Layout from '../layouts/Layout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Icon from '../components/Icon.astro';
+import JsonLd from '../components/JsonLd.astro';
+import { getOrganizationReference, getSchemaIds } from '../lib/schema';
 
 const title = 'Kontakt | Kina sa Ksenijom';
 const description = 'Imaš pitanje o putovanju u Kinu, vodiču ili budućim turama? Pošalji mi poruku putem kontakt forme i odgovoriću ti u najkraćem mogućem roku.';
 const canonical = new URL('/kontakt/', Astro.site).href;
+const schemaIds = getSchemaIds(Astro.site);
+const contactSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  '@id': `${canonical}#webpage`,
+  url: canonical,
+  name: title,
+  description,
+  inLanguage: 'sr-Latn',
+  isPartOf: { '@id': schemaIds.website },
+  mainEntity: {
+    ...getOrganizationReference(Astro.site),
+    email: 'info@kinasaksenijom.com',
+  },
+};
 ---
 
 <Layout
@@ -15,6 +32,7 @@ const canonical = new URL('/kontakt/', Astro.site).href;
   ogImage="/og/default.jpg"
   ogImageAlt="Kina sa Ksenijom"
 >
+  <JsonLd data={contactSchema} />
   <article class="contact-page">
     <section class="contact-section" aria-labelledby="contact-title">
       <Breadcrumbs items={[{ label: 'Početna', href: '/' }, { label: 'Kontakt' }]} />

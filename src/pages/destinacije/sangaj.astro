@@ -14,7 +14,7 @@ const title = 'Šangaj, Kina: šta videti i kada putovati';
 const description = 'Planiraš putovanje u Šangaj? Saznaj šta videti, gde odsesti, kako se kretati, koliko dana ostati i kada je najbolje posetiti grad.';
 const canonical = new URL('/destinacije/sangaj/', Astro.site).href;
 const hero = resolveImage(entry.data.heroImage);
-const editorialImage = resolveImage('~/assets/destinacije/sangaj/tjenzifang.jpg');
+const editorialImage = resolveImage('~/assets/destinacije/sangaj/zasto-posetiti-sangaj.jpg');
 
 const facts = [
   ['Broj stanovnika', 'Oko 24,9 miliona'],
@@ -28,22 +28,22 @@ const facts = [
 const attractions = [
   {
     title: 'Bund',
-    image: resolveImage('~/assets/destinacije/sangaj/bund.jpg'),
+    image: resolveImage('~/assets/destinacije/sangaj/bund-kartica.jpg'),
     alt: 'Pogled sa Bunda na nebodere Pudonga u Šangaju',
   },
   {
     title: 'Vrt Ju',
-    image: resolveImage('~/assets/destinacije/sangaj/vrt-ju.jpg'),
+    image: resolveImage('~/assets/destinacije/sangaj/yu-garden.jpg'),
     alt: 'Tradicionalna arhitektura i vrt u kompleksu Vrt Ju u Šangaju',
   },
   {
     title: 'Nanjing Road',
-    image: resolveImage('~/assets/destinacije/sangaj/galerija-03.jpg'),
+    image: resolveImage('~/assets/destinacije/sangaj/nanjing-road.jpg'),
     alt: 'Pešačka zona Nanjing Road u centru Šangaja',
   },
   {
     title: 'Nekadašnja francuska koncesija',
-    image: resolveImage('~/assets/destinacije/sangaj/francuska-cetvrt.jpg'),
+    image: resolveImage('~/assets/destinacije/sangaj/wukang.jpg'),
     alt: 'Ulica sa drvoredima u nekadašnjoj francuskoj koncesiji u Šangaju',
   },
 ];
@@ -51,7 +51,7 @@ const attractions = [
 const stayAreas = [
   {
     title: 'Bund i Nanjing Road',
-    text: 'Ova oblast je praktična za prvi boravak u Šangaju jer se nalazi blizu poznatih znamenitosti, restorana, prodavnica i više metro linija. Dobar je izbor ako ostaješ kratko i želiš da veliki deo grada obilaziš pešice, ali računaj na više ljudi i življu atmosferu.',
+    text: 'Ova oblast je praktična za prvi boravak u Šangaju jer se nalazi blizu poznatih znamenitosti, restorana, prodavnica i više metro linija. Dobar je izbor ako ostaješ kratko i želiš da veliki deo grada obilaziš u šetnji, ali računaj na više ljudi i življu atmosferu.',
   },
   {
     title: 'Jing’an i nekadašnja francuska koncesija',
@@ -73,8 +73,8 @@ const transportOptions = [
     text: 'Za kraće ili kasne vožnje možeš koristiti taksi ili DiDi. Sačuvaj naziv hotela i odredišta na kineskom jeziku jer engleski naziv neće uvek biti dovoljan vozaču.',
   },
   {
-    title: 'Kretanje pešice',
-    text: 'Kada stigneš u određenu četvrt, nastavi pešice. Bund, stari grad i nekadašnja francuska koncesija mnogo se bolje doživljavaju kroz šetnju nego kroz stalno prelaženje od jedne tačke do druge.',
+    title: 'Šetnja kroz četvrti',
+    text: 'Kada stigneš u određenu četvrt, nastavi da je istražuješ u šetnji. Bund, stari grad i nekadašnja francuska koncesija mnogo se bolje doživljavaju kroz šetnju nego kroz stalno prelaženje od jedne tačke do druge.',
   },
 ];
 
@@ -172,8 +172,8 @@ const faqSchema = {
         ]} />
         <div class="shanghai-hero__copy">
           <p class="eyebrow">ISTOČNA KINA · 上海</p>
-          <h1>Šangaj: upoznaj grad pre polaska</h1>
-          <p class="lead">Na jednoj strani reke Huangpu nižu se istorijske fasade Bunda, a na drugoj neboderi Pudonga. Između njih je Šangaj koji se najbolje upoznaje deo po deo, kroz različite četvrti, ukuse i prizore.</p>
+          <h1>Šangaj</h1>
+          <p class="lead">Upoznaj grad pre polaska, od istorijskih fasada Bunda do nebodera Pudonga.</p>
         </div>
       </div>
     </header>
@@ -194,7 +194,7 @@ const faqSchema = {
           <p>Grad je ogroman, ali njegove najzanimljivije delove ne treba obilaziti nasumično. Najbolje je da svaki dan posvetiš jednoj oblasti. Tako ostaje dovoljno vremena ne samo za poznate znamenitosti već i za šetnju, hranu i male trenutke kroz koje se Šangaj zapravo upoznaje.</p>
         </div>
         <figure class="editorial__image">
-          <SeoImage src={editorialImage} alt="Uličice i tradicionalne kuće u četvrti Tjenzifang u Šangaju" width={840} height={680} widths={[440, 640, 840]} sizes="(max-width: 800px) 100vw, 42vw" />
+          <SeoImage src={editorialImage} alt="Osvetljeni neboderi Pudonga i Orijentalni biser noću u Šangaju" width={840} height={680} widths={[440, 640, 840]} sizes="(max-width: 800px) 100vw, 42vw" />
         </figure>
       </div>
     </section>
@@ -322,13 +322,14 @@ const faqSchema = {
   .shanghai-page { background: var(--surface); color: var(--text); }
 
   .shanghai-hero { position: relative; min-height: 50rem; overflow: hidden; padding-top: 6.5rem; color: var(--on-dark); }
-  .shanghai-hero > :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+  .shanghai-hero > :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 48%; }
   .shanghai-hero__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(18,14,12,.94), rgba(18,14,12,.16) 72%); }
   .shanghai-hero__inner { position: relative; display: grid; min-height: 43.5rem; align-content: space-between; }
   .shanghai-hero__inner :global(.breadcrumbs) { width: 100%; margin: 0; padding-inline: 0; color: var(--on-dark-muted); }
-  .shanghai-hero__copy { max-width: 62rem; padding-bottom: clamp(4rem, 8vw, 6.5rem); }
-  .shanghai-hero h1 { max-width: 13ch; font-size: clamp(3.5rem, 7vw, 6.8rem); line-height: .95; }
-  .shanghai-hero .lead { max-width: 54rem; margin: 1.6rem 0 0; color: #eee4d8; }
+  .shanghai-hero__copy { max-width: 40.625rem; padding-bottom: clamp(4rem, 8vw, 6.5rem); }
+  .shanghai-hero .eyebrow { margin-bottom: clamp(1.5rem, 2vw, 2rem); }
+  .shanghai-hero h1 { max-width: none; font-size: clamp(4.25rem, 9vw, 8rem); line-height: .9; white-space: nowrap; }
+  .shanghai-hero .lead { max-width: 40.625rem; margin: .9rem 0 0; color: #eee4d8; }
 
   .shanghai-facts { border-bottom: 1px solid var(--line); background: var(--surface-alt); }
   .shanghai-facts__grid { display: grid; grid-template-columns: repeat(3, 1fr); margin-block: 0; padding-block: 2rem; }
@@ -422,7 +423,8 @@ const faqSchema = {
   @media (max-width: 50rem) {
     .shanghai-hero { min-height: 43rem; padding-top: 5.25rem; }
     .shanghai-hero__inner { min-height: 37.75rem; }
-    .shanghai-hero h1 { font-size: clamp(3rem, 13vw, 4.6rem); }
+    .shanghai-hero > :global(img) { object-position: 43% 48%; }
+    .shanghai-hero h1 { font-size: clamp(3.75rem, 17vw, 5.5rem); }
     .shanghai-facts__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .shanghai-facts__grid > div { border-left: 0 !important; }
     .shanghai-facts__grid > div:nth-child(even) { border-left: 1px solid var(--line) !important; }

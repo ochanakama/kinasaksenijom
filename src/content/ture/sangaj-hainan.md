@@ -1,7 +1,7 @@
 ---
 # URL: /ture/sangaj-hainan/
 # Napomena: slug je pisan bez dijakritike i sa "hainan" (ne "hajnan")
-# da bi se poklopio sa slugom destinacije /destinacije/hainan/.
+# URL destinacije je /destinacije/sanya-hainan/.
 
 naslov: "Šangaj i Hainan iz Beograda"
 title: "Putovanje u Kinu iz Beograda: Šangaj i Hainan, 11 dana | Kina sa Ksenijom"
